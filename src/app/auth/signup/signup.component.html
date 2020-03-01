@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Signup
+      Bruce
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,32 +12,48 @@
       <ion-grid>
         <ion-col>
 
+          <div class="key-back">
+            <ion-row>
+              <ion-col style="text-align: left">
+                <a routerLink="/login" class="new-account">
+                  <mat-icon>keyboard_backspace</mat-icon>
+                </a>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <p>Nova conta</p>
+            </ion-col>
+          </ion-row>
+
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field>
-                <input type="email" 
-                       matInput placeholder="Your e-mail"
-                       required
-                       ngModel
-                       name="email"
-                       email
-                       #emailInput="ngModel">
-                       <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
-                       <mat-error *ngIf="!emailInput.hasError('required')">E-mail is invalid.</mat-error>
-                </mat-form-field>
+                <input type="text" matInput placeholder="Nome completo" required ngModel name="name"
+                  #nameInput="ngModel">
+                <mat-error *ngIf="nameInput.hasError('required')">Field must not be empty.</mat-error>
+              </mat-form-field>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <mat-form-field>
+                <input type="email" matInput placeholder="Your e-mail" required ngModel name="email" email
+                  #emailInput="ngModel">
+                <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
+                <mat-error *ngIf="!emailInput.hasError('required')">E-mail is invalid.</mat-error>
+              </mat-form-field>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Should be at least 6 characters long.">
-                <input type="password"
-                      matInput placeholder="Your password"
-                      required
-                      ngModel
-                      name="password"
-                      minlength="6"
-                      #pwInput="ngModel">
+                <input type="password" matInput placeholder="Your password" required ngModel name="password"
+                  minlength="6" #pwInput="ngModel">
                 <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
               </mat-form-field>
             </ion-col>
@@ -46,13 +62,11 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Should be at least 6 characters long.">
-                <input type="password"
-                      matInput placeholder="Confirm password"
-                      required
-                      ngModel
-                      name="confirm-password"
-                      minlength="6"
-                      #confirmInput="ngModel">
+                <input type="password" matInput placeholder="Confirm password" required ngModel name="confirm-password"
+                  minlength="6" #confirmInput="ngModel" pattern="{{ pwInput.value }}">
+
+                <mat-error *ngIf="confirmInput.hasError('pattern')"> Password & Confirm Password does not match.
+                </mat-error>
                 <mat-hint align="end">{{ confirmInput.value?.length }} / 6</mat-hint>
               </mat-form-field>
             </ion-col>
@@ -61,24 +75,29 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field>
-                <input matInput
-                       placeholder="Your birthdate"
-                       [matDatepicker]="picker"
-                       required>
+                <input matInput placeholder="Your birthdate" [matDatepicker]="picker" [max]="maxDate" [min]="minDate"
+                  ngModel name="birthdate" required>
                 <mat-datepicker #picker></mat-datepicker>
-                <button matSuffix mat-stroked-button color="primary" (click)="picker.open()"><mat-icon>date_range</mat-icon></button>
-                <!-- <mat-error *ngIf="matDatepicker.hasError('required')">Please provide a valid date</mat-error>  -->
-              </mat-form-field>     
+                <button matSuffix mat-stroked-button color="primary" (click)="picker.open()">
+                  <mat-icon>date_range</mat-icon>
+                </button>
+              </mat-form-field>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <mat-checkbox ngModel name="agree" required color="primary">
+                Agree to Terms and Conditions.
+              </mat-checkbox>
             </ion-col>
           </ion-row>
 
 
           <ion-row>
             <ion-col style="text-align: center">
-              <button type="submit" 
-                      mat-raised-button
-                      color="primary">
-                Submit
+              <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">
+                Criar
               </button>
             </ion-col>
           </ion-row>
@@ -87,35 +106,4 @@
       </ion-grid>
     </form>
   </section>
-
-
-  <!-- 
-  <section>
-    <ion-item>
-      <ion-label position="floating">E-mail</ion-label>
-      <ion-input type="email" placeholder="Your E-mail"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" placeholder="New Password"></ion-input>
-    </ion-item>
-    <ion-button color="medium">Submit</ion-button>
-  </section> -->
 </ion-content>
-
-
-
-<!-- <ion-content [fullscreen]="true">
-  <section class="signup-form">
-    <form>
-      <mat-form-field>
-        <input type="email" matInput placeholder="Your e-mail">
-      </mat-form-field>
-      <mat-form-field>
-        <input type="password" matInput placeholder="Your password">
-      </mat-form-field>
-      <button type="submit" mat-raised-button color="primary">Submit</button>
-    </form>
-  </section>
-</ion-content> -->

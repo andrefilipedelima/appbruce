@@ -15,7 +15,8 @@ import { environment } from '../environments/environment';
 
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
-import { HomePage } from './home/home.page';
+import { WelcomeComponent } from './welcome/welcome.component';
+
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
@@ -27,7 +28,7 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     SignupComponent,
     LoginComponent,
-    HomePage
+    WelcomeComponent
   ],
   entryComponents: [],
   imports: [
@@ -43,7 +44,7 @@ import { FormsModule } from '@angular/forms';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
   bootstrap: [AppComponent]
 })

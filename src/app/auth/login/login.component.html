@@ -1,3 +1,76 @@
-<p>
-  login works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Bruce
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <section>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <ion-grid>
+        <ion-col>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <p>Entre com sua Conta</p>
+              <img src="assets/icon/person-icon.png" class="person-icon">
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <mat-form-field>
+                <input type="email" matInput placeholder="E-mail" required ngModel name="email" email
+                  #emailInput="ngModel">
+                <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
+                <mat-error *ngIf="!emailInput.hasError('required')">E-mail is invalid.</mat-error>
+              </mat-form-field>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col style="text-align: center">
+              <mat-form-field hintLabel="Should be at least 6 characters long.">
+                <input type="password" matInput placeholder="Senha" required ngModel name="password" minlength="6"
+                  #pwInput="ngModel">
+                <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
+              </mat-form-field>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="continue">
+            <ion-col style="text-align: center">
+             <ion-button class="btn-submit" type="submit" color="primary" expand="full" [disabled]="f.invalid">
+                Entrar
+              </ion-button>
+            
+              <!--   <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">
+                  Entrar
+                </button> -->
+            </ion-col>
+          </ion-row>
+
+          <div class="link">
+            <ion-row>
+              <ion-col style="text-align: left">
+                <a routerLink="/signup" class="new-account">Nova Conta</a>
+              </ion-col>
+              <ion-col style="text-align: right">
+                <a href="" class="forget-password">Esqueceu a senha?</a>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <ion-row class="continue">
+            <ion-col style="text-align: center">
+              <a href="">Continuar sem logar ></a>
+            </ion-col>
+          </ion-row>
+
+        </ion-col>
+      </ion-grid>
+    </form>
+  </section>
+</ion-content>

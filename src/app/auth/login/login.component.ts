@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -7,8 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+
+  //@ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
+
   constructor() { }
 
   ngOnInit() {}
+
+  onSubmit(form: NgForm){
+    console.log(form);
+  }
+
+  
+
+  /* someMethod() {
+    this.trigger.openMenu();
+  } */
+
 
 }
