@@ -1,14 +1,21 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
-import { WelcomeComponent } from './welcome/welcome.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'welcome/:id',
+    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomeComponentModule)
+  },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'welcome', component: WelcomeComponent },
+  
 ];
 
 @NgModule({
@@ -17,4 +24,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

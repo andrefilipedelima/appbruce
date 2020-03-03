@@ -13,22 +13,19 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 
-import { SignupComponent } from './auth/signup/signup.component';
-import { LoginComponent } from './auth/login/login.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 
 import { FormsModule } from '@angular/forms';
+import { AuthService } from './auth/auth.service';
+import { SignupComponent } from './auth/signup/signup.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
-    LoginComponent,
-    WelcomeComponent
+    LoginComponent
   ],
   entryComponents: [],
   imports: [
@@ -42,6 +39,7 @@ import { FormsModule } from '@angular/forms';
     AngularFireAuthModule,
   ],
   providers: [
+    AuthService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

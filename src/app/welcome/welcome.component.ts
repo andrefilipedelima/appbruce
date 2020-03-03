@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -7,24 +7,12 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./welcome.component.scss'],
 })
 export class WelcomeComponent implements OnInit {
+  public welcome: string;
 
-  constructor(private menu: MenuController) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {}
-
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+  ngOnInit() {
+    this.welcome = this.activatedRoute.snapshot.paramMap.get('id');
   }
-
-  openEnd() {
-    this.menu.open('end');
-  }
-
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
-  }
-
 
 }

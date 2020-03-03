@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatMenuTrigger } from '@angular/material';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +9,24 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class LoginComponent implements OnInit {
 
+  loginForm: FormGroup;
 
-  //@ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
+  constructor(private authService: AuthService) { }
 
-  constructor() { }
+  ngOnInit() {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email]
+      }),
+      password: new FormControl('', {validators: [Validators.required]})
+    });
+  }
 
-  ngOnInit() {}
-
-  onSubmit(form: NgForm){
-    console.log(form);
+  onSubmit(){
+    this.authService.Login({
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    });
   }
 
   
