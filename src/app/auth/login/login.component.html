@@ -42,13 +42,16 @@
 
           <ion-row class="continue">
             <ion-col style="text-align: center">
-             <ion-button class="btn-submit" type="submit" color="primary" expand="full" [disabled]="f.invalid">
+             <ion-button class="btn-submit"
+                         type="submit"
+                         color="primary"
+                         expand="full"
+                         [disabled]="f.invalid"
+                         (click)="onSubmit()">
                 Entrar
               </ion-button>
             
-              <!--   <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">
-                  Entrar
-                </button> -->
+    
             </ion-col>
           </ion-row>
 
@@ -65,7 +68,7 @@
 
           <ion-row class="continue">
             <ion-col style="text-align: center">
-              <a routerLink="/welcome/inbox">Continuar sem logar ></a>
+              <a routerLink="/welcome/filmes">Continuar sem logar ></a>
             </ion-col>
           </ion-row>
 

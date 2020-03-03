@@ -29,11 +29,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  
-
-  /* someMethod() {
-    this.trigger.openMenu();
-  } */
 
 
 }

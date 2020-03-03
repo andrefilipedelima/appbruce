@@ -13,37 +13,47 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/welcome/Inbox',
-      icon: 'mail'
+      title: 'Filmes',
+      url: '/welcome/filmes',
+      icon: 'film'
     },
     {
-      title: 'Outbox',
-      url: '/welcome/Outbox',
-      icon: 'paper-plane'
+      title: 'Séries',
+      url: '/welcome/series',
+      icon: 'videocam'
     },
     {
-      title: 'Favorites',
-      url: '/welcome/Favorites',
-      icon: 'heart'
+      title: 'Buscar',
+      url: '/welcome/buscar',
+      icon: 'search'
     },
     {
-      title: 'Archived',
-      url: '/welcome/Archived',
-      icon: 'archive'
+      title: 'Histórico',
+      url: '/welcome/historico',
+      icon: 'globe'
     },
     {
-      title: 'Trash',
-      url: '/welcome/Trash',
-      icon: 'trash'
+      title: 'Preferências',
+      url: '/welcome/preferencias',
+      icon: 'settings'
     },
     {
-      title: 'Spam',
-      url: '/welcome/Spam',
-      icon: 'warning'
+      title: 'Notificações',
+      url: '/welcome/notificacoes',
+      icon: 'notifications'
+    },
+    {
+      title: 'MyBruce',
+      url: '/welcome/myBruce',
+      icon: 'ribbon'
+    },
+    {
+      title: 'Logout',
+      url: '/welcome/logout',
+      icon: 'log-out'
     }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  /* public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders']; */
 
   constructor(
     private platform: Platform,
