@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-title>
       Bruce
     </ion-title>
@@ -78,7 +78,7 @@
                 <input matInput placeholder="Your birthdate" [matDatepicker]="picker" [max]="maxDate" [min]="minDate"
                   ngModel name="birthdate" required>
                 <mat-datepicker #picker></mat-datepicker>
-                <button matSuffix mat-stroked-button color="primary" (click)="picker.open()">
+                <button matSuffix mat-stroked-button (click)="picker.open()">
                   <mat-icon>date_range</mat-icon>
                 </button>
               </mat-form-field>
@@ -87,18 +87,23 @@
 
           <ion-row>
             <ion-col style="text-align: center">
-              <mat-checkbox ngModel name="agree" required color="primary">
+              <mat-checkbox ngModel name="agree" required>
                 Agree to Terms and Conditions.
               </mat-checkbox>
             </ion-col>
           </ion-row>
-
-
+          
           <ion-row>
             <ion-col style="text-align: center">
-              <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">
-                Criar
-              </button>
+             <ion-button class="btn-submit"
+                         type="submit"
+                         expand="full"
+                         [disabled]="f.invalid"
+                         >
+                Criar conta
+              </ion-button>
+            
+    
             </ion-col>
           </ion-row>
 

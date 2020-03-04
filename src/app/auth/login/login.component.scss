@@ -13,9 +13,9 @@ mat-form-field {
 }
 
 a {
-font-size: 0.8em;
-font-family: Arial, Helvetica, sans-serif;
-color: gray;
+    font-size: 0.8em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
 }
 
 .continue {
@@ -25,4 +25,30 @@ color: gray;
 .btn-submit{
     width: 300px;
     margin: auto;
+}
+
+::ng-deep .mat-form-field-label {
+    color: #e6e6e6 !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #e6e6e6 !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color :#e6e6e6 !important;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-hint {
+    color: #e6e6e6 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #e6e6e6 !important;
+  }
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+    border-bottom: 1px solid;
 }
