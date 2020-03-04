@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Subscription } from 'rxjs';
+import { AuthService } from './auth/auth.service';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
   public appPages = [
     {
@@ -26,7 +29,10 @@ export class AppComponent implements OnInit {
       title: 'Buscar',
       url: '/welcome/buscar',
       icon: 'search'
-    },
+    }
+  ];
+
+  public appPages2 = [
     {
       title: 'Histórico',
       url: '/welcome/historico',
@@ -46,23 +52,27 @@ export class AppComponent implements OnInit {
       title: 'MyBruce',
       url: '/welcome/myBruce',
       icon: 'ribbon'
-    },
-    {
-      title: 'Logout',
-      url: '/welcome/logout',
-      icon: 'log-out'
     }
   ];
   /* public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders']; */
 
+  home = false;
+  isAuth = false;
+  authSubscription: Subscription;
+  
+  
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private authService: AuthService,
   ) {
     this.initializeApp();
+
   }
 
+  
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -72,8 +82,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const path = window.location.pathname.split('welcome/')[1];
+    
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+
+    this.authSubscription = this.authService.authChange.subscribe(authStatus => {
+      this.isAuth = authStatus;
+    });
   }
+  
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+  }
+
+  onLogout() {
+    this.authService.logout();
+  }
+
 }
