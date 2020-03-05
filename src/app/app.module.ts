@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
+import { ToastService } from './services/toastService';
 
 
 
@@ -40,10 +41,11 @@ import { LoginComponent } from './auth/login/login.component';
     BrowserModule,
     BrowserAnimationsModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [
     AuthService,
+    ToastService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

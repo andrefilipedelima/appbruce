@@ -78,7 +78,7 @@
                 <input matInput placeholder="Your birthdate" [matDatepicker]="picker" [max]="maxDate" [min]="minDate"
                   ngModel name="birthdate" required>
                 <mat-datepicker #picker></mat-datepicker>
-                <button matSuffix mat-stroked-button (click)="picker.open()">
+                <button type="button" matSuffix mat-stroked-button (click)="picker.open()">
                   <mat-icon>date_range</mat-icon>
                 </button>
               </mat-form-field>

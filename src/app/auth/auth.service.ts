@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthData } from './auth-data.model';
@@ -22,8 +22,9 @@ export class AuthService {
       });
   }
 
-  login(authData: AuthData) {
-    this.afAuth.auth
+  async login(authData: AuthData): Promise<boolean> {
+    let sucesso = true; 
+    await this.afAuth.auth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
         console.log(result);
@@ -31,7 +32,10 @@ export class AuthService {
       })
       .catch(error => {
         console.log(error);
+        sucesso = false;
       });
+
+      return sucesso;
   }
 
   logout() {
@@ -49,4 +53,5 @@ export class AuthService {
     this.authChange.next(true);
     this.router.navigate(['/welcome/filmes']);
   }
+
 }
