@@ -23,7 +23,7 @@
             <ion-col style="text-align: center">
               <mat-form-field>
                 <input type="email" matInput placeholder="E-mail" required ngModel name="email" email
-                  #emailInput="ngModel">
+                  #emailInput="ngModel" #email>
                 <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
                 <mat-error *ngIf="!emailInput.hasError('required')">E-mail is invalid.</mat-error>
               </mat-form-field>
@@ -34,7 +34,7 @@
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Should be at least 6 characters long.">
                 <input type="password" matInput placeholder="Senha" required ngModel name="password" minlength="6"
-                  #pwInput="ngModel">
+                  #pwInput="ngModel" #password>
                 <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
               </mat-form-field>
             </ion-col>
@@ -45,8 +45,7 @@
              <ion-button class="btn-submit"
                          type="submit"
                          expand="full"
-                         [disabled]="f.invalid"
-                         (click)="onSubmit()">
+                         [disabled]="f.invalid">
                 Entrar
               </ion-button>
             
