@@ -3,11 +3,27 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthData } from './auth-data.model';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
   private isAuthenticated = false;
+
+  defaultAuth = firebase.auth();
+
+   actionCodeSettings = {
+    url: '/login',
+    iOS: {
+      bundleId: ''
+    },
+    android: {
+      packageName: '',
+      installApp: true,
+      minimumVersion: '12'
+    },
+    handleCodeInApp: true
+  };
 
   constructor(private router: Router, private afAuth: AngularFireAuth) {}
 
@@ -49,4 +65,17 @@ export class AuthService {
     this.authChange.next(true);
     this.router.navigate(['/welcome/filmes']);
   }
+
+  resetPassword(email: string) {
+    firebase.auth().sendPasswordResetEmail(
+      email, this.actionCodeSettings)
+      .then(function() {
+        // Password reset email sent.
+      })
+      .catch(function(error) {
+        // Error occurred. Inspect error.code.
+      }); 
+    }
+
+  
 }
