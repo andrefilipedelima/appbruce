@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { ToastService } from 'src/app/services/toastService';
+import { OverlayService } from 'src/app/services/OverlayService';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +11,9 @@ import { ToastService } from 'src/app/services/toastService';
 })
 export class LoginComponent implements OnInit {
   //loginForm: FormGroup;
-  toastService: ToastService;
+  overlayService: OverlayService;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private _toastService: ToastService) { 
+  constructor(private authService: AuthService, private route: ActivatedRoute, private _overlayService: OverlayService) { 
     console.log(this.route.queryParams);
 //    this.route.queryParams.subscribe(params => {
 //      console.log(params);
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 //      }
 //    });
 
-this.toastService = _toastService;
+this.overlayService = _overlayService;
 
 }
 
@@ -44,7 +44,7 @@ this.toastService = _toastService;
     });
 
     if(!login)
-      this.toastService.presentToast('Usuário ou senha inválidos');
+      this.overlayService.toast({ message: 'Usuário ou senha inválidos'});
   }
 
 

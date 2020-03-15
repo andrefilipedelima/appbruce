@@ -21,9 +21,10 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
-import { ToastService } from './services/toastService';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { TmdbService } from './core/providers/tmdb.service';
+import { OverlayService } from './services/OverlayService';
 
 
 @NgModule({
@@ -43,13 +44,15 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     BrowserModule,
     BrowserAnimationsModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     AuthService,
-    ToastService,
+    OverlayService,
     StatusBar,
     SplashScreen,
+    TmdbService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
   bootstrap: [AppComponent]
