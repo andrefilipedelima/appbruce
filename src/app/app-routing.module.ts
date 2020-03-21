@@ -12,11 +12,16 @@ const routes: Routes = [
   },
   {
     path: 'welcome/:id',
-    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomeComponentModule), 
+    loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule), 
   },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reset', component: ResetPasswordComponent },
+  {
+    path: 'welcome2',
+    loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule)
+  },
+
   
 ];
 

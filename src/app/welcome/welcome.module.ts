@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -8,6 +8,10 @@ import { WelcomeComponentRoutingModule } from './welcome-routing.module';
 
 import { WelcomeComponent } from './welcome.component';
 import { TmdbService } from '../core/providers/tmdb.service';
+
+import {map, take} from 'rxjs/operators';
+import { OverlayService } from '../services/OverlayService';
+import { Producao } from '../core/models/producao';
 
 @NgModule({
   imports: [
@@ -20,29 +24,17 @@ import { TmdbService } from '../core/providers/tmdb.service';
   ],
   declarations: [WelcomeComponent]
 })
+
+@Component({
+  selector: 'app-welcome',
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./welcome.component.scss']
+})
 export class WelcomeComponentModule {
 
-  constructor(private tmdbService: TmdbService){
-    tmdbService.buscarPorTexto('missão', 1).subscribe(result =>{
-      console.log(result.Total_Paginas);
-      result.Producoes.forEach(element => {
-        console.log(element, ':PorTexto: ', element.media_type);
-      });
-    });
+  items = [];
 
-    tmdbService.buscarFilmesPopulares(1).subscribe(result =>{
-      console.log(result.Total_Paginas);
-      result.Producoes.forEach(element => {
-        console.log(element, ':FilmesPopulares: ', element.media_type);
-      });
-    });
-
-    tmdbService.buscarSeriesPopulares(1).subscribe(result =>{
-      console.log(result.Total_Paginas);
-      result.Producoes.forEach(element => {
-        console.log(element, ':SeriesPopulares: ', element.title);
-      });
-    });
+  constructor(private tmdbService: TmdbService, private overlayService: OverlayService){
   }
 
 }

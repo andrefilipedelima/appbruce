@@ -15,8 +15,32 @@
     </ion-header>
   
     <div id="container">
-      <strong class="capitalize">{{ welcome }}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      
+      <div *ngFor="let cat of items">
+        <ion-row class="category-banner">
+          <ion-col class="ion-align-self-center">
+            {{ cat.categoria }}
+          </ion-col>
+        </ion-row>
+
+        <ion-slides>
+          <ion-slide *ngFor="let producao of cat.producoes">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title style="color: white;">
+                  {{ producao.media_type == "tv" ? producao.name : producao.title }}
+                </ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content>
+                <img src="http://image.tmdb.org/t/p/w185" {{producao.poster_path}}>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+
+      </div>
+      
     </div>
   </ion-content>
   

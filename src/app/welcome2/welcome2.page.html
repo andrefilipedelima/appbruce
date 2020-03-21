@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="titulo-pagina">{{titulo_pagina}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{titulo_pagina}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    
+    <div *ngFor="let cat of items">
+      <ion-row class="category-banner">
+        <ion-col class="ion-align-self-center titulo-categorias">
+          {{ cat.titulo }}
+        </ion-col>
+      </ion-row>
+
+      <ion-slides [options]="retornaSliderConfig(cat.tipo)" >
+        <ion-slide *ngFor="let producao of cat.producoes">
+          <ion-card class="cardCustomizado">
+            <ion-card-content class="cardCustomizado">
+              <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </div>
+    
+  </div>
+</ion-content>
