@@ -1,0 +1,1 @@
+# APP BRUCE - Buscador de conteudo em plataformas de streaming
