@@ -20,7 +20,11 @@ const routes: Routes = [
   {
     path: 'welcome2',
     loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule)
+  },  {
+    path: 'busca',
+    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
   },
+
 
   
 ];
