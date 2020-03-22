@@ -9,5 +9,9 @@
 
 
 <ion-content>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" placeholder="Digite o titulo aqui... "></ion-searchbar>
+  <ion-button expand="full" (click)="pesquisarPorTitulo()">Pesquisar</ion-button>
+
+  <ion-label position="floating" >{{msgError}}</ion-label>
+
 </ion-content>
