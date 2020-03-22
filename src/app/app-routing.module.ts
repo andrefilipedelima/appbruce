@@ -11,6 +11,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'welcome/buscar',
+    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
+  },
+  {
     path: 'welcome/:id',
     loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule), 
   },
@@ -20,9 +24,6 @@ const routes: Routes = [
   {
     path: 'welcome2',
     loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule)
-  },  {
-    path: 'busca',
-    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
   },
 
 
