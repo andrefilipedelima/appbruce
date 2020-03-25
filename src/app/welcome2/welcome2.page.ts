@@ -4,6 +4,7 @@ import { OverlayService } from '../services/OverlayService';
 import { WelcomeType } from '../core/models/welcomeType';
 import { ParametroBusca } from '../core/models/parametroBusca';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome2',
@@ -14,32 +15,37 @@ export class Welcome2Page implements OnInit {
   items: WelcomeType[];
   tipo_pagina: 'tv' | 'movie';
   titulo_pagina: string;
+  loading: Promise<HTMLIonLoadingElement>;
   
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute) { }
+  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController) { 
+    this.loading = this.overlayService.loading();
+  }
 
   async ngOnInit(): Promise<void> {
     const param_tipo_pagina = this.route.snapshot.paramMap.get('id');
 
     if(!param_tipo_pagina){
       this.tipo_pagina = 'movie';
-      this.titulo_pagina = 'Filmes';
     }
     else{
       if(param_tipo_pagina == 'filmes'){
         this.tipo_pagina = 'movie';
-        this.titulo_pagina = 'Filmes';
       }
       else{
         this.tipo_pagina = 'tv';
-        this.titulo_pagina = 'Séries';
       }
     }
+
+    this.titulo_pagina = this.tipo_pagina == 'tv'? 'Séries' : 'Filmes';
 
     await this.carregaDados();
   }
 
+  async ionViewDidEnter(){
+    (await this.loading).dismiss();
+  }
+
   async carregaDados(): Promise<void>{
-    const loading = await this.overlayService.loading();
     this.items = [];
 
     try
@@ -77,10 +83,6 @@ export class Welcome2Page implements OnInit {
       console.log(ex);
       this.overlayService.toast({ message: ex});
     }
-    finally{
-      loading.dismiss();
-    }
-
     
   }
 
@@ -107,4 +109,7 @@ export class Welcome2Page implements OnInit {
       return retorno;
   }
 
+  abreDetalhes(id: string){
+    this.navCtrl.navigateForward(['detalhes',this.tipo_pagina, id]);
+  }
 }

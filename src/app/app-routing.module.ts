@@ -18,9 +18,14 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'reset', component: ResetPasswordComponent },
   {
-    path: 'welcome2',
+    path: 'welcome2/:id',
     loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule)
   },
+  {
+    path: 'detalhes/:tipo/:id',
+    loadChildren: () => import('./detalhes-producao/detalhes-producao.module').then( m => m.DetalhesProducaoPageModule)
+  },
+
 
   
 ];

@@ -23,9 +23,9 @@
         </ion-col>
       </ion-row>
 
-      <ion-slides [options]="retornaSliderConfig(cat.tipo)" >
+      <ion-slides [options]="retornaSliderConfig(cat.tipo)">
         <ion-slide *ngFor="let producao of cat.producoes">
-          <ion-card class="cardCustomizado">
+          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
             <ion-card-content class="cardCustomizado">
               <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
             </ion-card-content>
