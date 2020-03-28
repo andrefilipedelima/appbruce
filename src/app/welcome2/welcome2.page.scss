@@ -1,16 +1,33 @@
-.cardCustomizado{
+.cardCustomizado {
     padding: 0px !important;
     margin: 0px !important;
     line-height: 0 !important;
 }
 
-.titulo-categorias{
-    font-size: 1.6em !important;
-    font-family: Verdana;
-    color: #fca136;
+.titulo-categorias {
+    font-size: 1.4em !important;
+    font-family: sans-serif;
+    margin-top: 20px;
+    margin-left: 17px;
+    margin-bottom: 5px;
 }
 
-.titulo-pagina{
+.titulo-pagina {
     font-size: 2em !important;
     font-family: Verdana;
+}
+
+.search-pagina {
+    font-size: 2em !important;
+    font-family: Verdana;
+}
+
+.menu {
+    display: flex;
+}
+
+.search-btn {
+    height: 50px;
+     width: 50px;
+    border-radius: 50%;
 }

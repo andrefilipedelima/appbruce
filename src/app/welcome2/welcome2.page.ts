@@ -93,15 +93,15 @@ export class Welcome2Page implements OnInit {
         retorno = {
           spaceBetween: 10,
           centeredSlides: !(window.innerWidth>=960),
-          slidesPerView: window.innerWidth>=960 ? 6 : 1.6,
+          slidesPerView: window.innerWidth>=960 ? 3.2 : 1.2,
           loop: true
         }
       }
       else{
         retorno = {
           spaceBetween: 10,
-          centeredSlides: false,
-          slidesPerView: window.innerWidth>=960 ? 6 : 2.6,
+          centeredSlides: !(window.innerWidth>=960),
+          slidesPerView: window.innerWidth>=960 ? 6.2 : 2.4,
           loop: true
         }
       }
