@@ -9,6 +9,8 @@ import { ParametroBusca } from '../models/parametroBusca';
 import { Filme } from '../models/filme';
 import { Serie } from '../models/serie';
 import { Cast } from '../models/cast';
+import { Pessoa } from '../models/pessoa';
+import { Compania } from '../models/compania';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,20 @@ export class TmdbService {
     const url_busca = `${this.API_URL}movie/${id_filme}?${this.KEY}&language=pt-BR`;
 
     return this.http.get<Filme>(url_busca);
+  }
+
+  buscarPorPessoa(strBusca: string, pagina: number): Observable<Pessoa[]>{
+    const url_busca = `${this.API_URL}search/person?${this.KEY}&language=pt-BR&page=${pagina}&query=${strBusca}`;
+
+    return this.http.get<Pessoa>(url_busca)
+                    .pipe(map((props:any) => props.results));
+  }
+
+  buscarPorCompania(strBusca: string, pagina: number): Observable<Compania[]>{
+    const url_busca = `${this.API_URL}search/company?${this.KEY}&page=${pagina}&query=${strBusca}`;
+
+    return this.http.get<Compania>(url_busca)
+                    .pipe(map((props:any) => props.results));
   }
 
   buscarPorTexto(strBusca: string, pagina: number): Observable<Resultado>{
@@ -102,5 +118,4 @@ export class Resultado{
     else
       this.Producoes = Producoes
   }
-
 }
