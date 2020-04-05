@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import { Producao } from '../models/producao';
 import { Genero } from '../models/genero';
 import { ParametroBusca } from '../models/parametroBusca';
+import { Filme } from '../models/filme';
+import { Serie } from '../models/serie';
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +18,37 @@ export class TmdbService {
 
   constructor(private http: HttpClient) { }
 
+  buscarSeriePorId(id_serie: number): Observable<Serie>{
+    const url_busca = `${this.API_URL}tv/${id_serie}?${this.KEY}&language=pt-BR`;
+
+    return this.http.get<Serie>(url_busca);
+  }
+
+  buscarFilmePorId(id_filme: number): Observable<Filme>{
+    const url_busca = `${this.API_URL}movie/${id_filme}?${this.KEY}&language=pt-BR`;
+
+    return this.http.get<Filme>(url_busca);
+  }
+
   buscarPorTexto(strBusca: string, pagina: number): Observable<Resultado>{
     const url_busca = this.API_URL + "search/multi?" + this.KEY + "&language=pt-BR&page=" + pagina + "&query=" + strBusca;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, false)));
   }
 
   buscarPopulares(pagina: number, media_type: 'tv' | 'movie'): Observable<Resultado>{
     const url_busca = this.API_URL + media_type + "/popular?" + this.KEY + "&language=pt-BR&page=" + pagina;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));
   }
 
   buscarEmAlta(media_type: 'tv' | 'movie'): Observable<Resultado>{
     const url_busca = this.API_URL + "trending/" + media_type + "/week?" + this.KEY + "";
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));
   }
 
   descobrir(pagina: number, media_type: 'tv' | 'movie', parametroBusca: ParametroBusca[]): Observable<Resultado>{
@@ -47,7 +61,7 @@ export class TmdbService {
     const url_busca = this.API_URL + "discover/" + media_type + "?" + this.KEY + parametro;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));
   }
 
   buscarGeneros(media_type: 'tv' | 'movie'): Observable<Genero[]>{
@@ -73,9 +87,12 @@ export class Resultado{
   Total_Paginas: number; 
   Producoes: Producao[];
 
-  constructor(Total_Paginas: number, Producoes: Producao[]){
+  constructor(Total_Paginas: number, Producoes: Producao[], filtraPosterNull: boolean){
     this.Total_Paginas= Total_Paginas;
-    this.Producoes = Producoes.filter(x => x.poster_path !=null);
+    if(filtraPosterNull)
+      this.Producoes = Producoes.filter(x => x.poster_path !=null);
+    else
+      this.Producoes = Producoes
   }
 
 }

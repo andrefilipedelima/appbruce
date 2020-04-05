@@ -3,7 +3,21 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title class="titulo-pagina">{{titulo_pagina}}</ion-title>
+    <div class="menu">
+      <ion-title slot="start" class="titulo-pagina">{{titulo_pagina}}</ion-title>
+      <ion-button 
+          class="search-btn"
+          color="#0d0d0d"
+          [routerLink]="['/welcome/buscar']">
+        <ion-icon 
+            slot="end"
+            [ios]="'search-outline'"
+            [md]="'search-sharp'"
+            color="#e6e6e6"  
+           >
+        </ion-icon>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -23,9 +37,9 @@
         </ion-col>
       </ion-row>
 
-      <ion-slides [options]="retornaSliderConfig(cat.tipo)" >
+      <ion-slides [options]="retornaSliderConfig(cat.tipo)">
         <ion-slide *ngFor="let producao of cat.producoes">
-          <ion-card class="cardCustomizado">
+          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
             <ion-card-content class="cardCustomizado">
               <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
             </ion-card-content>
