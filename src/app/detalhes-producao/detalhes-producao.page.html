@@ -14,12 +14,15 @@
 
     <ion-card-content>
       <ion-row>
-        <ion-col size="12" sizeLg="6">
-          <img id="posterFilme" src='{{ "http://image.tmdb.org/t/p/original/" + poster }}' >
+        <ion-col size="12" sizeLg="4">
+          <img id="posterFilme" src='{{ "http://image.tmdb.org/t/p/original/" + poster }}'>
         </ion-col>
-        <ion-col size="12"  sizeLg="6">
+        <ion-col size="12"  sizeLg="8">
           <ion-row>
             <p class="titulo-detalhes">Gêneros: </p><p class="conteude" *ngFor="let genero of generos">{{genero.name}} {{generos.indexOf(genero) == generos.length - 1 ? "" : " - "}}</p>
+          </ion-row>
+          <ion-row>
+            <p class="titulo-detalhes">Elenco: </p><p class="conteude" *ngFor="let pessoa of elenco">{{pessoa.name}}{{elenco.indexOf(pessoa) == elenco.length - 1 ? "" : ", "}}</p>
           </ion-row>
           <ion-row>
             <p class="titulo-detalhes">Lançamento: </p><p class="conteude">{{ anoLancamento }}</p>
@@ -29,6 +32,27 @@
           </ion-row>
           <ion-row>
             <p class="sinopse">{{sinopse}}</p>
+          </ion-row>
+          <ion-row>
+            <ion-list *ngIf="(streamers$ | async) as streamers">
+              <ng-container *ngIf="streamers.length > 0; else noStreamers ">
+                <ion-row>
+                  <p class="titulo-detalhes">Onde encontrar </p>
+                </ion-row>
+    
+                <a *ngFor="let streamer of streamers" target="_blank" href='{{ streamer.url }}'>
+                  <p class="nomeStreaming"> {{ streamer.display_name }}</p>
+                </a>
+              </ng-container>
+              <ng-template #noStreamers>
+                <ion-row>
+                  <p class="titulo-detalhes">Onde encontrar </p>
+                </ion-row>
+                    <ion-row>
+                  <ion-item lines="none" class="nomeStreaming" style="color: red; text-decoration: none;">Não encontramos onde assistir</ion-item>
+                </ion-row>
+              </ng-template>
+          </ion-list>
           </ion-row>
         </ion-col>
       </ion-row>

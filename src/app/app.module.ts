@@ -25,6 +25,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { HttpClientModule } from '@angular/common/http';
 import { TmdbService } from './core/providers/tmdb.service';
 import { OverlayService } from './services/OverlayService';
+import { UtellyService } from './core/providers/utelly.service';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { OverlayService } from './services/OverlayService';
     StatusBar,
     SplashScreen,
     TmdbService,
+    UtellyService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
   bootstrap: [AppComponent]

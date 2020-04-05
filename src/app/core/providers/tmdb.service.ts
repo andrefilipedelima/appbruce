@@ -8,6 +8,7 @@ import { Genero } from '../models/genero';
 import { ParametroBusca } from '../models/parametroBusca';
 import { Filme } from '../models/filme';
 import { Serie } from '../models/serie';
+import { Cast } from '../models/cast';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,13 @@ export class TmdbService {
 
     return this.http.get(url_busca)
                     .pipe(map((props:any) => new Resultado(props.total_pages, props.results, false)));
+  }
+
+  buscarAtores(id_producao: number, media_type: 'tv' | 'movie'): Observable<Cast[]>{
+    const url_busca = `${this.API_URL}${media_type}/${id_producao}/credits?${this.KEY}`
+
+    return this.http.get<Cast>(url_busca)
+                    .pipe(map((props:any) => props.cast));
   }
 
   buscarPopulares(pagina: number, media_type: 'tv' | 'movie'): Observable<Resultado>{
