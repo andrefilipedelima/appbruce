@@ -14,4 +14,24 @@
 
   <ion-label position="floating" >{{msgError}}</ion-label>
 
+  <div id="container">
+    
+    <div *ngFor="let cat of items">
+      <ion-row class="category-banner">
+        <ion-col class="ion-align-self-center titulo-categorias">
+          {{ cat.titulo }}
+        </ion-col>
+      </ion-row>
+
+      <ion-list *ngFor="let producao of cat.producoes">
+          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
+            <ion-card-content class="cardCustomizado" *ngIf="producao.poster_path !== null">
+                <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
+            </ion-card-content>
+          </ion-card>
+      </ion-list>
+    </div>
+    
+  </div>
+
 </ion-content>
