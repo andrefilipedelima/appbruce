@@ -54,34 +54,30 @@ export class BuscaPage implements OnInit {
     }
   }
 
+  possuiImagem(value) {
+    return value.poster_path !== null;
+  }
+
+  filtraTipoMidia(value) {
+    return value.media_type === 'movie' || value.media_type === 'tv';
+  }
+
 
   async carregaDados(): Promise<void>{
     this.items = [];
 
-    const teste = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Producoes;
+    const resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Producoes;
 
-    console.log('oi, eu sou o tetse', teste)
+    var filtered = resultado.filter(this.possuiImagem);
 
-    function possuiImagem(value) {
-      return value.poster_path !== null;
-    }
-
-    function filtraTipoMidia(value) {
-      return value.media_type === 'movie' || value.media_type === 'tv';
-    }
-
-    var filtered = teste.filter(possuiImagem);
-
-    filtered = filtered.filter(filtraTipoMidia);
-
-    console.log('oi eu esyou filtrado', filtered);
+    filtered = filtered.filter(this.filtraTipoMidia);
 
     try
     {
 
 
       this.items.push({
-        producoes: await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Producoes
+        producoes: filtered,
       });
 
       console.log(this.items);
@@ -109,9 +105,9 @@ export class BuscaPage implements OnInit {
   //     return retorno;
   // }
 
-  // abreDetalhes(id: string){
-  //   this.navCtrl.navigateForward(['detalhes',this.tipo_pagina, id]);
-  // }
+  abreDetalhes(id: number, tipoPagina){
+    this.navCtrl.navigateForward(['detalhes', tipoPagina, id]);
+  }
 
   // realizarPesquisa(this.tituloPesquisa) {
 

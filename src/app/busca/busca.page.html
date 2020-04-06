@@ -24,8 +24,8 @@
       </ion-row>
 
       <ion-list *ngFor="let producao of cat.producoes">
-          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
-            <ion-card-content class="cardCustomizado" *ngIf="producao.poster_path !== null">
+          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id, producao.media_type)">
+            <ion-card-content class="cardCustomizado" >
                 <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
             </ion-card-content>
           </ion-card>
