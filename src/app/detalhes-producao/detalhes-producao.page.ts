@@ -22,6 +22,7 @@ export class DetalhesProducaoPage implements OnInit {
   anoLancamento: string;
   sinopse: string;
   tituloProducao: string;
+  generoIndefinido: Genero[] = [{ id: 0, name: 'Gênero Indefinido', nrRandom: 0}]
 
   constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController) { 
     this.loading = this.overlayService.loading();
@@ -49,9 +50,21 @@ export class DetalhesProducaoPage implements OnInit {
       this.filme = await this.tmdbService.buscarFilmePorId(Number.parseInt(id_producao)).toPromise();
 
       this.poster = this.filme.poster_path;
-      this.generos = this.filme.genres;
+      
+      if (this.filme.genres.length > 0){
+        this.generos = this.filme.genres;
+      } else {
+        this.generos = this.generoIndefinido;
+      }
+      
       this.anoLancamento = this.filme.release_date.substring(0 ,4);
-      this.sinopse = this.filme.overview;
+
+      if (this.filme.overview !== '') {
+        this.sinopse = this.filme.overview;
+      } else {
+        this.sinopse = 'Sinopse não disponivel no momento.';
+      }
+      
       this.tituloProducao = this.filme.title;
     }
 
