@@ -7,6 +7,11 @@ import { Genero } from '../core/models/genero';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Serie } from '../core/models/serie';
+import { UtellyService } from '../core/providers/utelly.service';
+import { Utelly_Item } from '../core/models/utelly_item';
+import { Streamers } from '../core/models/streamers';
+import { take, map } from 'rxjs/operators';
+import { Cast } from '../core/models/cast';
 
 @Component({
   selector: 'app-detalhes-producao',
@@ -14,8 +19,6 @@ import { Serie } from '../core/models/serie';
   styleUrls: ['./detalhes-producao.page.scss'],
 })
 export class DetalhesProducaoPage implements OnInit {
-  filme: Filme;
-  serie: Serie;
   loading: Promise<HTMLIonLoadingElement>;
   poster: string;
   generos: Genero[];
@@ -23,12 +26,20 @@ export class DetalhesProducaoPage implements OnInit {
   sinopse: string;
   tituloProducao: string;
   generoIndefinido: Genero[] = [{ id: 0, name: 'Gênero Indefinido', nrRandom: 0}]
+  elenco: Cast[];
 
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController) { 
+  streamers$: Observable<Streamers[]>;
+
+  buscouProducao: boolean;
+  buscouStreamings: boolean;
+
+  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController, private utellyService: UtellyService) { 
     this.loading = this.overlayService.loading();
+    this.buscouProducao = false;
+    this.buscouStreamings = false;
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const id_producao = this.route.snapshot.paramMap.get('id');
     const tipo_pagina = this.route.snapshot.paramMap.get('tipo');
 
@@ -36,42 +47,71 @@ export class DetalhesProducaoPage implements OnInit {
       this.navCtrl.navigateRoot(['/welcome/filmes']);
     }
 
-    if(tipo_pagina == 'tv'){
-      this.serie = await this.tmdbService.buscarSeriePorId(Number.parseInt(id_producao)).toPromise();
-
-      this.poster = this.serie.poster_path;
-      this.generos = this.serie.genres;
-      this.anoLancamento = this.serie.first_air_date.substring(0 ,4);
-      this.sinopse = this.serie.overview;
-      this.tituloProducao = this.serie.name;
-
-    }
-    else{
-      this.filme = await this.tmdbService.buscarFilmePorId(Number.parseInt(id_producao)).toPromise();
-
-      this.poster = this.filme.poster_path;
-      
-      if (this.filme.genres.length > 0){
-        this.generos = this.filme.genres;
-      } else {
-        this.generos = this.generoIndefinido;
-      }
-      
-      this.anoLancamento = this.filme.release_date.substring(0 ,4);
-
-      if (this.filme.overview !== '') {
-        this.sinopse = this.filme.overview;
-      } else {
-        this.sinopse = 'Sinopse não disponivel no momento.';
-      }
-      
-      this.tituloProducao = this.filme.title;
-    }
-
+    this.carregaDados(Number.parseInt(id_producao), tipo_pagina);
   }
 
-  async ionViewDidEnter(){
-    (await this.loading).dismiss();
+  async carregaDados(id_producao: number, tipo_pagina: string): Promise<void>{
+
+    try{
+      let midia: 'tv' | 'movie';
+      midia = (tipo_pagina == 'tv' ? 'tv' : 'movie');
+
+      this.elenco = await this.tmdbService.buscarAtores(id_producao, midia).toPromise();
+      this.elenco = this.elenco.slice(0, 3);
+
+      this.streamers$ = this.utellyService.buscarEmQualStremingPorId(id_producao, 'tmdb').pipe(map(uttely => uttely.locations));
+      
+      this.streamers$.pipe(take(1)).subscribe( locations => {
+        this.buscouStreamings = true;
+        this.escondeLoading();
+      });
+
+      if(tipo_pagina == 'tv'){
+        this.tmdbService.buscarSeriePorId(id_producao).pipe(take(1)).subscribe(serie =>{
+          this.poster = serie.poster_path;
+          this.generos = serie.genres;
+          this.anoLancamento = serie.first_air_date.substring(0 ,4);
+          this.sinopse = serie.overview;
+          this.tituloProducao = serie.name;
+
+          this.buscouProducao = true;
+          this.escondeLoading();
+        });
+      }
+      else{
+        this.tmdbService.buscarFilmePorId(id_producao).pipe(take(1)).subscribe(filme =>{
+          this.poster = filme.poster_path;
+
+          if (filme.genres.length > 0){
+            this.generos = filme.genres;
+          } else {
+            this.generos = this.generoIndefinido;
+          }
+
+          this.anoLancamento = filme.release_date.substring(0 ,4);
+          
+          if (filme.overview !== '') {
+            this.sinopse = filme.overview;
+          } else {
+            this.sinopse = 'Sinopse não disponivel no momento.';
+          }
+          
+          this.tituloProducao = filme.title;
+
+          this.buscouProducao = true;
+          this.escondeLoading();
+        });
+      }
+    }
+    catch(error){
+      this.overlayService.toast(error);
+    }
+  }
+
+  async escondeLoading(): Promise<void>{
+    if(this.buscouProducao && this.buscouStreamings){
+      (await this.loading).dismiss();
+    }
   }
 
 }

@@ -29,9 +29,6 @@ const routes: Routes = [
     path: 'detalhes/:tipo/:id',
     loadChildren: () => import('./detalhes-producao/detalhes-producao.module').then( m => m.DetalhesProducaoPageModule)
   },
-
-
-
   
 ];
 
@@ -41,4 +38,6 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+
+}
