@@ -69,9 +69,21 @@ export class DetalhesProducaoPage implements OnInit {
       if(tipo_pagina == 'tv'){
         this.tmdbService.buscarSeriePorId(id_producao).pipe(take(1)).subscribe(serie =>{
           this.poster = serie.poster_path;
-          this.generos = serie.genres;
+
+          if (serie.genres.length > 0){
+            this.generos = serie.genres;
+          } else {
+            this.generos = this.generoIndefinido;
+          }
+
           this.anoLancamento = serie.first_air_date.substring(0 ,4);
-          this.sinopse = serie.overview;
+
+          if (serie.overview !== '') {
+            this.sinopse = serie.overview;
+          } else {
+            this.sinopse = 'Sinopse indisponível no momento.';
+          }
+
           this.tituloProducao = serie.name;
 
           this.buscouProducao = true;
@@ -93,7 +105,7 @@ export class DetalhesProducaoPage implements OnInit {
           if (filme.overview !== '') {
             this.sinopse = filme.overview;
           } else {
-            this.sinopse = 'Sinopse não disponivel no momento.';
+            this.sinopse = 'Sinopse indisponível no momento.';
           }
           
           this.tituloProducao = filme.title;
