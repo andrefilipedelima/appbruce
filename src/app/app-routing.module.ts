@@ -28,7 +28,11 @@ const routes: Routes = [
   {
     path: 'detalhes/:tipo/:id',
     loadChildren: () => import('./detalhes-producao/detalhes-producao.module').then( m => m.DetalhesProducaoPageModule)
+  },  {
+    path: 'modal-filtro',
+    loadChildren: () => import('./modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
   },
+
   
 ];
 
