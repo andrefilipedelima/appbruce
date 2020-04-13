@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { BuscaPageRoutingModule } from './busca-routing.module';
 
+import { ModalFiltroPageModule } from './../modal-filtro/modal-filtro.module'
+
 import { BuscaPage } from './busca.page';
 
 @NgModule({
@@ -13,7 +15,8 @@ import { BuscaPage } from './busca.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    BuscaPageRoutingModule
+    BuscaPageRoutingModule,
+    ModalFiltroPageModule,
   ],
   declarations: [BuscaPage]
 })

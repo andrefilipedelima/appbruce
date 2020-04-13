@@ -1,9 +1,40 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>modalFiltro</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
+<ion-content padding>
+  <ion-list>
+    <ion-radio-group value="filme" allow-empty-selection="true" name="radio-group"
+    (ionChange)="coletaTipoStreaming($event)">
+      <ion-list-header>
+        <ion-label>Tipo</ion-label>
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-label>Filme</ion-label>
+        <ion-radio color="medium" slot="start" value="filme"></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Série</ion-label>
+        <ion-radio color="medium" slot="start" value="serie"></ion-radio>
+      </ion-item>
+  
+    </ion-radio-group>
+  </ion-list>
 
+
+  <ion-list inset>
+    <ion-item>
+      <ion-label position="floating">Ator</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Produtora</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  </ion-list>
+  
+  <ion-button color="medium" class="submit-btn" (click)="logIn(mail.value,password.value)" type="submit">Pesquisar
+  </ion-button>
+  
+  
 </ion-content>

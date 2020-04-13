@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
+import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
 
 
 
@@ -23,7 +24,7 @@ export class BuscaPage implements OnInit {
   loading: Promise<HTMLIonLoadingElement>;
 
 
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private navCtrl: NavController) {
+  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private navCtrl: NavController, public modalCtrl: ModalController) {
     // this.loading = this.overlayService.loading();
   }
 
@@ -109,8 +110,12 @@ export class BuscaPage implements OnInit {
     this.navCtrl.navigateForward(['detalhes', tipoPagina, id]);
   }
 
-  // realizarPesquisa(this.tituloPesquisa) {
+  async logIn() {
+    let profileModal = await this.modalCtrl.create({
+      component: ModalFiltroPage,
+    });
 
-  // }
+    return await profileModal.present();
+  }
 
 }
