@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
 import { NavController, ModalController } from '@ionic/angular';
 import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
-
-
 
 @Component({
   selector: 'app-busca',
@@ -13,6 +11,9 @@ import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
   styleUrls: ['./busca.page.scss'],
 })
 export class BuscaPage implements OnInit {
+
+  @Input() realizaBuscaFiltro;
+
   items: BuscaType[];
 
 
@@ -28,8 +29,11 @@ export class BuscaPage implements OnInit {
     // this.loading = this.overlayService.loading();
   }
 
-
   ngOnInit() {
+    console.log('this.realizaBuscaFiltro', this.realizaBuscaFiltro);
+    if (this.realizaBuscaFiltro !== undefined) {
+
+    }
   }
 
   coletaTitulo(searchbar) {
@@ -73,10 +77,7 @@ export class BuscaPage implements OnInit {
 
     filtered = filtered.filter(this.filtraTipoMidia);
 
-    try
-    {
-
-
+    try {
       this.items.push({
         producoes: filtered,
       });
@@ -84,27 +85,12 @@ export class BuscaPage implements OnInit {
       console.log(this.items);
 
   
-    }
-    catch(ex){
+    } catch(ex){
       console.log(ex);
       this.overlayService.toast({ message: ex});
     }
     
   }
-
-  // retornaSliderConfig(){
-  //     let retorno: {};
-
-
-  //       retorno = {
-  //         spaceBetween: 10,
-  //         centeredSlides: !(window.innerWidth>=960),
-  //         slidesPerView: window.innerWidth>=960 ? 6.2 : 2.4,
-  //         loop: true
-  //       }
-
-  //     return retorno;
-  // }
 
   abreDetalhes(id: number, tipoPagina){
     this.navCtrl.navigateForward(['detalhes', tipoPagina, id]);
