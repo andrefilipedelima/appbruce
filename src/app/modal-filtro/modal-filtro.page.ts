@@ -37,7 +37,9 @@ export class ModalFiltroPage implements OnInit {
 
 
   coletaTipoStreaming(event) {
-    this.tipoStreaming = event.detail;
+    const aux = event.detail;
+    // event.detail vem com array de informacoes,[] serve para coletar apenas o valor de value
+    this.tipoStreaming = aux['value'];
     console.log('tipo de streaming selecionado', this.tipoStreaming);
   }
 

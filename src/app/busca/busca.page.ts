@@ -114,6 +114,7 @@ export class BuscaPage implements OnInit {
 
         } else {
           console.log('Nada para pesquisar!');
+          this.msgError = null;
         }
       })
 

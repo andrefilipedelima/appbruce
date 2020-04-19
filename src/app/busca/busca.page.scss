@@ -12,3 +12,13 @@
 // .grid-busca {
 //     --ion-grid-columns: 3;
 // }
+
+.bt {
+    border-color:#272724;
+    background: #3c3c3c;
+}
+
+.bt:active {
+    position:relative;
+    top:2px;
+}

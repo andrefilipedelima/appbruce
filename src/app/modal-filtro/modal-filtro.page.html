@@ -5,12 +5,12 @@
       <ion-label>O que deseja procurar hoje?</ion-label>
     </ion-list-header>
     
-    <ion-radio-group allow-empty-selection="true" name="radio-group"
+    <ion-radio-group allow-empty-selection="true" name="radio-group" value="filme"
     (ionChange)="coletaTipoStreaming($event)">
   
       <ion-item>
         <ion-label>Filme</ion-label>
-        <ion-radio color="medium" slot="start" value="filme"></ion-radio>
+        <ion-radio color="medium" slot="start" value="filme" checked></ion-radio>
       </ion-item>
   
       <ion-item>
@@ -43,7 +43,7 @@
     </ion-item>
     <ion-item *ngFor="let cat of generos">
       <ion-label position="floating">Gênero</ion-label>
-      <ion-select [(ngModel)]="genero" (ionChange)="onChange(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="popover">
+      <ion-select [(ngModel)]="genero" (ionChange)="onChange(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
         <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
       </ion-select>
     </ion-item>
