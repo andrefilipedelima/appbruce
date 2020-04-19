@@ -1,11 +1,12 @@
 
 <ion-content padding>
-  <ion-list>
+  <ion-list inset>
+    <ion-list-header>
+      <ion-label>O que deseja procurar hoje?</ion-label>
+    </ion-list-header>
+    
     <ion-radio-group allow-empty-selection="true" name="radio-group"
     (ionChange)="coletaTipoStreaming($event)">
-      <ion-list-header>
-        <ion-label>O que deseja procurar hoje?</ion-label>
-      </ion-list-header>
   
       <ion-item>
         <ion-label>Filme</ion-label>
@@ -21,30 +22,31 @@
   </ion-list>
 
 
+
+
+
+
+
   <ion-list inset>
+
+    <ion-list-header>
+      <ion-label>Filtrar por: </ion-label>
+    </ion-list-header>
+
     <ion-item >
       <ion-label position="floating"> Ano de Lançamento</ion-label>
-      <ion-input type="tel" [(ngModel)]="ano" name="ano"></ion-input>
+      <ion-input type="tel" maxlength="4" [(ngModel)]="ano" name="ano"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating"> Ator</ion-label>
       <ion-input type="text" [(ngModel)]="ator" name="ator"></ion-input>
     </ion-item>
-
-
     <ion-item *ngFor="let cat of generos">
       <ion-label position="floating">Gênero</ion-label>
       <ion-select [(ngModel)]="genero" (ionChange)="onChange(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="popover">
         <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
       </ion-select>
     </ion-item>
-
-
-
-
-
-
-
     <ion-item>
       <ion-label position="floating"> Idioma Original</ion-label>
       <ion-input type="text" [(ngModel)]="idioma" name="idioma"></ion-input>
@@ -61,8 +63,7 @@
   <ion-grid>
     <ion-row class="ion-align-items-center">
       <ion-col size="12" class="ion-text-center">
-        <ion-button color="medium" class="submit-btn" (click)="pesquisaComFiltros()" type="submit">Pesquisar
-        </ion-button>
+        <ion-button color="medium" (click)="pesquisaComFiltros()">Pesquisar</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

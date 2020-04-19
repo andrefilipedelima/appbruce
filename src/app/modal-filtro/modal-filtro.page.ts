@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NavController, ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { Genero } from '../core/models/genero';
 
@@ -11,9 +12,13 @@ import { Genero } from '../core/models/genero';
 })
 export class ModalFiltroPage implements OnInit {
 
-  constructor(private tmdbService: TmdbService, public navCtrl: NavController, public modalController: ModalController) { }
+  constructor(
+    private tmdbService: TmdbService,
+    public navCtrl: NavController,
+    public modalController: ModalController,
+    public alertController: AlertController,
+  ) { }
 
-  @Output() realizaBusca: EventEmitter<Object> = new EventEmitter<Object>();
 
   public tipoStreaming: string;
   public ator: string;
@@ -23,6 +28,7 @@ export class ModalFiltroPage implements OnInit {
   public produtora: string;
 
   public generos;
+  public producao;
 
 
   ngOnInit() {
@@ -60,18 +66,56 @@ export class ModalFiltroPage implements OnInit {
   pesquisaComFiltros() {
     console.log('ano de lancamento: ', this.ano, 'ator: ', this.ator, 'genero: ', this.genero, 'idioma original: ', this.idioma, 'produtora: ', this.produtora);
 
-    this.montarSelectGeneros();
+    // this.montarSelectGeneros();
 
-    const producao = {
+    this.producao = {
+      tipoStreaming: this.tipoStreaming,
       ano: this.ano,
       ator: this.ator,
       genero: this.genero,
       idioma: this.idioma,
       produtora: this.produtora,
     }
-    this.modalController.dismiss();
-    this.realizaBusca.emit(producao);
 
+
+    if (this.ano === undefined &&
+      this.ator === undefined &&
+      this.genero === undefined &&
+      this.idioma === undefined &&
+      this.produtora === undefined
+      ) {
+      this.presentAlert();
+    } else {
+      this.fechaModal();
+    }
+
+  }
+
+
+  async presentAlert() {
+
+    const alert = await this.alertController.create({
+      header: 'Ops!',
+      subHeader: 'Você deve selecionar pelo menos UM filtro para continuar a pesquisa.',
+      message: 'O que deseja fazer?',
+      buttons: [
+        {
+          text: 'Pesquisar depois',
+          handler: () => {
+            this.fechaModal();
+          }
+        },
+        { 
+          text: 'Continuar pesquisa',
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  fechaModal(){
+    this.modalController.dismiss(this.producao);
   }
   
   onChange(valorSelecionado){
