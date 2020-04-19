@@ -12,10 +12,7 @@ import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
 })
 export class BuscaPage implements OnInit {
 
-  @Input() realizaBuscaFiltro;
-
   items: BuscaType[];
-
 
   public tituloPesquisa: any;
   public msgError: string;
@@ -23,18 +20,18 @@ export class BuscaPage implements OnInit {
   public loadedGoalList: any[];
   tipo_pagina: 'tv' | 'movie';
   loading: Promise<HTMLIonLoadingElement>;
+  public realizaBuscaFiltro;
 
 
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private navCtrl: NavController, public modalCtrl: ModalController) {
+  constructor(
+    private tmdbService: TmdbService,
+    private overlayService: OverlayService,
+    private navCtrl: NavController,
+    private  modalCtrl: ModalController) {
     // this.loading = this.overlayService.loading();
   }
 
-  ngOnInit() {
-    console.log('this.realizaBuscaFiltro', this.realizaBuscaFiltro);
-    if (this.realizaBuscaFiltro !== undefined) {
-
-    }
-  }
+  ngOnInit() {}
 
   coletaTitulo(searchbar) {
     this.tituloPesquisa = searchbar.target.value;
@@ -100,6 +97,25 @@ export class BuscaPage implements OnInit {
     let profileModal = await this.modalCtrl.create({
       component: ModalFiltroPage,
     });
+
+    profileModal.onDidDismiss()
+      .then((data) => {
+        const filtro = data['data'];
+        if (filtro.ano !== undefined || 
+            filtro.genero !== undefined ||
+            filtro.ator !== undefined ||
+            filtro.idioma !== undefined ||
+            filtro.produtora !== undefined 
+        ) {
+
+            console.log('tem pesquisa para filtrar: ', filtro);
+            this.realizaBuscaFiltro = filtro;
+            // criar a funcao que vai chamar a pesquisa filtrada
+
+        } else {
+          console.log('Nada para pesquisar!');
+        }
+      })
 
     return await profileModal.present();
   }
