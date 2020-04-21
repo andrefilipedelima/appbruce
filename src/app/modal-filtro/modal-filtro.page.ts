@@ -27,6 +27,7 @@ export class ModalFiltroPage implements OnInit {
   public idioma: string;
   public produtora: string;
 
+  // array de generos retornados que compoem o select da tela de filtros 
   public generos;
   public producao;
 
@@ -70,15 +71,6 @@ export class ModalFiltroPage implements OnInit {
 
     // this.montarSelectGeneros();
 
-    this.producao = {
-      tipoStreaming: this.tipoStreaming,
-      ano: this.ano,
-      ator: this.ator,
-      genero: this.genero,
-      idioma: this.idioma,
-      produtora: this.produtora,
-    }
-
 
     if (this.ano === undefined &&
       this.ator === undefined &&
@@ -88,6 +80,20 @@ export class ModalFiltroPage implements OnInit {
       ) {
       this.presentAlert();
     } else {
+      let genero; 
+      if (this.genero !== undefined) {
+        genero = this.buscaIDgenero();
+      }
+
+      this.producao = {
+        tipoStreaming: this.tipoStreaming,
+        ano: this.ano,
+        ator: this.ator,
+        genero: genero,
+        idioma: this.idioma,
+        produtora: this.produtora,
+      }
+
       this.fechaModal();
     }
 
@@ -123,6 +129,19 @@ export class ModalFiltroPage implements OnInit {
   onChange(valorSelecionado){
     console.log('genero selecionado', valorSelecionado);
     this.genero = valorSelecionado;
+  }
+
+
+  buscaIDgenero() {
+    const generoEscolhido = {
+      name: this.genero,
+      id: '',
+    };
+
+    let resultado = this.generos[0].resultado;
+    const aux = resultado.find(genero => genero.name === generoEscolhido.name);
+    generoEscolhido.id = aux.id;
+    return generoEscolhido;
   }
 
 }
