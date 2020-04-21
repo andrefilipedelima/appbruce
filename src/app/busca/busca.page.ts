@@ -4,6 +4,7 @@ import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
 import { NavController, ModalController } from '@ionic/angular';
 import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
+import { ParametroBusca } from '../core/models/parametroBusca';
 
 @Component({
   selector: 'app-busca',
@@ -110,7 +111,8 @@ export class BuscaPage implements OnInit {
 
             console.log('tem pesquisa para filtrar: ', filtro);
             this.realizaBuscaFiltro = filtro;
-            // criar a funcao que vai chamar a pesquisa filtrada
+
+            this.realizaPesquisaComFiltro();
 
         } else {
           console.log('Nada para pesquisar!');
@@ -119,6 +121,74 @@ export class BuscaPage implements OnInit {
       })
 
     return await profileModal.present();
+  }
+
+  async realizaPesquisaComFiltro(): Promise<void>{
+    let busca: ParametroBusca[] = [];
+
+    if ( this.realizaBuscaFiltro.genero !== undefined ) {
+      busca.push({
+        parametro: "with_genres",
+        valor: this.realizaBuscaFiltro.genero.id,
+      }
+      )
+    }
+
+    if (this.realizaBuscaFiltro.produtora !== undefined) {
+      busca.push({
+        parametro: "with_companies",
+        valor: this.realizaBuscaFiltro.produtora,
+      }
+      )
+    }
+
+
+    if (this.realizaBuscaFiltro.idioma !== undefined) {
+      busca.push(
+       {
+          parametro: "with_original_language",
+          valor: this.realizaBuscaFiltro.idioma,
+        }
+      )
+    }
+
+    if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
+      if (this.realizaBuscaFiltro.ano !== undefined) {
+        busca.push({
+          parametro: "primary_release_year",
+          valor: this.realizaBuscaFiltro.ano,
+        }
+        )
+      }
+      if (this.realizaBuscaFiltro.ator !== undefined) {
+        busca.push({
+          parametro: "with_people",
+          valor: this.realizaBuscaFiltro.ator,
+        })
+      }
+    }
+
+    if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
+      if (this.realizaBuscaFiltro.ano !== undefined) {
+        busca.push({
+          parametro: "first_air_date_year",
+          valor: this.realizaBuscaFiltro.ano,
+        })
+      }
+    }
+
+    if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
+      this.tipo_pagina = 'movie';
+    } else if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
+      this.tipo_pagina = 'tv';
+    }
+
+    const resultado = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Producoes;
+
+    console.log('resultado de busca', resultado);
+
+    console.log('valores de buscas', busca);
+
   }
 
 }
