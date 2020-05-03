@@ -150,7 +150,7 @@ export class BuscaPage implements OnInit {
       busca.push(
        {
           parametro: "with_original_language",
-          valor: this.realizaBuscaFiltro.idioma,
+          valor: this.realizaBuscaFiltro.idioma.id,
         }
       )
     }

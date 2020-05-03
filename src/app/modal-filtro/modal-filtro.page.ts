@@ -29,11 +29,16 @@ export class ModalFiltroPage implements OnInit {
 
   // array de generos retornados que compoem o select da tela de filtros 
   public generos;
+
+  // array de idiomas retornados que compoem o select da tela de filtros 
+  public idiomas;
+
   public producao;
 
 
   ngOnInit() {
     this.montarSelectGeneros();
+    this.montaSelectIdiomas();
   }
 
 
@@ -65,6 +70,16 @@ export class ModalFiltroPage implements OnInit {
     })
   }
 
+  async montaSelectIdiomas(){
+    this.idiomas = [];
+    const resultado = await (await this.tmdbService.getLanguages().toPromise());
+    console.log('resultado', resultado);
+
+    this.idiomas.push({
+      resultado: resultado,
+    })
+  }
+
 
   pesquisaComFiltros() {
     console.log('ano de lancamento: ', this.ano, 'ator: ', this.ator, 'genero: ', this.genero, 'idioma original: ', this.idioma, 'produtora: ', this.produtora);
@@ -80,17 +95,25 @@ export class ModalFiltroPage implements OnInit {
       ) {
       this.presentAlert();
     } else {
+      let ano;
+      if (this.ano !== undefined) {
+        ano = this.tratamentoData();
+      }
       let genero; 
       if (this.genero !== undefined) {
         genero = this.buscaIDgenero();
       }
+      let idioma;
+      if (this.idioma !== undefined) {
+        idioma = this.buscaIDidioma();
+      }
 
       this.producao = {
         tipoStreaming: this.tipoStreaming,
-        ano: this.ano,
+        ano: ano,
         ator: this.ator,
         genero: genero,
-        idioma: this.idioma,
+        idioma: idioma,
         produtora: this.produtora,
       }
 
@@ -126,11 +149,21 @@ export class ModalFiltroPage implements OnInit {
     this.modalController.dismiss(this.producao);
   }
   
-  onChange(valorSelecionado){
+  onChangeGenero(valorSelecionado){
     console.log('genero selecionado', valorSelecionado);
     this.genero = valorSelecionado;
   }
 
+  onChangeIdioma(valorSelecionado){
+    console.log('idioma selecionado', valorSelecionado);
+    this.idioma = valorSelecionado;
+  }
+
+  tratamentoData() {
+    const aux = this.ano.split('-');
+    const anoEscolhido = aux[0];
+    return anoEscolhido
+  }
 
   buscaIDgenero() {
     const generoEscolhido = {
@@ -142,6 +175,19 @@ export class ModalFiltroPage implements OnInit {
     const aux = resultado.find(genero => genero.name === generoEscolhido.name);
     generoEscolhido.id = aux.id;
     return generoEscolhido;
+  }
+
+  buscaIDidioma() {
+    const idiomaEscolhido = {
+      name: this.idioma,
+      id: '',
+    };
+
+    let resultado = this.idiomas[0].resultado;
+    // funcao find procura o item selecionado dentro do array
+    const aux = resultado.find(idioma => idioma.language === idiomaEscolhido.name);
+    idiomaEscolhido.id = aux.id;
+    return idiomaEscolhido;
   }
 
 }

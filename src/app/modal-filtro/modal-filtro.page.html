@@ -32,10 +32,10 @@
     <ion-list-header>
       <ion-label>Filtrar por: </ion-label>
     </ion-list-header>
-
-    <ion-item >
-      <ion-label position="floating"> Ano de Lançamento</ion-label>
-      <ion-input type="tel" maxlength="4" [(ngModel)]="ano" name="ano"></ion-input>
+    
+    <ion-item>  
+      <ion-label position="floating"> Ano de Lançamento</ion-label> 
+      <ion-datetime displayFormat="YYYY" [(ngModel)]="ano" name="ano"></ion-datetime> 
     </ion-item>
     <ion-item>
       <ion-label position="floating"> Ator</ion-label>
@@ -43,13 +43,15 @@
     </ion-item>
     <ion-item *ngFor="let cat of generos">
       <ion-label position="floating">Gênero</ion-label>
-      <ion-select [(ngModel)]="genero" (ionChange)="onChange(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
+      <ion-select [(ngModel)]="genero" (ionChange)="onChangeGenero(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
         <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item>
-      <ion-label position="floating"> Idioma Original</ion-label>
-      <ion-input type="text" [(ngModel)]="idioma" name="idioma"></ion-input>
+    <ion-item *ngFor="let cat2 of idiomas">
+      <ion-label position="floating">Idioma Original</ion-label>
+      <ion-select [(ngModel)]="idioma" (ionChange)="onChangeIdioma(idioma)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
+        <ion-select-option *ngFor="let idioma of cat2.resultado" value="{{idioma.language}}">{{idioma.language}}</ion-select-option>
+      </ion-select>
     </ion-item>
     <ion-item>
       <ion-label position="floating"> Produtora</ion-label>
