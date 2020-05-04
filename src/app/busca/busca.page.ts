@@ -65,6 +65,17 @@ export class BuscaPage implements OnInit {
     return value.media_type === 'movie' || value.media_type === 'tv';
   }
 
+  incluiTipoMidia(value) {
+    if (!value.media_type) {
+      if (value.release_date) {
+        return value.media_type = 'movie';
+      }
+      if (value.first_air_date) {
+        return value.media_type = 'tv';
+      }
+    }
+    return value.media_type;
+  }
 
   async carregaDados(): Promise<void>{
     this.items = [];
@@ -94,7 +105,7 @@ export class BuscaPage implements OnInit {
     this.navCtrl.navigateForward(['detalhes', tipoPagina, id]);
   }
 
-  async logIn() {
+  async filtrar() {
     let profileModal = await this.modalCtrl.create({
       component: ModalFiltroPage,
     });
@@ -125,6 +136,7 @@ export class BuscaPage implements OnInit {
 
   async realizaPesquisaComFiltro(): Promise<void>{
     let busca: ParametroBusca[] = [];
+    this.items = [];
 
     if ( this.realizaBuscaFiltro.genero !== undefined ) {
       busca.push({
@@ -191,6 +203,24 @@ export class BuscaPage implements OnInit {
     console.log('resultado de busca', resultado);
 
     console.log('valores de buscas', busca);
+
+
+    var filtered = resultado.filter(this.possuiImagem);
+
+    filtered = resultado.filter(this.incluiTipoMidia);
+
+    try {
+      this.items.push({
+        producoes: filtered,
+      });
+
+      console.log('sao os filtros da pesquisa', this.items);
+
+  
+    } catch(ex){
+      console.log(ex);
+      this.overlayService.toast({ message: ex});
+    }
 
   }
 

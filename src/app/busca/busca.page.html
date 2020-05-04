@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title class="titulo-pagina">Buscar</ion-title>
-    <ion-icon slot="end" (click)="logIn()" size="large" name="options-outline"></ion-icon>
+    <ion-icon slot="end" (click)="filtrar()" size="large" name="options-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -25,41 +25,21 @@
   <ion-label position="floating" >{{msgError}}</ion-label>
 
   <div id="container">
-    
     <div *ngFor="let cat of items">
-      <!-- <ion-row class="category-banner">
-        <ion-col class="ion-align-self-center titulo-categorias">
-          {{ cat.titulo }}
-        </ion-col>
-      </ion-row> -->
 
-      
-
-      <!-- <ion-list>
-        <ion-grid class="grid-busca">
-          <ion-row class="ion-justify-content-center">
-            <ion-col *ngFor="let producao of cat.producoes">
-              <ion-item>
-                <ion-card (click)="abreDetalhes(producao.id, producao.media_type)">
+        <ion-grid >
+          <ion-row >
+            <ion-col *ngFor="let producao of cat.producoes" size-sm="2" size="4">
+                <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id, producao.media_type)">
                   <ion-card-content class="cardCustomizado" >
                       <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
                   </ion-card-content>
                 </ion-card>
-              </ion-item>
             </ion-col>
           </ion-row>
         </ion-grid>
-      </ion-list> -->
 
-      <ion-list *ngFor="let producao of cat.producoes">
-          <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id, producao.media_type)">
-            <ion-card-content class="cardCustomizado" >
-                <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
-            </ion-card-content>
-          </ion-card>
-      </ion-list>
     </div>
-    
   </div>
 
 </ion-content>
