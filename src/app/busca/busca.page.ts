@@ -79,16 +79,37 @@ export class BuscaPage implements OnInit {
 
   async carregaDados(): Promise<void>{
     this.items = [];
+    let resultado;
 
-    const resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Producoes;
+    const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
+    console.log('quantidade de paginas da busca', quantidadePaginas );
 
-    var filtered = resultado.filter(this.possuiImagem);
 
-    filtered = filtered.filter(this.filtraTipoMidia);
+    let itensAux = [];
+
+    for(let i = 1; i <= quantidadePaginas; i++ ) {
+      let concatAux = [];
+
+      console.log('pagina', i);
+
+      resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
+
+
+      var filtered = resultado.filter(this.filtraTipoMidia);
+
+      concatAux = itensAux.concat(filtered);
+
+
+      console.log('itens depois da pagina', i);
+      console.log('itens', concatAux);
+
+      itensAux = concatAux;
+
+    }
 
     try {
       this.items.push({
-        producoes: filtered,
+        producoes: itensAux,
       });
 
       console.log(this.items);
@@ -198,20 +219,38 @@ export class BuscaPage implements OnInit {
       this.tipo_pagina = 'tv';
     }
 
-    const resultado = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Producoes;
-
-    console.log('resultado de busca', resultado);
-
     console.log('valores de buscas', busca);
 
+    let resultado;
 
-    var filtered = resultado.filter(this.possuiImagem);
+    const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
+    console.log('quantidade de paginas da busca', quantidadePaginas );
 
-    filtered = resultado.filter(this.incluiTipoMidia);
+    let itensAux = [];
+
+    for(let i = 1; i <= quantidadePaginas; i++ ) {
+      let concatAux = [];
+
+      console.log('pagina', i);
+
+      resultado = await (await this.tmdbService.descobrir(i, this.tipo_pagina, busca).toPromise()).Producoes;
+
+
+      var filtered = resultado.filter(this.incluiTipoMidia);
+
+      concatAux = itensAux.concat(filtered);
+
+
+      console.log('itens depois da pagina', i);
+      console.log('itens', concatAux);
+
+      itensAux = concatAux;
+
+    }
 
     try {
       this.items.push({
-        producoes: filtered,
+        producoes: itensAux,
       });
 
       console.log('sao os filtros da pesquisa', this.items);
