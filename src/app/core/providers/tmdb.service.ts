@@ -11,6 +11,7 @@ import { Serie } from '../models/serie';
 import { Cast } from '../models/cast';
 import { Pessoa } from '../models/pessoa';
 import { Compania } from '../models/compania';
+import { Idioma } from '../models/idioma';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,8 @@ import { Compania } from '../models/compania';
 export class TmdbService {
   private API_URL = "https://api.themoviedb.org/3/";
   private KEY = "api_key=c5b741870c2311cf49febb1f3d228bd2";
+
+  public idioma: string = "assets/languages.json"
 
   constructor(private http: HttpClient) { }
 
@@ -51,7 +54,7 @@ export class TmdbService {
     const url_busca = this.API_URL + "search/multi?" + this.KEY + "&language=pt-BR&page=" + pagina + "&query=" + strBusca;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, false)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));               
   }
 
   buscarAtores(id_producao: number, media_type: 'tv' | 'movie'): Observable<Cast[]>{
@@ -105,6 +108,10 @@ export class TmdbService {
                     }));
   }
 
+  // funcao para preencher idiomas 
+  getLanguages(): Observable<Idioma[]> {
+    return this.http.get<Idioma[]>(this.idioma)
+  }
 }
 
 export class Resultado{

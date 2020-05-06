@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="titulo-pagina">Buscar</ion-title>
+    <ion-icon slot="end" (click)="filtrar()" size="large" name="options-outline"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list >
+    <ion-list-header>
+
+      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" placeholder="Digite o titulo aqui... "></ion-searchbar>
+    
+      <ion-button class="bt" (click)="pesquisarPorTitulo()">
+        <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+  </ion-list>
+
+
+  <ion-label position="floating" >{{msgError}}</ion-label>
+
+  <div id="container">
+    <div *ngFor="let cat of items">
+
+        <ion-grid >
+          <ion-row >
+            <ion-col *ngFor="let producao of cat.producoes" size-sm="2" size="4">
+                <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id, producao.media_type)">
+                  <ion-card-content class="cardCustomizado" >
+                      <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
+                  </ion-card-content>
+                </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    </div>
+  </div>
+
+</ion-content>

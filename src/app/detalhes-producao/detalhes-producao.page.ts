@@ -25,6 +25,7 @@ export class DetalhesProducaoPage implements OnInit {
   anoLancamento: string;
   sinopse: string;
   tituloProducao: string;
+  generoIndefinido: Genero[] = [{ id: 0, name: 'Gênero Indefinido', nrRandom: 0}]
   elenco: Cast[];
 
   streamers$: Observable<Streamers[]>;
@@ -68,9 +69,21 @@ export class DetalhesProducaoPage implements OnInit {
       if(tipo_pagina == 'tv'){
         this.tmdbService.buscarSeriePorId(id_producao).pipe(take(1)).subscribe(serie =>{
           this.poster = serie.poster_path;
-          this.generos = serie.genres;
+
+          if (serie.genres.length > 0){
+            this.generos = serie.genres;
+          } else {
+            this.generos = this.generoIndefinido;
+          }
+
           this.anoLancamento = serie.first_air_date.substring(0 ,4);
-          this.sinopse = serie.overview;
+
+          if (serie.overview !== '') {
+            this.sinopse = serie.overview;
+          } else {
+            this.sinopse = 'Sinopse indisponível no momento.';
+          }
+
           this.tituloProducao = serie.name;
 
           this.buscouProducao = true;
@@ -80,9 +93,21 @@ export class DetalhesProducaoPage implements OnInit {
       else{
         this.tmdbService.buscarFilmePorId(id_producao).pipe(take(1)).subscribe(filme =>{
           this.poster = filme.poster_path;
-          this.generos = filme.genres;
+
+          if (filme.genres.length > 0){
+            this.generos = filme.genres;
+          } else {
+            this.generos = this.generoIndefinido;
+          }
+
           this.anoLancamento = filme.release_date.substring(0 ,4);
-          this.sinopse = filme.overview;
+          
+          if (filme.overview !== '') {
+            this.sinopse = filme.overview;
+          } else {
+            this.sinopse = 'Sinopse indisponível no momento.';
+          }
+          
           this.tituloProducao = filme.title;
 
           this.buscouProducao = true;

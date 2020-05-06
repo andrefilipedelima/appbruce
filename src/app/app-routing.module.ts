@@ -11,6 +11,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'welcome/buscar',
+    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
+  },
+  {
     path: 'welcome/:id',
     loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule), 
   },
@@ -24,7 +28,11 @@ const routes: Routes = [
   {
     path: 'detalhes/:tipo/:id',
     loadChildren: () => import('./detalhes-producao/detalhes-producao.module').then( m => m.DetalhesProducaoPageModule)
+  },  {
+    path: 'modal-filtro',
+    loadChildren: () => import('./modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
   },
+
   
 ];
 
