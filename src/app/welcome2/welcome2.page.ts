@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList, ViewChildren } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { OverlayService } from '../services/OverlayService';
 import { WelcomeType } from '../core/models/welcomeType';
 import { ParametroBusca } from '../core/models/parametroBusca';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome2',
@@ -16,7 +16,8 @@ export class Welcome2Page implements OnInit {
   tipo_pagina: 'tv' | 'movie';
   titulo_pagina: string;
   loading: Promise<HTMLIonLoadingElement>;
-  
+  @ViewChildren(IonSlides) slides: QueryList<IonSlides>;
+
   constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController) { 
     this.loading = this.overlayService.loading();
   }
@@ -94,7 +95,9 @@ export class Welcome2Page implements OnInit {
           spaceBetween: 10,
           centeredSlides: !(window.innerWidth>=960),
           slidesPerView: window.innerWidth>=960 ? 3.2 : 1.2,
-          loop: true
+          loop: true,
+          initialSlide: 0,
+          speed: 400
         }
       }
       else{
@@ -102,7 +105,9 @@ export class Welcome2Page implements OnInit {
           spaceBetween: 10,
           centeredSlides: !(window.innerWidth>=960),
           slidesPerView: window.innerWidth>=960 ? 6.2 : 2.4,
-          loop: true
+          loop: true,
+          initialSlide: 0,
+          speed: 400
         }
       }
 
@@ -111,5 +116,13 @@ export class Welcome2Page implements OnInit {
 
   abreDetalhes(id: string){
     this.navCtrl.navigateForward(['detalhes',this.tipo_pagina, id]);
+  }
+
+  slideNext(indice: number): void{
+    this.slides.toArray()[indice].slideNext();
+  }
+
+  slidePrev(indice: number): void{
+    this.slides.toArray()[indice].slidePrev();
   }
 }

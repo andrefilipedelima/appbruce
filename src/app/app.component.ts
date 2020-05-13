@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -67,6 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
+    private route: Router
   ) {
     this.initializeApp();
 
@@ -98,6 +100,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  
+  habilitado(): boolean{
+     return this.route.url == '/login';
   }
 
 }

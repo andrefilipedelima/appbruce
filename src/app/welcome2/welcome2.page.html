@@ -37,7 +37,7 @@
         </ion-col>
       </ion-row>
 
-      <ion-slides [options]="retornaSliderConfig(cat.tipo)">
+      <ion-slides [options]="retornaSliderConfig(cat.tipo)" >
         <ion-slide *ngFor="let producao of cat.producoes">
           <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
             <ion-card-content class="cardCustomizado">
@@ -45,8 +45,11 @@
             </ion-card-content>
           </ion-card>
         </ion-slide>
+
+        <div class="botao-esquerda" slot="start" (click)="slidePrev(items.indexOf(cat))"><ion-icon style="height: 100%; width: 100%;" name="caret-back"></ion-icon></div>
+        <div class="botao-direita" slot="end" (click)="slideNext(items.indexOf(cat))"><ion-icon style="height: 100%; width: 100%;" name="caret-forward"></ion-icon></div>
       </ion-slides>
-    </div>
+  </div>
     
   </div>
 </ion-content>

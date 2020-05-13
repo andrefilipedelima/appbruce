@@ -31,3 +31,38 @@
      width: 50px;
     border-radius: 50%;
 }
+
+@media only screen and (min-width: 960px) {
+    .botao-esquerda{
+        top: 50%;
+        position: sticky;
+        z-index: 2;
+        color: yellowgreen;
+        height: 4em;
+        width: 4em;
+        float: left;
+        cursor:pointer;
+    }
+
+    .botao-direita{
+        top: 50%;
+        position: sticky;
+        z-index: 2;
+        color: yellowgreen;
+        height: 4em;
+        width: 4em;
+        float: right;
+        cursor:pointer;
+    }
+}
+
+
+@media only screen and (max-width: 959px) {
+    .botao-esquerda{
+        display: none;
+    }
+
+    .botao-direita{
+        display: none;
+    }
+}
