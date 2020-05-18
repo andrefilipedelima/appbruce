@@ -36,18 +36,11 @@ export class BuscaPage implements OnInit {
 
   coletaTitulo(searchbar) {
     this.tituloPesquisa = searchbar.target.value;
-
-    console.log(this.tituloPesquisa);
   }
 
   pesquisarPorTitulo() {
     if (this.tituloPesquisa) {
       this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
-
-       // const teste = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Producoes
-       const teste = this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise();
-
-       console.log('teste', teste);
 
        this.carregaDados();
 
@@ -82,7 +75,6 @@ export class BuscaPage implements OnInit {
     let resultado;
 
     const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
-    console.log('quantidade de paginas da busca', quantidadePaginas );
 
 
     let itensAux = [];
@@ -90,18 +82,12 @@ export class BuscaPage implements OnInit {
     for(let i = 1; i <= quantidadePaginas; i++ ) {
       let concatAux = [];
 
-      console.log('pagina', i);
-
       resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
 
 
       var filtered = resultado.filter(this.filtraTipoMidia);
 
       concatAux = itensAux.concat(filtered);
-
-
-      console.log('itens depois da pagina', i);
-      console.log('itens', concatAux);
 
       itensAux = concatAux;
 
@@ -111,9 +97,6 @@ export class BuscaPage implements OnInit {
       this.items.push({
         producoes: itensAux,
       });
-
-      console.log(this.items);
-
   
     } catch(ex){
       console.log(ex);
@@ -140,7 +123,6 @@ export class BuscaPage implements OnInit {
             filtro.idioma !== undefined ||
             filtro.produtora !== undefined 
         ) {
-
             console.log('tem pesquisa para filtrar: ', filtro);
             this.realizaBuscaFiltro = filtro;
 
@@ -219,19 +201,13 @@ export class BuscaPage implements OnInit {
       this.tipo_pagina = 'tv';
     }
 
-    console.log('valores de buscas', busca);
-
     let resultado;
 
     const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
-    console.log('quantidade de paginas da busca', quantidadePaginas );
-
     let itensAux = [];
 
     for(let i = 1; i <= quantidadePaginas; i++ ) {
       let concatAux = [];
-
-      console.log('pagina', i);
 
       resultado = await (await this.tmdbService.descobrir(i, this.tipo_pagina, busca).toPromise()).Producoes;
 
@@ -239,10 +215,6 @@ export class BuscaPage implements OnInit {
       var filtered = resultado.filter(this.incluiTipoMidia);
 
       concatAux = itensAux.concat(filtered);
-
-
-      console.log('itens depois da pagina', i);
-      console.log('itens', concatAux);
 
       itensAux = concatAux;
 
@@ -252,9 +224,6 @@ export class BuscaPage implements OnInit {
       this.items.push({
         producoes: itensAux,
       });
-
-      console.log('sao os filtros da pesquisa', this.items);
-
   
     } catch(ex){
       console.log(ex);

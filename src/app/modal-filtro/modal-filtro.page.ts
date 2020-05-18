@@ -46,7 +46,6 @@ export class ModalFiltroPage implements OnInit {
     const aux = event.detail;
     // event.detail vem com array de informacoes,[] serve para coletar apenas o valor de value
     this.tipoStreaming = aux['value'];
-    console.log('tipo de streaming selecionado', this.tipoStreaming);
   }
 
   async montarSelectGeneros(){
@@ -64,7 +63,6 @@ export class ModalFiltroPage implements OnInit {
     }
     const resultado = await (await this.tmdbService.buscarGeneros(mediaType).toPromise());
 
-    console.log('resultado dos generos', resultado);
     this.generos.push({
       resultado: resultado,
     })
@@ -73,7 +71,6 @@ export class ModalFiltroPage implements OnInit {
   async montaSelectIdiomas(){
     this.idiomas = [];
     const resultado = await (await this.tmdbService.getLanguages().toPromise());
-    console.log('resultado', resultado);
 
     this.idiomas.push({
       resultado: resultado,
@@ -82,10 +79,6 @@ export class ModalFiltroPage implements OnInit {
 
 
   pesquisaComFiltros() {
-    console.log('ano de lancamento: ', this.ano, 'ator: ', this.ator, 'genero: ', this.genero, 'idioma original: ', this.idioma, 'produtora: ', this.produtora);
-
-    // this.montarSelectGeneros();
-
 
     if (this.ano === undefined &&
       this.ator === undefined &&
