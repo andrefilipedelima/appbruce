@@ -38,8 +38,21 @@
       <ion-datetime displayFormat="YYYY" [(ngModel)]="ano" name="ano" doneText="Ok" cancelText="Fechar"></ion-datetime> 
     </ion-item>
     <ion-item>
-      <ion-label position="floating"> Ator</ion-label>
-      <ion-input type="text" [(ngModel)]="ator" name="ator"></ion-input>
+      <ion-label position="floating">Ator</ion-label>
+      <ionic-selectable
+        [(ngModel)]="ator"
+        name="ator"
+        [items]="atores"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onSearch)="onSearchAtor($event)">
+        <ng-template ionicSelectableSearchFailTemplate>
+          <div padding>
+            Nenhum resultado encontrado.
+          </div>
+        </ng-template>
+      </ionic-selectable>
     </ion-item>
     <ion-item *ngFor="let cat of generos">
       <ion-label position="floating">Gênero</ion-label>

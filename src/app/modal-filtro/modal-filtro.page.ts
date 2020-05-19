@@ -3,6 +3,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { Genero } from '../core/models/genero';
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 
 @Component({
@@ -32,6 +33,9 @@ export class ModalFiltroPage implements OnInit {
 
   // array de idiomas retornados que compoem o select da tela de filtros 
   public idiomas;
+
+  // array de atores retornados que compoem o select da tela de filtros 
+  public atores;
 
   public producao;
 
@@ -77,6 +81,26 @@ export class ModalFiltroPage implements OnInit {
     })
   }
 
+  async montaSelectAtor(ator) {
+    this.atores = [];
+    const atoresAux = [];
+    const resultado = await (await this.tmdbService.buscarPorPessoa(ator,1).toPromise());
+
+    atoresAux.push({
+      resultado: resultado,
+    })
+
+    const varAux = atoresAux[0].resultado;
+
+    varAux.forEach(element => {
+
+      this.atores.push({
+        id: element.id,
+        name: element.name,
+      })
+    });
+
+  }
 
   pesquisaComFiltros() {
 
@@ -150,6 +174,17 @@ export class ModalFiltroPage implements OnInit {
   onChangeIdioma(valorSelecionado){
     console.log('idioma selecionado', valorSelecionado);
     this.idioma = valorSelecionado;
+  }
+
+  onSearchAtor(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let atorPesquisa = event.text.trim().toLowerCase();
+
+    if (atorPesquisa.length >= 3) {
+      this.montaSelectAtor(atorPesquisa);
+    }
   }
 
   tratamentoData() {

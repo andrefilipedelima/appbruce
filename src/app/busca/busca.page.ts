@@ -181,7 +181,7 @@ export class BuscaPage implements OnInit {
       if (this.realizaBuscaFiltro.ator !== undefined) {
         busca.push({
           parametro: "with_people",
-          valor: this.realizaBuscaFiltro.ator,
+          valor: this.realizaBuscaFiltro.ator.id,
         })
       }
     }
