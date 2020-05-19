@@ -150,12 +150,9 @@ export class BuscaPage implements OnInit {
     }
 
     if (this.realizaBuscaFiltro.produtora !== undefined) {
-      let produtora = []
-      produtora = await this.buscaIDprodutora();
-
       busca.push({
         parametro: "with_companies",
-        valor: this.realizaBuscaFiltro.produtora,
+        valor: this.realizaBuscaFiltro.produtora.id,
       }
       )
     }
@@ -229,25 +226,6 @@ export class BuscaPage implements OnInit {
       console.log(ex);
       this.overlayService.toast({ message: ex});
     }
-
-  }
-
-
-  async buscaIDprodutora() {
-
-    // verificar numero da pagina 
-    const resultado = await (await this.tmdbService.buscarPorCompania(this.realizaBuscaFiltro.produtora, 1).toPromise());
-
-    let produtoraID = [];
-
-    resultado.forEach(item => {
-      produtoraID.push(
-        item.id
-      )
-    }
-    )
-
-    return produtoraID;
 
   }
 

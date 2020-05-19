@@ -37,6 +37,9 @@ export class ModalFiltroPage implements OnInit {
   // array de atores retornados que compoem o select da tela de filtros 
   public atores;
 
+  // array de produtoras retornados que compoem o select da tela de filtros 
+  public produtoras;
+
   public producao;
 
 
@@ -95,6 +98,28 @@ export class ModalFiltroPage implements OnInit {
     varAux.forEach(element => {
 
       this.atores.push({
+        id: element.id,
+        name: element.name,
+      })
+    });
+
+  }
+
+
+  async montaSelectProdutora(produtora) {
+    this.produtoras = [];
+    const prodAux = [];
+    const resultado = await (await this.tmdbService.buscarPorCompania(produtora,1).toPromise());
+
+    prodAux.push({
+      resultado: resultado,
+    })
+
+    const varAux = prodAux[0].resultado;
+
+    varAux.forEach(element => {
+
+      this.produtoras.push({
         id: element.id,
         name: element.name,
       })
@@ -186,6 +211,18 @@ export class ModalFiltroPage implements OnInit {
       this.montaSelectAtor(atorPesquisa);
     }
   }
+
+  onSearchProdutora(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let prodPesquisa = event.text.trim().toLowerCase();
+
+    if (prodPesquisa) {
+      this.montaSelectProdutora(prodPesquisa);
+    }
+  }
+
 
   tratamentoData() {
     const aux = this.ano.split('-');

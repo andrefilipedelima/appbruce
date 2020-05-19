@@ -67,8 +67,21 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="floating"> Produtora</ion-label>
-      <ion-input type="text" [(ngModel)]="produtora" name="produtora"></ion-input>
+      <ion-label position="floating">Produtora</ion-label>
+      <ionic-selectable
+        [(ngModel)]="produtora"
+        name="produtora"
+        [items]="produtoras"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onSearch)="onSearchProdutora($event)">
+        <ng-template ionicSelectableSearchFailTemplate>
+          <div padding>
+            Nenhum resultado encontrado.
+          </div>
+        </ng-template>
+      </ionic-selectable>
     </ion-item>
   </ion-list>
 
