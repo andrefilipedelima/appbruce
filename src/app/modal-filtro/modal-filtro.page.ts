@@ -21,8 +21,8 @@ export class ModalFiltroPage implements OnInit {
   ) { }
 
 
-  public tipoStreaming: string;
-  public ator: string;
+  public tipoStreaming: string = 'filme';
+  public ator: any;
   public ano: string;
   public genero: string;
   public idioma: string;
@@ -42,10 +42,20 @@ export class ModalFiltroPage implements OnInit {
 
   public producao;
 
+  public tipoStreamingAux: string;
+
 
   ngOnInit() {
     this.montarSelectGeneros();
     this.montaSelectIdiomas();
+    this.tipoStreamingAux = this.tipoStreaming;
+  }
+
+  ngDoCheck() {
+    if (this.tipoStreaming !== this.tipoStreamingAux) {
+      this.montarSelectGeneros();
+      this.tipoStreamingAux = this.tipoStreaming;
+    }
   }
 
 
@@ -65,9 +75,7 @@ export class ModalFiltroPage implements OnInit {
     } else {
       mediaType = 'movie';
     }
-    if (!this.tipoStreaming) {
-      mediaType = 'movie';
-    }
+
     const resultado = await (await this.tmdbService.buscarGeneros(mediaType).toPromise());
 
     this.generos.push({
@@ -93,6 +101,8 @@ export class ModalFiltroPage implements OnInit {
       resultado: resultado,
     })
 
+    // console.log('atoreAux', atoresAux);
+
     const varAux = atoresAux[0].resultado;
 
     varAux.forEach(element => {
@@ -100,7 +110,10 @@ export class ModalFiltroPage implements OnInit {
       this.atores.push({
         id: element.id,
         name: element.name,
+      //   image: 'http://image.tmdb.org/t/p/original/' + element.profile_path,
       })
+
+    //  console.log('this.atores', this.atores);
     });
 
   }
@@ -114,6 +127,8 @@ export class ModalFiltroPage implements OnInit {
     prodAux.push({
       resultado: resultado,
     })
+
+    console.log('fhfhhfhhfhfhf', prodAux);
 
     const varAux = prodAux[0].resultado;
 
