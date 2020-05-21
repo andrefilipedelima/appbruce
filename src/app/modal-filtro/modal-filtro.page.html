@@ -37,7 +37,7 @@
       <ion-label position="floating"> Ano de Lançamento</ion-label> 
       <ion-datetime displayFormat="YYYY" [(ngModel)]="ano" name="ano" doneText="Ok" cancelText="Fechar"></ion-datetime> 
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="mostraCampoAtor">
       <ion-label position="floating">Ator</ion-label>
       <ionic-selectable
         [(ngModel)]="ator"
@@ -55,13 +55,10 @@
         <ng-template ionicSelectableCloseButtonTemplate>
           <ion-icon name="close-circle" style="font-size: 24px;"></ion-icon>
         </ng-template>
+        <!-- <ng-template ionicSelectableItemRightTemplate let-ator="item">
+          <img class="country-flag" [src]="atores.image" >
+        </ng-template> -->
       </ionic-selectable>
-    </ion-item>
-    <ion-item *ngFor="let cat of generos">
-      <ion-label position="floating">Gênero</ion-label>
-      <ion-select [(ngModel)]="genero" (ionChange)="onChangeGenero(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
-        <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
-      </ion-select>
     </ion-item>
     <ion-item *ngFor="let cat2 of idiomas">
       <ion-label position="floating">Idioma Original</ion-label>
@@ -88,6 +85,12 @@
           <ion-icon name="close-circle" style="font-size: 24px;"></ion-icon>
         </ng-template>
       </ionic-selectable>
+    </ion-item>
+    <ion-item *ngFor="let cat of generos">
+      <ion-label position="floating">Gênero</ion-label>
+      <ion-select [(ngModel)]="genero" (ionChange)="onChangeGenero(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
+        <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 

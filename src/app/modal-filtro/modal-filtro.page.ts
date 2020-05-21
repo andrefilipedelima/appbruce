@@ -43,6 +43,7 @@ export class ModalFiltroPage implements OnInit {
   public producao;
 
   public tipoStreamingAux: string;
+  public mostraCampoAtor: boolean = true;
 
 
   ngOnInit() {
@@ -52,6 +53,11 @@ export class ModalFiltroPage implements OnInit {
   }
 
   ngDoCheck() {
+    if (this.tipoStreaming === 'serie') {
+      this.mostraCampoAtor = false;
+    } else {
+      this.mostraCampoAtor = true;
+    }
     if (this.tipoStreaming !== this.tipoStreamingAux) {
       this.montarSelectGeneros();
       this.tipoStreamingAux = this.tipoStreaming;
