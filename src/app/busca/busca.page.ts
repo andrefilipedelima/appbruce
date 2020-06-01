@@ -38,6 +38,14 @@ export class BuscaPage implements OnInit {
     this.tituloPesquisa = searchbar.target.value;
   }
 
+  clickEnter(e) {
+    // e.target é o input da searchbar
+    // vai tirar o foco da searchbar quando clicar na tecla enter
+    e.target.blur();
+
+    this.pesquisarPorTitulo();
+  }
+
   pesquisarPorTitulo() {
     if (this.tituloPesquisa) {
       this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;

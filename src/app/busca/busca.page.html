@@ -13,7 +13,7 @@
   <ion-list >
     <ion-list-header>
 
-      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" placeholder="Digite o titulo aqui... "></ion-searchbar>
+      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (keyup.enter)="clickEnter($event)" placeholder="Digite o titulo aqui... "></ion-searchbar>
     
       <ion-button class="bt" (click)="pesquisarPorTitulo()">
         <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon>
