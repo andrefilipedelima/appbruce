@@ -125,17 +125,19 @@ export class BuscaPage implements OnInit {
     profileModal.onDidDismiss()
       .then((data) => {
         const filtro = data['data'];
-        if (filtro.ano !== undefined || 
-            filtro.genero !== undefined ||
-            filtro.ator !== undefined ||
-            filtro.idioma !== undefined ||
-            filtro.produtora !== undefined 
-        ) {
-            console.log('tem pesquisa para filtrar: ', filtro);
-            this.realizaBuscaFiltro = filtro;
-
-            this.realizaPesquisaComFiltro();
-
+        if (filtro !== undefined) {
+          if (filtro.ano !== undefined || 
+              filtro.genero !== undefined ||
+              filtro.ator !== undefined ||
+              filtro.idioma !== undefined ||
+              filtro.produtora !== undefined 
+          ) {
+              console.log('tem pesquisa para filtrar: ', filtro);
+              this.realizaBuscaFiltro = filtro;
+  
+              this.realizaPesquisaComFiltro();
+  
+          } 
         } else {
           console.log('Nada para pesquisar!');
           this.msgError = null;

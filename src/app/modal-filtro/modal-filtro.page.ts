@@ -107,8 +107,6 @@ export class ModalFiltroPage implements OnInit {
       resultado: resultado,
     })
 
-    // console.log('atoreAux', atoresAux);
-
     const varAux = atoresAux[0].resultado;
 
     varAux.forEach(element => {
@@ -116,10 +114,9 @@ export class ModalFiltroPage implements OnInit {
       this.atores.push({
         id: element.id,
         name: element.name,
-      //   image: 'http://image.tmdb.org/t/p/original/' + element.profile_path,
+        image: 'http://image.tmdb.org/t/p/original/' + element.profile_path,
       })
 
-    //  console.log('this.atores', this.atores);
     });
 
   }
@@ -133,8 +130,6 @@ export class ModalFiltroPage implements OnInit {
     prodAux.push({
       resultado: resultado,
     })
-
-    console.log('fhfhhfhhfhfhf', prodAux);
 
     const varAux = prodAux[0].resultado;
 
@@ -180,7 +175,7 @@ export class ModalFiltroPage implements OnInit {
         produtora: this.produtora,
       }
 
-      this.fechaModal();
+      this.modalController.dismiss(this.producao);
     }
 
   }
@@ -196,7 +191,7 @@ export class ModalFiltroPage implements OnInit {
         {
           text: 'Pesquisar depois',
           handler: () => {
-            this.fechaModal();
+            this.dismissModal();
           }
         },
         { 
@@ -208,8 +203,8 @@ export class ModalFiltroPage implements OnInit {
     await alert.present();
   }
 
-  fechaModal(){
-    this.modalController.dismiss(this.producao);
+  dismissModal() {
+    this.modalController.dismiss();
   }
   
   onChangeGenero(valorSelecionado){
