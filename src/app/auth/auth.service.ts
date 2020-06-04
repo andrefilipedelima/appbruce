@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthData } from './auth-data.model';
 import * as firebase from 'firebase';
+import { OverlayService } from '../services/OverlayService';
 
 @Injectable()
 export class AuthService {
@@ -25,13 +26,18 @@ export class AuthService {
     handleCodeInApp: true
   };
 
-  constructor(private router: Router, private afAuth: AngularFireAuth) {}
+  constructor(private router: Router, private afAuth: AngularFireAuth, private overlay: OverlayService) {}
 
   registerUser(authData: AuthData) {
     this.afAuth.auth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
-        this.authSuccessfully();
+        result.user.sendEmailVerification().then(result => {
+          this.overlay.toast({message: "Conta Criada, verifique sua caixa de e-mail"});
+          this.router.navigate(['/login/true']);
+        }).catch(error => {
+          this.overlay.toast({message: "Erro de e-mail de configuração."});
+        })
       })
       .catch(error => {
         console.log(error);
@@ -44,7 +50,12 @@ export class AuthService {
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
         console.log(result);
-        this.authSuccessfully();
+        if (result.user.emailVerified) {
+          this.authSuccessfully();
+        }
+        else {
+          this.overlay.toast({message: "E-mail ainda não verificado."});
+        }
       })
       .catch(error => {
         console.log(error);
@@ -54,6 +65,14 @@ export class AuthService {
       return sucesso;
   }
 
+  /* async reset() {
+    this.afAuth.auth.sendPasswordResetEmail().then( result => {
+
+    }).catch(error => {
+
+    });
+  } */
+  
   logout() {
     this.authChange.next(false);
     this.router.navigate(['/login']);
