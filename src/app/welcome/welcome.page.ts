@@ -7,11 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController, IonSlides } from '@ionic/angular';
 
 @Component({
-  selector: 'app-welcome2',
-  templateUrl: './welcome2.page.html',
-  styleUrls: ['./welcome2.page.scss'],
+  selector: 'app-welcome',
+  templateUrl: './welcome.page.html',
+  styleUrls: ['./welcome.page.scss'],
 })
-export class Welcome2Page implements OnInit {
+export class WelcomePage implements OnInit {
   items: WelcomeType[];
   tipo_pagina: 'tv' | 'movie';
   titulo_pagina: string;

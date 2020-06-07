@@ -49,11 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
       url: '/welcome/notificacoes',
       icon: 'notifications'
     },
-    {
-      title: 'MyBruce',
-      url: '/welcome/myBruce',
-      icon: 'ribbon'
-    }
   ];
   /* public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders']; */
 
@@ -104,7 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   
   habilitado(): boolean{
-     return this.route.url == '/login';
+     return (this.route.url == '/login' || this.route.url == '/signup' || this.route.url == '/reset');
   }
 
 }

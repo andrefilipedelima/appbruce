@@ -10,11 +10,20 @@
 }
 
 .bt {
-    border-color:#272724;
-    background: #3c3c3c;
+    color: white;
+    background: #333333;
+    height: 70%;
+}
+.bt.ios {
+    height: 60%;
+    margin-bottom: 12px;
 }
 
 .bt:active {
     position:relative;
     top:2px;
+}
+
+.barraPesquisa-header {
+    padding-right: 15px;
 }
