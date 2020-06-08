@@ -32,6 +32,14 @@
     border-radius: 50%;
 }
 
+.dog {
+    max-width: 45px;
+}
+
+.titulo-pagina.ios {
+    font-size: 1em !important;
+}
+
 @media only screen and (min-width: 960px) {
     .botao-esquerda{
         top: 50%;

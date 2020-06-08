@@ -50,7 +50,10 @@ a {
     margin: auto;
 }
 
-
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: #448AFF;
-  }
+}
+
+.dog {
+    max-width: 45px;
+}
