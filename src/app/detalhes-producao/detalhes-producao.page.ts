@@ -59,7 +59,7 @@ export class DetalhesProducaoPage implements OnInit {
       this.elenco = await this.tmdbService.buscarAtores(id_producao, midia).toPromise();
       this.elenco = this.elenco.slice(0, 3);
 
-      this.streamers$ = this.utellyService.buscarEmQualStremingPorId(id_producao, 'tmdb').pipe(map(uttely => uttely.locations));
+      this.streamers$ = this.utellyService.buscarEmQualStreamingPorId(id_producao, 'tmdb').pipe(map(uttely => uttely.locations));
       
       this.streamers$.pipe(take(1)).subscribe( locations => {
         this.buscouStreamings = true;

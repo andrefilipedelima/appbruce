@@ -99,7 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   
   habilitado(): boolean{
-     return (this.route.url == '/login' || this.route.url == '/signup' || this.route.url == '/reset');
+     return (this.route.url == '/login' || this.route.url == '/signup' || this.route.url == '/reset' || this.route.url == '/login/true');
   }
 
 }

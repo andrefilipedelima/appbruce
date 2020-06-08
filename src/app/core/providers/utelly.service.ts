@@ -21,7 +21,7 @@ export class UtellyService {
 
   }
 
-  buscarEmQualStremingPorId(id_producao: number, baseParaConsultar: 'tmdb'): Observable<Utelly_Item>{
+  buscarEmQualStreamingPorId(id_producao: number, baseParaConsultar: 'tmdb'): Observable<Utelly_Item>{
     const url_busca = `${this.URL_BASE}idlookup?country=BR&source_id=${id_producao}&source=${baseParaConsultar}`
 
     return this.http
