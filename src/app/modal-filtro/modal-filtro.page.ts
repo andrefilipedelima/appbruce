@@ -3,6 +3,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { Genero } from '../core/models/genero';
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 
 @Component({
@@ -20,8 +21,8 @@ export class ModalFiltroPage implements OnInit {
   ) { }
 
 
-  public tipoStreaming: string;
-  public ator: string;
+  public tipoStreaming: string = 'filme';
+  public ator: any;
   public ano: string;
   public genero: string;
   public idioma: string;
@@ -33,12 +34,34 @@ export class ModalFiltroPage implements OnInit {
   // array de idiomas retornados que compoem o select da tela de filtros 
   public idiomas;
 
+  // array de atores retornados que compoem o select da tela de filtros 
+  public atores;
+
+  // array de produtoras retornados que compoem o select da tela de filtros 
+  public produtoras;
+
   public producao;
+
+  public tipoStreamingAux: string;
+  public mostraCampoAtor: boolean = true;
 
 
   ngOnInit() {
     this.montarSelectGeneros();
     this.montaSelectIdiomas();
+    this.tipoStreamingAux = this.tipoStreaming;
+  }
+
+  ngDoCheck() {
+    if (this.tipoStreaming === 'serie') {
+      this.mostraCampoAtor = false;
+    } else {
+      this.mostraCampoAtor = true;
+    }
+    if (this.tipoStreaming !== this.tipoStreamingAux) {
+      this.montarSelectGeneros();
+      this.tipoStreamingAux = this.tipoStreaming;
+    }
   }
 
 
@@ -58,9 +81,7 @@ export class ModalFiltroPage implements OnInit {
     } else {
       mediaType = 'movie';
     }
-    if (!this.tipoStreaming) {
-      mediaType = 'movie';
-    }
+
     const resultado = await (await this.tmdbService.buscarGeneros(mediaType).toPromise());
 
     this.generos.push({
@@ -77,6 +98,50 @@ export class ModalFiltroPage implements OnInit {
     })
   }
 
+  async montaSelectAtor(ator) {
+    this.atores = [];
+    const atoresAux = [];
+    const resultado = await (await this.tmdbService.buscarPorPessoa(ator,1).toPromise());
+
+    atoresAux.push({
+      resultado: resultado,
+    })
+
+    const varAux = atoresAux[0].resultado;
+
+    varAux.forEach(element => {
+
+      this.atores.push({
+        id: element.id,
+        name: element.name,
+        image: 'http://image.tmdb.org/t/p/original/' + element.profile_path,
+      })
+
+    });
+
+  }
+
+
+  async montaSelectProdutora(produtora) {
+    this.produtoras = [];
+    const prodAux = [];
+    const resultado = await (await this.tmdbService.buscarPorCompania(produtora,1).toPromise());
+
+    prodAux.push({
+      resultado: resultado,
+    })
+
+    const varAux = prodAux[0].resultado;
+
+    varAux.forEach(element => {
+
+      this.produtoras.push({
+        id: element.id,
+        name: element.name,
+      })
+    });
+
+  }
 
   pesquisaComFiltros() {
 
@@ -110,7 +175,7 @@ export class ModalFiltroPage implements OnInit {
         produtora: this.produtora,
       }
 
-      this.fechaModal();
+      this.modalController.dismiss(this.producao);
     }
 
   }
@@ -126,7 +191,7 @@ export class ModalFiltroPage implements OnInit {
         {
           text: 'Pesquisar depois',
           handler: () => {
-            this.fechaModal();
+            this.dismissModal();
           }
         },
         { 
@@ -138,8 +203,8 @@ export class ModalFiltroPage implements OnInit {
     await alert.present();
   }
 
-  fechaModal(){
-    this.modalController.dismiss(this.producao);
+  dismissModal() {
+    this.modalController.dismiss();
   }
   
   onChangeGenero(valorSelecionado){
@@ -151,6 +216,29 @@ export class ModalFiltroPage implements OnInit {
     console.log('idioma selecionado', valorSelecionado);
     this.idioma = valorSelecionado;
   }
+
+  onSearchAtor(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let atorPesquisa = event.text.trim().toLowerCase();
+
+    if (atorPesquisa.length >= 3) {
+      this.montaSelectAtor(atorPesquisa);
+    }
+  }
+
+  onSearchProdutora(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let prodPesquisa = event.text.trim().toLowerCase();
+
+    if (prodPesquisa) {
+      this.montaSelectProdutora(prodPesquisa);
+    }
+  }
+
 
   tratamentoData() {
     const aux = this.ano.split('-');

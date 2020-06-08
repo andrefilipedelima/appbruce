@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TmdbService } from './core/providers/tmdb.service';
 import { OverlayService } from './services/OverlayService';
 import { UtellyService } from './core/providers/utelly.service';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { UtellyService } from './core/providers/utelly.service';
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicSelectableModule
   ],
   providers: [
     AuthService,

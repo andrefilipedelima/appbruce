@@ -25,15 +25,15 @@
               <mat-form-field>
                 <input type="email" matInput placeholder="E-mail" required ngModel name="email" email
                   #emailInput="ngModel" #email>
-                <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
-                <mat-error *ngIf="!emailInput.hasError('required')">E-mail is invalid.</mat-error>
+                <mat-error *ngIf="emailInput.hasError('required')">Preenchimento obrigatório.</mat-error>
+                <mat-error *ngIf="!emailInput.hasError('required')">E-mail inválido.</mat-error>
               </mat-form-field>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col style="text-align: center">
-              <mat-form-field hintLabel="Should be at least 6 characters long.">
+              <mat-form-field hintLabel="Deve ter pelo menos 6 caracteres.">
                 <input type="password" matInput placeholder="Senha" required ngModel name="password" minlength="6"
                   #pwInput="ngModel" #password>
                 <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>

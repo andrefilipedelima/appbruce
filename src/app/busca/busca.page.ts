@@ -38,6 +38,14 @@ export class BuscaPage implements OnInit {
     this.tituloPesquisa = searchbar.target.value;
   }
 
+  clickEnter(e) {
+    // e.target é o input da searchbar
+    // vai tirar o foco da searchbar quando clicar na tecla enter
+    e.target.blur();
+
+    this.pesquisarPorTitulo();
+  }
+
   pesquisarPorTitulo() {
     if (this.tituloPesquisa) {
       this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
@@ -117,17 +125,19 @@ export class BuscaPage implements OnInit {
     profileModal.onDidDismiss()
       .then((data) => {
         const filtro = data['data'];
-        if (filtro.ano !== undefined || 
-            filtro.genero !== undefined ||
-            filtro.ator !== undefined ||
-            filtro.idioma !== undefined ||
-            filtro.produtora !== undefined 
-        ) {
-            console.log('tem pesquisa para filtrar: ', filtro);
-            this.realizaBuscaFiltro = filtro;
-
-            this.realizaPesquisaComFiltro();
-
+        if (filtro !== undefined) {
+          if (filtro.ano !== undefined || 
+              filtro.genero !== undefined ||
+              filtro.ator !== undefined ||
+              filtro.idioma !== undefined ||
+              filtro.produtora !== undefined 
+          ) {
+              console.log('tem pesquisa para filtrar: ', filtro);
+              this.realizaBuscaFiltro = filtro;
+  
+              this.realizaPesquisaComFiltro();
+  
+          } 
         } else {
           console.log('Nada para pesquisar!');
           this.msgError = null;
@@ -150,12 +160,9 @@ export class BuscaPage implements OnInit {
     }
 
     if (this.realizaBuscaFiltro.produtora !== undefined) {
-      let produtora = []
-      produtora = await this.buscaIDprodutora();
-
       busca.push({
         parametro: "with_companies",
-        valor: this.realizaBuscaFiltro.produtora,
+        valor: this.realizaBuscaFiltro.produtora.id,
       }
       )
     }
@@ -181,7 +188,7 @@ export class BuscaPage implements OnInit {
       if (this.realizaBuscaFiltro.ator !== undefined) {
         busca.push({
           parametro: "with_people",
-          valor: this.realizaBuscaFiltro.ator,
+          valor: this.realizaBuscaFiltro.ator.id,
         })
       }
     }
@@ -229,25 +236,6 @@ export class BuscaPage implements OnInit {
       console.log(ex);
       this.overlayService.toast({ message: ex});
     }
-
-  }
-
-
-  async buscaIDprodutora() {
-
-    // verificar numero da pagina 
-    const resultado = await (await this.tmdbService.buscarPorCompania(this.realizaBuscaFiltro.produtora, 1).toPromise());
-
-    let produtoraID = [];
-
-    resultado.forEach(item => {
-      produtoraID.push(
-        item.id
-      )
-    }
-    )
-
-    return produtoraID;
 
   }
 

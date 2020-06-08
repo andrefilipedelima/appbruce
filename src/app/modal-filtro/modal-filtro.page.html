@@ -1,5 +1,14 @@
 
 <ion-content padding>
+
+  <ion-toolbar>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+
   <ion-list inset>
     <ion-list-header>
       <ion-label>O que deseja procurar hoje?</ion-label>
@@ -23,10 +32,6 @@
 
 
 
-
-
-
-
   <ion-list inset>
 
     <ion-list-header>
@@ -37,15 +42,25 @@
       <ion-label position="floating"> Ano de Lançamento</ion-label> 
       <ion-datetime displayFormat="YYYY" [(ngModel)]="ano" name="ano" doneText="Ok" cancelText="Fechar"></ion-datetime> 
     </ion-item>
-    <ion-item>
-      <ion-label position="floating"> Ator</ion-label>
-      <ion-input type="text" [(ngModel)]="ator" name="ator"></ion-input>
-    </ion-item>
-    <ion-item *ngFor="let cat of generos">
-      <ion-label position="floating">Gênero</ion-label>
-      <ion-select [(ngModel)]="genero" (ionChange)="onChangeGenero(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
-        <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
-      </ion-select>
+    <ion-item *ngIf="mostraCampoAtor">
+      <ion-label position="floating">Ator</ion-label>
+      <ionic-selectable
+        [(ngModel)]="ator"
+        name="ator"
+        [items]="atores"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onSearch)="onSearchAtor($event)">
+        <ng-template ionicSelectableSearchFailTemplate>
+          <div padding>
+            Nenhum resultado encontrado.
+          </div>
+        </ng-template>
+        <ng-template ionicSelectableCloseButtonTemplate>
+          <ion-icon name="close-circle" style="font-size: 24px;"></ion-icon>
+        </ng-template>
+      </ionic-selectable>
     </ion-item>
     <ion-item *ngFor="let cat2 of idiomas">
       <ion-label position="floating">Idioma Original</ion-label>
@@ -54,8 +69,30 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="floating"> Produtora</ion-label>
-      <ion-input type="text" [(ngModel)]="produtora" name="produtora"></ion-input>
+      <ion-label position="floating">Produtora</ion-label>
+      <ionic-selectable
+        [(ngModel)]="produtora"
+        name="produtora"
+        [items]="produtoras"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onSearch)="onSearchProdutora($event)">
+        <ng-template ionicSelectableSearchFailTemplate>
+          <div padding>
+            Nenhum resultado encontrado.
+          </div>
+        </ng-template>
+        <ng-template ionicSelectableCloseButtonTemplate>
+          <ion-icon name="close-circle" style="font-size: 24px;"></ion-icon>
+        </ng-template>
+      </ionic-selectable>
+    </ion-item>
+    <ion-item *ngFor="let cat of generos">
+      <ion-label position="floating">Gênero</ion-label>
+      <ion-select [(ngModel)]="genero" (ionChange)="onChangeGenero(genero)" okText="Ok" cancelText="Fechar"  multiple="false" interface="alert">
+        <ion-select-option *ngFor="let genero of cat.resultado" value="{{genero.name}}">{{genero.name}}</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 
