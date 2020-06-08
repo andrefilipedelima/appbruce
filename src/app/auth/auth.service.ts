@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthData } from './auth-data.model';
 import * as firebase from 'firebase';
 import { OverlayService } from '../services/OverlayService';
+import { AuthEmail } from './auth-email.model';
 
 @Injectable()
 export class AuthService {
@@ -65,13 +66,13 @@ export class AuthService {
       return sucesso;
   }
 
-  /* async reset() {
-    this.afAuth.auth.sendPasswordResetEmail().then( result => {
-
+  reset(authEmail: AuthEmail) {
+    this.afAuth.auth.sendPasswordResetEmail(authEmail.email).then( result => {
+      this.overlay.toast({message: "Verifique sua caixa de e-mail para trocar a senha."});     
     }).catch(error => {
-
+      this.overlay.toastLong({message: "Nenhuma conta válida foi encontrada com o E-mail informado."});
     });
-  } */
+  }
   
   logout() {
     this.authChange.next(false);

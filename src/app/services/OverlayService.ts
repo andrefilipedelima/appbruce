@@ -39,4 +39,18 @@ export class OverlayService {
 
     return toast;
   }
+
+  async toastLong(options?: ToastOptions): Promise<HTMLIonToastElement> {
+    const toast = await this.toastCtrl.create({
+      position: 'top',
+      duration: 6000,
+      buttons: ['OK'],
+      ...options
+    });
+
+    toast.present();
+
+    return toast;
+  }
+
 }
