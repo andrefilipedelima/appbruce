@@ -16,19 +16,17 @@ const routes: Routes = [
   },
   {
     path: 'welcome/:id',
-    loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule), 
+    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule), 
   },
   { path: 'signup', component: SignupComponent },
+  { path: 'login/:contacriada', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reset', component: ResetPasswordComponent },
   {
-    path: 'welcome2/:id',
-    loadChildren: () => import('./welcome2/welcome2.module').then( m => m.Welcome2PageModule)
-  },
-  {
     path: 'detalhes/:tipo/:id',
     loadChildren: () => import('./detalhes-producao/detalhes-producao.module').then( m => m.DetalhesProducaoPageModule)
-  },  {
+  },
+  {
     path: 'modal-filtro',
     loadChildren: () => import('./modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
   },

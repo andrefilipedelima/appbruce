@@ -3,26 +3,29 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title class="titulo-pagina">Buscar</ion-title>
+    <ion-title class="titulo-pagina">
+      <img src="../../../assets/icon/logo-appbruce-b.png" class="dog">
+      Buscar
+    </ion-title>
     <ion-icon slot="end" (click)="filtrar()" size="large" name="options-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-  <ion-list >
-    <ion-list-header>
+  <ion-list>
+    <ion-list-header class="barraPesquisa-header">
 
       <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (keyup.enter)="clickEnter($event)" placeholder="Digite o titulo aqui... "></ion-searchbar>
     
-      <ion-button class="bt" (click)="pesquisarPorTitulo()">
-        <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon>
+      <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR
+        <!-- <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon> -->
       </ion-button>
     </ion-list-header>
   </ion-list>
 
 
-  <ion-label position="floating" >{{msgError}}</ion-label>
+  <ion-label position="floating">{{msgError}}</ion-label>
 
   <div id="container">
     <div *ngFor="let cat of items">

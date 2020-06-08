@@ -1,48 +1,52 @@
 @media only screen and (min-width: 800px) {
-.titulo-detalhes{
-    font-size: 1.8em !important;
-    font-family: Verdana;
-    margin-right: 5px !important;
-    font-weight: bold;
-    color: white;
-}
+    .titulo-detalhes{
+        font-size: 1.6em !important;
+        font-family: Verdana;
+        margin-right: 5px !important;
+        font-weight: bold;
+        color: white;
+    }
 
-.conteude{
-    font-size: 1.8em !important;
-    font-family: Verdana;
-    margin-right: 5px !important;
-    margin-left: 5px !important;
-    color: #3880ff;
-}
+    .conteude{
+        font-size: 1.8em !important;
+        font-family: Verdana;
+        margin-right: 5px !important;
+        margin-left: 5px !important;
+        color: #3880ff;
+    }
 
-.sinopse{
-    font-size: 1.6em !important;
-    font-family: Verdana;
-    color: #8c8c8c;
-    text-align: justify;
-}
+    .sinopse{
+        font-size: 1.6em !important;
+        font-family: Verdana;
+        color: #8c8c8c;
+        text-align: justify;
+    }
 
-ion-card {
-    max-height: 95% !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
+    ion-card {
+        max-height: 95% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
 
-.titulo-producao{
-    font-size: 2em;
-    font-family: Verdana;
-    font-weight: bold;
-    color: #fca136;
-    text-align: center !important;
-}
+    .titulo-producao{
+        font-size: 2em;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #fca136;
+        text-align: center !important;
+    }
 
-.nomeStreaming{
-    font-size: 2em !important;
-    font-family: Verdana;
-    color: yellowgreen;
-    text-decoration: underline;
-    text-decoration-color: yellowgreen;
-}
+    .nomeStreaming{
+        font-size: 2em !important;
+        font-family: Verdana;
+        color: yellowgreen;
+        text-decoration: underline;
+        text-decoration-color: yellowgreen;
+    }
+    .sinopse{
+        font-size: 1.2em !important;
+    }
+
 }
 
 @media only screen and (max-width: 799px) {

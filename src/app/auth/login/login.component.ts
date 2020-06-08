@@ -27,6 +27,11 @@ this.overlayService = _overlayService;
 }
 
   ngOnInit() {
+    const criacaoConta = this.route.snapshot.paramMap.get("contacriada");
+    
+    if(criacaoConta !== undefined && criacaoConta == "true") {
+     this._overlayService.toast({message:"Conta criada, por favor verifique o seu e-mail para ativar a conta!"}); 
+    }
 
     //this.loginForm = new FormGroup({
     //  email: new FormControl('', {
