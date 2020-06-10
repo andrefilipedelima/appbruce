@@ -6,11 +6,13 @@ import { AuthData } from './auth-data.model';
 import * as firebase from 'firebase';
 import { OverlayService } from '../services/OverlayService';
 import { AuthEmail } from './auth-email.model';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
   private isAuthenticated = false;
+  authState$: Observable<firebase.User>;
 
   defaultAuth = firebase.auth();
 
@@ -87,7 +89,7 @@ export class AuthService {
   private authSuccessfully() {
     this.isAuthenticated = true;
     this.authChange.next(true);
-    this.router.navigate(['/welcome/filmes']);
+    this.router.navigate(['/welcome2/filmes']);
   }
 
 }

@@ -5,6 +5,9 @@ import { OverlayService } from '../services/OverlayService';
 import { NavController, ModalController } from '@ionic/angular';
 import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
 import { ParametroBusca } from '../core/models/parametroBusca';
+import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
+import { AuthService } from '../auth/auth.service';
+import { HistoricoBusca } from '../core/models/historicoBusca';
 
 @Component({
   selector: 'app-busca',
@@ -28,7 +31,9 @@ export class BuscaPage implements OnInit {
     private tmdbService: TmdbService,
     private overlayService: OverlayService,
     private navCtrl: NavController,
-    private  modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private historicoBuscaService: HistoricoBuscaService,
+    private authService: AuthService) {
     // this.loading = this.overlayService.loading();
   }
 
@@ -81,6 +86,20 @@ export class BuscaPage implements OnInit {
   async carregaDados(): Promise<void>{
     this.items = [];
     let resultado;
+    let busca: HistoricoBusca;
+
+    if(this.authService.isAuth()){
+      busca = {
+        id: undefined,
+        dataBusca: (new Date).getDate(),
+        porTitulo: true,
+        tituloBuscado: this.tituloPesquisa,
+        detalhada: null
+      }
+
+      console.log(busca);
+      await this.historicoBuscaService.create(busca);
+    }
 
     const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
 
