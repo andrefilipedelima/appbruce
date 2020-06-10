@@ -17,6 +17,10 @@ export class HistoricoBuscaService extends Firestore<HistoricoBusca> {
 
   private init(): void {
     this.authService.authState$.subscribe(user => {
+      console.log(user);
+      console.log(user.uid);
+      console.log(this.collection);
+
       if (user)
         this.setCollection(`/users/${user.uid}/historico`, (ref: firestore.CollectionReference) => {
           //return ref.orderBy('done', 'asc').orderBy('title', 'asc');

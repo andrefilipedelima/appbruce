@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import { OverlayService } from '../services/OverlayService';
 import { AuthEmail } from './auth-email.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +30,9 @@ export class AuthService {
     handleCodeInApp: true
   };
 
-  constructor(private router: Router, private afAuth: AngularFireAuth, private overlay: OverlayService) {}
+  constructor(private router: Router, private afAuth: AngularFireAuth, private overlay: OverlayService) {
+    this.authState$ = afAuth.authState;
+  }
 
   registerUser(authData: AuthData) {
     this.afAuth.auth
@@ -83,13 +86,13 @@ export class AuthService {
   }
 
   isAuth() {
-    return this.isAuthenticated;
+    return this.authState$.pipe(map(user => user != null));
   }
 
   private authSuccessfully() {
     this.isAuthenticated = true;
     this.authChange.next(true);
-    this.router.navigate(['/welcome2/filmes']);
+    this.router.navigate(['/welcome/filmes']);
   }
 
 }

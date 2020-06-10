@@ -8,6 +8,7 @@ import { ParametroBusca } from '../core/models/parametroBusca';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
 import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-busca',
@@ -33,7 +34,8 @@ export class BuscaPage implements OnInit {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private historicoBuscaService: HistoricoBuscaService,
-    private authService: AuthService) {
+    private authService: AuthService
+    ) {
     // this.loading = this.overlayService.loading();
   }
 
@@ -86,19 +88,18 @@ export class BuscaPage implements OnInit {
   async carregaDados(): Promise<void>{
     this.items = [];
     let resultado;
-    let busca: HistoricoBusca;
 
     if(this.authService.isAuth()){
-      busca = {
+      let buscaHistorico: HistoricoBusca;
+      buscaHistorico = {
         id: undefined,
-        dataBusca: (new Date).getDate(),
+        dataBusca: new Date(),
         porTitulo: true,
         tituloBuscado: this.tituloPesquisa,
         detalhada: null
       }
 
-      console.log(busca);
-      await this.historicoBuscaService.create(busca);
+      await this.historicoBuscaService.create(buscaHistorico);
     }
 
     const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
@@ -228,6 +229,21 @@ export class BuscaPage implements OnInit {
     }
 
     let resultado;
+
+    if(this.authService.isAuth()){
+      let buscaHistorico: HistoricoBusca;
+      buscaHistorico = {
+        id: undefined,
+        dataBusca: new Date(),
+        porTitulo: false,
+        detalhada: {
+          midia: this.tipo_pagina,
+          parametrosBusca: busca
+        }
+      }
+
+      await this.historicoBuscaService.create(buscaHistorico);
+    }
 
     const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
     let itensAux = [];
