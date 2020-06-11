@@ -13,7 +13,7 @@ import { ParametroBusca } from '../core/models/parametroBusca';
 })
 export class BuscaPage implements OnInit {
 
-  items: BuscaType[];
+  items: BuscaType[] = [];
 
   public tituloPesquisa: any;
   public msgError: string;
@@ -23,6 +23,8 @@ export class BuscaPage implements OnInit {
   loading: Promise<HTMLIonLoadingElement>;
   public realizaBuscaFiltro;
 
+  // variavel auxiliar para informar se tem retorno de pesquisa ou nao
+  public pesquisaEncontrada: boolean = false;
 
   constructor(
     private tmdbService: TmdbService,
@@ -38,6 +40,11 @@ export class BuscaPage implements OnInit {
     this.tituloPesquisa = searchbar.target.value;
   }
 
+  limpaPesquisa(e) {
+    this.items = [];
+    this.msgError = null;
+  }
+
   clickEnter(e) {
     // e.target é o input da searchbar
     // vai tirar o foco da searchbar quando clicar na tecla enter
@@ -48,14 +55,15 @@ export class BuscaPage implements OnInit {
 
   pesquisarPorTitulo() {
     if (this.tituloPesquisa) {
-      this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
-
        this.carregaDados();
-
-
     } else {
       this.msgError = "Não foi possivel encontrar sua busca. Tente novamente usando outros termos!";
+      this.items = [];
     }
+  }
+
+  testeBotao(){
+    console.log('cliquei botao');
   }
 
   possuiImagem(value) {
@@ -92,6 +100,7 @@ export class BuscaPage implements OnInit {
 
       resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
 
+      this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
 
       var filtered = resultado.filter(this.filtraTipoMidia);
 

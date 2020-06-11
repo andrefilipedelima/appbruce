@@ -16,7 +16,7 @@
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
-      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
+      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (ionClear)="limpaPesquisa($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
     
       <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR
         <!-- <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon> -->
@@ -24,8 +24,21 @@
     </ion-list-header>
   </ion-list>
 
+  <div class="resultado" *ngIf='msgError'>
+    <ion-label> {{msgError}} </ion-label>
+  </div>
 
-  <ion-label position="floating">{{msgError}}</ion-label>
+
+  <!-- <div *ngIf=pesquisaEncontrada> -->
+    <!-- <div>
+      <ion-label class='resultado'> Resultados Encontrados para: </ion-label>
+      <div></div>
+        <ion-button class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{tituloPesquisa}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+    </div> -->
+
 
   <div id="container">
     <div *ngFor="let cat of items">
