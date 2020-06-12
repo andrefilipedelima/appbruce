@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="menu">
+      <ion-title slot="start" class="titulo-pagina">
+        <img src="../../../assets/icon/logo-appbruce-b.png" class="dog">
+        Preferências
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-list class="listaPreferencias">
+    <ion-item *ngFor="let item of form">
+      <ion-label>{{item.val}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="item.isChecked"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

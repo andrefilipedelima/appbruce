@@ -35,18 +35,33 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public appPages2 = [
     {
+      title: 'Filmes',
+      url: '/welcome/filmes',
+      icon: 'film'
+    },
+    {
+      title: 'Séries',
+      url: '/welcome/series',
+      icon: 'videocam'
+    },
+    {
+      title: 'Buscar',
+      url: '/welcome/buscar',
+      icon: 'search'
+    },
+    {
       title: 'Histórico',
-      url: '/welcome/historico',
+      url: '/historico',
       icon: 'globe'
     },
     {
       title: 'Preferências',
-      url: '/welcome/preferencias',
+      url: '/preferencias',
       icon: 'settings'
     },
     {
       title: 'Notificações',
-      url: '/welcome/notificacoes',
+      url: '/notificacoes',
       icon: 'notifications'
     },
   ];

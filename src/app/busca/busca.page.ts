@@ -8,7 +8,6 @@ import { ParametroBusca } from '../core/models/parametroBusca';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
 import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-busca',

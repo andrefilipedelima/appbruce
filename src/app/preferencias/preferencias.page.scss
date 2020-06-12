@@ -1,0 +1,32 @@
+.titulo-pagina {
+    font-size: 2em !important;
+    font-family: Verdana;
+}
+
+.search-pagina {
+    font-size: 2em !important;
+    font-family: Verdana;
+}
+
+.menu {
+    display: flex;
+}
+
+.search-btn {
+    height: 50px;
+     width: 50px;
+    border-radius: 50%;
+}
+
+.dog {
+    max-width: 45px;
+}
+
+.titulo-pagina.ios {
+    font-size: 1em !important;
+}
+
+.listaPreferencias {
+    width: 35%;
+    margin: auto;
+}
