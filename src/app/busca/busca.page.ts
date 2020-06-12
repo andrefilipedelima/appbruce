@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
@@ -23,8 +23,22 @@ export class BuscaPage implements OnInit {
   loading: Promise<HTMLIonLoadingElement>;
   public realizaBuscaFiltro;
 
+  // recebe o titulo da searchbar
+  public pesquisa: string;
+
+  // tipo de pesquisa
+  public porTitulo: boolean = false;
+  public porFiltro: boolean = false;
+
   // variavel auxiliar para informar se tem retorno de pesquisa ou nao
   public pesquisaEncontrada: boolean = false;
+
+  // botoes de filtro
+  public btFiltroGenero = null;
+  public btFiltroAno = null;
+  public btFiltroAtor = null;
+  public btFiltroProdutora = null;
+  public btFiltroIdioma = null;
 
   constructor(
     private tmdbService: TmdbService,
@@ -37,12 +51,21 @@ export class BuscaPage implements OnInit {
   ngOnInit() {}
 
   coletaTitulo(searchbar) {
+    if (this.msgError !== null || this.pesquisaEncontrada) {
+      // para limpar a tela ao modificar barra de pesquisa
+      this.msgError = null;
+      this.pesquisaEncontrada = false;
+      this.items = []
+    }
     this.tituloPesquisa = searchbar.target.value;
   }
 
   limpaPesquisa(e) {
     this.items = [];
     this.msgError = null;
+    this.pesquisaEncontrada = false;
+    this.porFiltro = false;
+    this.porTitulo = false;
   }
 
   clickEnter(e) {
@@ -54,8 +77,10 @@ export class BuscaPage implements OnInit {
   }
 
   pesquisarPorTitulo() {
+    this.porTitulo = true;
     if (this.tituloPesquisa) {
-       this.carregaDados();
+      this.pesquisa = this.tituloPesquisa;
+      this.carregaDados();
     } else {
       this.msgError = "Não foi possivel encontrar sua busca. Tente novamente usando outros termos!";
       this.items = [];
@@ -92,6 +117,10 @@ export class BuscaPage implements OnInit {
 
     const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
 
+    if (quantidadePaginas <= 0) {
+      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
+      this.pesquisaEncontrada = false;
+    }
 
     let itensAux = [];
 
@@ -100,7 +129,7 @@ export class BuscaPage implements OnInit {
 
       resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
 
-      this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
+      this.pesquisaEncontrada = true;
 
       var filtered = resultado.filter(this.filtraTipoMidia);
 
@@ -160,12 +189,14 @@ export class BuscaPage implements OnInit {
     let busca: ParametroBusca[] = [];
     this.items = [];
 
+    this.pesquisaEncontrada = true;
     if ( this.realizaBuscaFiltro.genero !== undefined ) {
       busca.push({
         parametro: "with_genres",
         valor: this.realizaBuscaFiltro.genero.id,
       }
       )
+      this.btFiltroGenero = this.realizaBuscaFiltro.genero.name;
     }
 
     if (this.realizaBuscaFiltro.produtora !== undefined) {
@@ -174,6 +205,7 @@ export class BuscaPage implements OnInit {
         valor: this.realizaBuscaFiltro.produtora.id,
       }
       )
+      this.btFiltroProdutora = this.realizaBuscaFiltro.produtora.name;
     }
 
 
@@ -184,6 +216,7 @@ export class BuscaPage implements OnInit {
           valor: this.realizaBuscaFiltro.idioma.id,
         }
       )
+      this.btFiltroIdioma = this.realizaBuscaFiltro.idioma.name;
     }
 
     if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
@@ -193,12 +226,14 @@ export class BuscaPage implements OnInit {
           valor: this.realizaBuscaFiltro.ano,
         }
         )
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
       if (this.realizaBuscaFiltro.ator !== undefined) {
         busca.push({
           parametro: "with_people",
           valor: this.realizaBuscaFiltro.ator.id,
         })
+        this.btFiltroAtor = this.realizaBuscaFiltro.ator.name;
       }
     }
 
@@ -208,6 +243,7 @@ export class BuscaPage implements OnInit {
           parametro: "first_air_date_year",
           valor: this.realizaBuscaFiltro.ano,
         })
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
     }
 
@@ -220,6 +256,12 @@ export class BuscaPage implements OnInit {
     let resultado;
 
     const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
+    
+    if (quantidadePaginas <= 0) {
+      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
+      this.pesquisaEncontrada = false;
+    }
+
     let itensAux = [];
 
     for(let i = 1; i <= quantidadePaginas; i++ ) {

@@ -16,11 +16,9 @@
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
-      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (ionClear)="limpaPesquisa($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
+      <ion-searchbar id="barraPesquisa" #searchbar (ionInput)="coletaTitulo($event)" (ionClear)="limpaPesquisa($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
     
-      <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR
-        <!-- <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon> -->
-      </ion-button>
+      <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR</ion-button>
     </ion-list-header>
   </ion-list>
 
@@ -28,13 +26,36 @@
     <ion-label> {{msgError}} </ion-label>
   </div>
 
+  <div class="resultado" *ngIf='porTitulo && pesquisaEncontrada'>
+    <ion-label> Esses foram os resultados encontrados para: {{pesquisa}} </ion-label>
+      <ion-button color="dark" class="btLimpar" (click)="limpaPesquisa($event)">
+        Limpar Resultados
+      </ion-button>
+  </div>
+  <br><br>
 
-  <!-- <div *ngIf=pesquisaEncontrada> -->
-    <!-- <div>
-      <ion-label class='resultado'> Resultados Encontrados para: </ion-label>
+    <!-- <div *ngIf=pesquisaEncontrada> -->
+    <!-- <div> -->
+      <!-- <ion-label class='resultado'> Resultados Encontrados para: </ion-label>
       <div></div>
-        <ion-button class='botaoFiltro' color='light' (click)="testeBotao()">
-          {{tituloPesquisa}}
+        <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{btFiltroGenero}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroAtor" class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{btFiltroAtor}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroAno" class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{btFiltroAno}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroProdutora" class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{btFiltroProdutora}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroIdioma" class='botaoFiltro' color='light' (click)="testeBotao()">
+          {{btFiltroIdioma}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
     </div> -->
