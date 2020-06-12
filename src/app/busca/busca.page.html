@@ -22,7 +22,7 @@
     </ion-list-header>
   </ion-list>
 
-  <div class="resultado" *ngIf='msgError'>
+  <div class="resultado" *ngIf='msgError  && !porFiltro'>
     <ion-label> {{msgError}} </ion-label>
   </div>
 
@@ -32,11 +32,9 @@
         Limpar Resultados
       </ion-button>
   </div>
-  <br><br>
 
-    <!-- <div *ngIf=pesquisaEncontrada> -->
-    <!-- <div> -->
-      <!-- <ion-label class='resultado'> Resultados Encontrados para: </ion-label>
+  <div class="resultado" *ngIf='porFiltro'>
+    <ion-label > Filtros Selecionados: </ion-label>
       <div></div>
         <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="testeBotao()">
           {{btFiltroGenero}}
@@ -58,8 +56,20 @@
           {{btFiltroIdioma}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
-    </div> -->
+    </div>
 
+    <div class="resultado" *ngIf='porFiltro && pesquisaEncontrada'>
+      <ion-label> Esses foram os resultados encontrados:  </ion-label>
+        <ion-button color="dark" class="btLimpar" (click)="limpaPesquisa($event)">
+          Limpar Filtros
+        </ion-button>
+    </div>
+
+    <div class="resultado" *ngIf='msgError && porFiltro'>
+      <ion-label> {{msgError}} </ion-label>
+    </div>
+
+  <br><br><br>
 
   <div id="container">
     <div *ngFor="let cat of items">

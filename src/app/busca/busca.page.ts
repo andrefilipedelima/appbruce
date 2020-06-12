@@ -55,6 +55,7 @@ export class BuscaPage implements OnInit {
       // para limpar a tela ao modificar barra de pesquisa
       this.msgError = null;
       this.pesquisaEncontrada = false;
+      this.porFiltro = false;
       this.items = []
     }
     this.tituloPesquisa = searchbar.target.value;
@@ -77,7 +78,10 @@ export class BuscaPage implements OnInit {
   }
 
   pesquisarPorTitulo() {
+    this.msgError = null;
     this.porTitulo = true;
+    this.porFiltro = false;
+
     if (this.tituloPesquisa) {
       this.pesquisa = this.tituloPesquisa;
       this.carregaDados();
@@ -186,10 +190,15 @@ export class BuscaPage implements OnInit {
   }
 
   async realizaPesquisaComFiltro(): Promise<void>{
+    // limpar tela caso ja tenha pesquisa
+    this.msgError = null;
+    this.pesquisaEncontrada = false;
+    this.porTitulo = false;
+
+    this.porFiltro = true;
     let busca: ParametroBusca[] = [];
     this.items = [];
 
-    this.pesquisaEncontrada = true;
     if ( this.realizaBuscaFiltro.genero !== undefined ) {
       busca.push({
         parametro: "with_genres",
@@ -258,7 +267,7 @@ export class BuscaPage implements OnInit {
     const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
     
     if (quantidadePaginas <= 0) {
-      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
+      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outra combinação de filtros!';
       this.pesquisaEncontrada = false;
     }
 
@@ -269,6 +278,7 @@ export class BuscaPage implements OnInit {
 
       resultado = await (await this.tmdbService.descobrir(i, this.tipo_pagina, busca).toPromise()).Producoes;
 
+      this.pesquisaEncontrada = true;
 
       var filtered = resultado.filter(this.incluiTipoMidia);
 
