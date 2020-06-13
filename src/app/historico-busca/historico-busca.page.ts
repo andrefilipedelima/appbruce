@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { OverlayService } from '../services/OverlayService';
 import { take } from 'rxjs/operators';
 import { TmdbService } from '../core/providers/tmdb.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-historico-busca',
@@ -19,7 +20,8 @@ export class HistoricoBuscaPage implements OnInit {
   constructor(private historicoBuscaService: HistoricoBuscaService,
               private authService: AuthService,
               private overlayService: OverlayService,
-              private tmdbService: TmdbService) 
+              private tmdbService: TmdbService,
+              private navCtrl: NavController)
               { }
 
   ngOnInit() {
@@ -34,4 +36,11 @@ export class HistoricoBuscaPage implements OnInit {
       this.historicoBusca$.pipe(take(1)).subscribe(historico => loading.dismiss());
     })
   }
+
+  async realizaBisca(historico: HistoricoBusca):Promise<void>{
+    let historicoJson = JSON.stringify(historico);
+
+    this.navCtrl.navigateForward(['welcome/buscar',historicoJson]);
+  }
+
 }

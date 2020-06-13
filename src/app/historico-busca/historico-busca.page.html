@@ -27,14 +27,14 @@
 <ion-content>
   <ion-list *ngIf="(historicoBusca$ | async) as historicoBusca">
     <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
-        <ion-card *ngFor="let historico of historicoBusca">
+        <ion-card *ngFor="let historico of historicoBusca" (click)="realizaBisca(historico);">
           <ion-card-content>
             <ion-row *ngIf="historico.porTitulo" class="conteudoBusca">
               <p class="titulo-detalhes">Título:</p> <p class="conteude">{{historico.tituloBuscado}}</p>
             </ion-row>
             <ion-row *ngIf="!historico.porTitulo">
               <ion-row class="conteudoBusca">
-                <p class="titulo-detalhes">Mídia:</p> <p class="conteude">{{historico.detalhada.midiaMostrar}}</p>
+                <p class="titulo-detalhes">Tipo de produção:</p> <p class="conteude">{{historico.detalhada.midiaMostrar}}</p>
               </ion-row>
               <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca"  class="conteudoBusca">
                 <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p> <p class="conteude">{{parametro.valorMostrar}}</p>

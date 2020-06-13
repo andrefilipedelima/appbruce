@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
   },
   {
+    path: 'welcome/buscar/:historicoBusca',
+    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
+  },
+  {
     path: 'welcome/historico',
     loadChildren: () => import('./historico-busca/historico-busca.module').then( m => m.HistoricoBuscaPageModule)
   },

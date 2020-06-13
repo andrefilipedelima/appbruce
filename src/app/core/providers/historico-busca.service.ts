@@ -9,7 +9,7 @@ import { firestore } from 'firebase';
   providedIn: 'root'
 })
 export class HistoricoBuscaService extends Firestore<HistoricoBusca> {
-  private readonly limiteRegistros = 20;
+  private readonly limiteRegistros = 10;
   private qtdeRegistros: number;
   private ultimoRegistro: HistoricoBusca;
 
