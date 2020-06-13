@@ -1,4 +1,5 @@
 import { ParametroBusca } from './parametroBusca';
+import { ParametroBuscaLog } from './parametroBuscaLog';
 
 export interface HistoricoBusca{
     id: string,
@@ -7,6 +8,7 @@ export interface HistoricoBusca{
     tituloBuscado?: string,
     detalhada?: {
         midia: 'tv' | 'movie',
-        parametrosBusca: ParametroBusca[]
+        midiaMostrar: string,
+        parametrosBusca: ParametroBuscaLog[]
     }
 }

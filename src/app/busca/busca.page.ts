@@ -9,6 +9,7 @@ import { HistoricoBuscaService } from '../core/providers/historico-busca.service
 import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
 import { DatePipe } from '@angular/common';
+import { ParametroBuscaLog } from '../core/models/parametroBuscaLog';
 
 @Component({
   selector: 'app-busca',
@@ -95,8 +96,7 @@ export class BuscaPage implements OnInit {
         id: undefined,
         dataBusca: new Date(),
         porTitulo: true,
-        tituloBuscado: this.tituloPesquisa,
-        detalhada: null
+        tituloBuscado: this.tituloPesquisa
       }
 
       await this.historicoBuscaService.create(buscaHistorico);
@@ -169,6 +169,7 @@ export class BuscaPage implements OnInit {
 
   async realizaPesquisaComFiltro(): Promise<void>{
     let busca: ParametroBusca[] = [];
+    let buscaLog: ParametroBuscaLog[] = [];
     this.items = [];
 
     if ( this.realizaBuscaFiltro.genero !== undefined ) {
@@ -177,6 +178,13 @@ export class BuscaPage implements OnInit {
         valor: this.realizaBuscaFiltro.genero.id,
       }
       )
+
+      buscaLog.push({
+        parametro: "with_genres",
+        valor: this.realizaBuscaFiltro.genero.id,
+        parametroMostrar : "Gênero",
+        valorMostrar: this.realizaBuscaFiltro.genero.name
+      })
     }
 
     if (this.realizaBuscaFiltro.produtora !== undefined) {
@@ -185,6 +193,13 @@ export class BuscaPage implements OnInit {
         valor: this.realizaBuscaFiltro.produtora.id,
       }
       )
+
+      buscaLog.push({
+        parametro: "with_companies",
+        valor: this.realizaBuscaFiltro.produtora.id,
+        parametroMostrar : "Produtora",
+        valorMostrar: this.realizaBuscaFiltro.produtora.name
+      })
     }
 
 
@@ -195,6 +210,13 @@ export class BuscaPage implements OnInit {
           valor: this.realizaBuscaFiltro.idioma.id,
         }
       )
+      
+      buscaLog.push({
+        parametro: "with_original_language",
+        valor: this.realizaBuscaFiltro.idioma.id,
+        parametroMostrar : "Idioma Original",
+        valorMostrar: this.realizaBuscaFiltro.idioma.name
+      })
     }
 
     if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
@@ -204,12 +226,26 @@ export class BuscaPage implements OnInit {
           valor: this.realizaBuscaFiltro.ano,
         }
         )
+        
+      buscaLog.push({
+        parametro: "primary_release_year",
+        valor: this.realizaBuscaFiltro.ano,
+        parametroMostrar : "Ano de Lançamento",
+        valorMostrar: this.realizaBuscaFiltro.ano
+      })
       }
       if (this.realizaBuscaFiltro.ator !== undefined) {
         busca.push({
           parametro: "with_people",
           valor: this.realizaBuscaFiltro.ator.id,
         })
+        
+      buscaLog.push({
+        parametro: "with_people",
+        valor: this.realizaBuscaFiltro.ator.id,
+        parametroMostrar : "Ator",
+        valorMostrar: this.realizaBuscaFiltro.ator.name
+      })
       }
     }
 
@@ -219,6 +255,13 @@ export class BuscaPage implements OnInit {
           parametro: "first_air_date_year",
           valor: this.realizaBuscaFiltro.ano,
         })
+        
+      buscaLog.push({
+        parametro: "first_air_date_year",
+        valor: this.realizaBuscaFiltro.ano,
+        parametroMostrar : "Ano de Lançamento",
+        valorMostrar: this.realizaBuscaFiltro.ano
+      })
       }
     }
 
@@ -238,10 +281,12 @@ export class BuscaPage implements OnInit {
         porTitulo: false,
         detalhada: {
           midia: this.tipo_pagina,
-          parametrosBusca: busca
+          midiaMostrar: this.tipo_pagina == 'tv' ? "Série" : "Filme",
+          parametrosBusca: buscaLog
         }
       }
 
+      console.log(buscaHistorico)
       await this.historicoBuscaService.create(buscaHistorico);
     }
 

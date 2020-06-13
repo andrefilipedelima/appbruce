@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <div class="menu">
+      <ion-title slot="start" class="titulo-pagina">
+        <img src="../../../assets/icon/logo-appbruce-b.png" class="dog">
+        Histórico de Busca
+      </ion-title>
+      <ion-button 
+          class="search-btn"
+          color="#0d0d0d"
+          [routerLink]="['/welcome/historico']">
+        <ion-icon 
+            slot="end"
+            [ios]="'search-outline'"
+            [md]="'search-sharp'"
+            color="#e6e6e6"  
+           >
+        </ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="(historicoBusca$ | async) as historicoBusca">
+    <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
+        <ion-card *ngFor="let historico of historicoBusca">
+          <ion-card-content>
+            <ion-row *ngIf="historico.porTitulo" class="conteudoBusca">
+              <p class="titulo-detalhes">Título:</p> <p class="conteude">{{historico.tituloBuscado}}</p>
+            </ion-row>
+            <ion-row *ngIf="!historico.porTitulo">
+              <ion-row class="conteudoBusca">
+                <p class="titulo-detalhes">Mídia:</p> <p class="conteude">{{historico.detalhada.midiaMostrar}}</p>
+              </ion-row>
+              <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca"  class="conteudoBusca">
+                <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p> <p class="conteude">{{parametro.valorMostrar}}</p>
+              </ion-row>
+            </ion-row>
+          </ion-card-content>
+      </ion-card>
+    </ng-container>
+    <ng-template #semHistorico>
+      <ion-card>
+        <ion-row>
+          Não há histórico de busca
+        </ion-row>
+      </ion-card>
+    </ng-template>
+  </ion-list>
+</ion-content>
