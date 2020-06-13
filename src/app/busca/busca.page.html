@@ -36,23 +36,23 @@
   <div class="resultado" *ngIf='porFiltro'>
     <ion-label > Filtros Selecionados: </ion-label>
       <div></div>
-        <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="testeBotao()">
+        <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="botaoFiltro('genero')">
           {{btFiltroGenero}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
-        <ion-button *ngIf="btFiltroAtor" class='botaoFiltro' color='light' (click)="testeBotao()">
+        <ion-button *ngIf="btFiltroAtor" class='botaoFiltro' color='light' (click)="botaoFiltro('ator')">
           {{btFiltroAtor}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
-        <ion-button *ngIf="btFiltroAno" class='botaoFiltro' color='light' (click)="testeBotao()">
+        <ion-button *ngIf="btFiltroAno" class='botaoFiltro' color='light' (click)="botaoFiltro('ano')">
           {{btFiltroAno}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
-        <ion-button *ngIf="btFiltroProdutora" class='botaoFiltro' color='light' (click)="testeBotao()">
+        <ion-button *ngIf="btFiltroProdutora" class='botaoFiltro' color='light' (click)="botaoFiltro('produtora')">
           {{btFiltroProdutora}}
           <span class="close-filter-tag"> X </span>
         </ion-button>
-        <ion-button *ngIf="btFiltroIdioma" class='botaoFiltro' color='light' (click)="testeBotao()">
+        <ion-button *ngIf="btFiltroIdioma" class='botaoFiltro' color='light' (click)="botaoFiltro('idioma')">
           {{btFiltroIdioma}}
           <span class="close-filter-tag"> X </span>
         </ion-button>

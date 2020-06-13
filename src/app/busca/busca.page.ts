@@ -91,10 +91,6 @@ export class BuscaPage implements OnInit {
     }
   }
 
-  testeBotao(){
-    console.log('cliquei botao');
-  }
-
   possuiImagem(value) {
     return value.poster_path !== null;
   }
@@ -124,6 +120,7 @@ export class BuscaPage implements OnInit {
     if (quantidadePaginas <= 0) {
       this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
       this.pesquisaEncontrada = false;
+      this.porTitulo = false;
     }
 
     let itensAux = [];
@@ -189,6 +186,43 @@ export class BuscaPage implements OnInit {
     return await profileModal.present();
   }
 
+
+  botaoFiltro(filtroRetirado){
+
+    if (filtroRetirado === 'genero') {
+      this.realizaBuscaFiltro.genero = undefined;
+      this.btFiltroGenero = false;
+    }
+    if (filtroRetirado === 'ano') {
+      this.realizaBuscaFiltro.ano = undefined;
+      this.btFiltroAno = false;
+    }
+    if (filtroRetirado === 'idioma') {
+      this.realizaBuscaFiltro.idioma = undefined;
+      this.btFiltroIdioma = false;
+    }
+    if (filtroRetirado === 'produtora') {
+      this.realizaBuscaFiltro.produtora = undefined;
+      this.btFiltroProdutora = false;
+    }
+    if (filtroRetirado === 'ator') {
+      this.realizaBuscaFiltro.ator = undefined;
+      this.btFiltroAtor = false;
+    }
+    if (this.realizaBuscaFiltro.ator === undefined &&
+      this.realizaBuscaFiltro.produtora === undefined &&
+      this.realizaBuscaFiltro.idioma === undefined &&
+      this.realizaBuscaFiltro.ano === undefined &&
+      this.realizaBuscaFiltro.genero === undefined
+    ) {
+      this.msgError = 'Para realizar buscas você deve selecionar pelo menos um filtro ou digitar um titulo no campo acima!';
+      this.porFiltro = false;
+      this.pesquisaEncontrada = false;
+      this.items = [];
+    } else {
+      this.realizaPesquisaComFiltro();
+    }
+  }
   async realizaPesquisaComFiltro(): Promise<void>{
     // limpar tela caso ja tenha pesquisa
     this.msgError = null;
