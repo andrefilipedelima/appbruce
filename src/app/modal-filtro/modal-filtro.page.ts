@@ -48,6 +48,8 @@ export class ModalFiltroPage implements OnInit {
   // variaveis de retorno das pesquisas dos selects
   public produtoraNotFound: boolean = false;
   public prodPesquisaAux: string = null;
+  public atorNotFound: boolean = false;
+  public atorPesquisaAux: string = null;
 
   ngOnInit() {
     this.montarSelectGeneros();
@@ -105,6 +107,10 @@ export class ModalFiltroPage implements OnInit {
     this.atores = [];
     const atoresAux = [];
     const resultado = await (await this.tmdbService.buscarPorPessoa(ator,1).toPromise());
+
+    if (resultado.length === 0) {
+      this.atorNotFound = true;
+    }
 
     atoresAux.push({
       resultado: resultado,
@@ -230,8 +236,16 @@ export class ModalFiltroPage implements OnInit {
   }) {
     let atorPesquisa = event.text.trim().toLowerCase();
 
-    if (atorPesquisa.length >= 3) {
-      this.montaSelectAtor(atorPesquisa);
+    if (atorPesquisa.length >= 2) {
+      if (this.atorPesquisaAux !== atorPesquisa) {
+        this.montaSelectAtor(atorPesquisa);
+        this.atorPesquisaAux = atorPesquisa;
+      }
+    } else {
+      event.component.items = [];
+      this.atorNotFound = false;
+      this.atorPesquisaAux = null;
+      return;
     }
   }
 
