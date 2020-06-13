@@ -1,8 +1,83 @@
 [
         {
-            "name": "(Afan) Oromo",
-            "language": "Oromo",
-            "id": "om"
+            "name": "English",
+            "language": "Inglês",
+            "id": "en" 
+        },
+        {
+            "name": "Spanish",
+            "language": "Espanhol",
+            "id": "es"
+        },
+        {
+            "name": "Portuguese",
+            "language": "Português",
+            "id": "pt"
+        },
+        {
+            "name": "German",
+            "language": "Alemão",
+            "id": "de"
+        },
+        {
+            "name": "Chinese",
+            "language": "Chinês",
+            "id": "zh"
+        },
+        {
+            "name": "Korean",
+            "language": "Coreano",
+            "id": "ko"
+        },
+        {
+            "name": "French",
+            "language": "Francês",
+            "id": "fr"
+        },
+        {
+            "name": "Greek",
+            "language": "Grego",
+            "id": "el"
+        },
+        {
+            "name": "Dutch",
+            "language": "Holandês",
+            "id": "nl"
+        },
+        {
+            "name": "Irish",
+            "language": "Irlandês",
+            "id": "ga"
+        },
+        {
+            "name": "Italian",
+            "language": "Italiano",
+            "id": "it"
+        },
+        {
+            "name": "Japanese",
+            "language": "Japonês",
+            "id": "ja"
+        },
+        {
+            "name": "Polish",
+            "language": "Polonês",
+            "id": "pl"
+        },
+        {
+            "name": "Russian",
+            "language": "Russo",
+            "id": "ru"
+        },
+        {
+            "name": "Swedish",
+            "language": "Sueco",
+            "id": "sv"
+        },
+        {
+            "name": "Thai",
+            "language": "Tailandês",
+            "id": "th"
         },
         {
             "name": "Abkhazian",
@@ -18,6 +93,11 @@
             "name": "Afrikaans",
             "language": "Africâner",
             "id": "af"
+        },
+        {
+            "name": "Aymara",
+            "language": "Aimara",
+            "id": "ay"
         },
         {
             "name": "Albanian",
@@ -45,19 +125,9 @@
             "id": "as"
         },
         {
-            "name": "Aymara",
-            "language": "Aimara",
-            "id": "ay"
-        },
-        {
             "name": "Azerbaijani",
             "language": "Azerbaijão",
             "id": "az"
-        },
-        {
-            "name": "Bashkir",
-            "language": "Bashkir",
-            "id": "ba"
         },
         {
             "name": "Basque",
@@ -65,14 +135,19 @@
             "id": "eu"
         },
         {
+            "name": "Bashkir",
+            "language": "Bashkir",
+            "id": "ba"
+        },
+        {
             "name": "Bengali",
             "language": "Bengali",
             "id": "bn"
         },
         {
-            "name": "Bhutani",
-            "language": "Butanesa",
-            "id": "dz"
+            "name": "Byelorussian",
+            "language": "Bielorrussa",
+            "id": "be"
         },
         {
             "name": "Bihari",
@@ -85,6 +160,11 @@
             "id": "bi"
         },
         {
+            "name": "Burmese",
+            "language": "Birmanês",
+            "id": "my"
+        },
+        {
             "name": "Breton",
             "language": "Bretã",
             "id": "br"
@@ -95,14 +175,9 @@
             "id": "bg"
         },
         {
-            "name": "Burmese",
-            "language": "Birmanês",
-            "id": "my"
-        },
-        {
-            "name": "Byelorussian",
-            "language": "Bielorrussa",
-            "id": "be"
+            "name": "Bhutani",
+            "language": "Butanesa",
+            "id": "dz"
         },
         {
             "name": "Cambodian",
@@ -115,9 +190,19 @@
             "id": "ca"
         },
         {
-            "name": "Chinese",
-            "language": "Chinês",
-            "id": "zh"
+            "name": "Kashmiri",
+            "language": "Caxemira",
+            "id": "ks"
+        },
+        {
+            "name": "Kazakh",
+            "language": "Cazaque",
+            "id": "kk"
+        },
+        {
+            "name": "Singhalese",
+            "language": "Cingalês",
+            "id": "si"
         },
         {
             "name": "Corsican",
@@ -130,9 +215,9 @@
             "id": "hr"
         },
         {
-            "name": "Czech",
-            "language": "Tcheco",
-            "id": "cs"
+            "name": "Kurdish",
+            "language": "Curda",
+            "id": "ku"
         },
         {
             "name": "Danish",
@@ -140,14 +225,14 @@
             "id": "da"
         },
         {
-            "name": "Dutch",
-            "language": "Holandês",
-            "id": "nl"
+            "name": "Slovak",
+            "language": "Eslovaco",
+            "id": "sk"
         },
         {
-            "name": "English",
-            "language": "Inglês",
-            "id": "en" 
+            "name": "Slovenian",
+            "language": "Esloveno",
+            "id": "sl"
         },
         {
             "name": "Esperanto",
@@ -175,14 +260,14 @@
             "id": "fi"
         },
         {
-            "name": "French",
-            "language": "Francês",
-            "id": "fr"
-        },
-        {
             "name": "Frisian",
             "language": "Frísio",
             "id": "fy"
+        },
+        {
+            "name": "Scots Gaelic",
+            "language": "Gaélico escocês",
+            "id": "gd"
         },
         {
             "name": "Galician",
@@ -193,16 +278,6 @@
             "name": "Georgian",
             "language": "Georgiano",
             "id": "ka"
-        },
-        {
-            "name": "German",
-            "language": "Alemão",
-            "id": "de"
-        },
-        {
-            "name": "Greek",
-            "language": "Grego",
-            "id": "el"
         },
         {
             "name": "Greenlandic",
@@ -260,21 +335,6 @@
             "id": "iu"
         },
         {
-            "name": "Irish",
-            "language": "Irlandês",
-            "id": "ga"
-        },
-        {
-            "name": "Italian",
-            "language": "Italiano",
-            "id": "it"
-        },
-        {
-            "name": "Japanese",
-            "language": "Japonês",
-            "id": "ja"
-        },
-        {
             "name": "Javanese",
             "language": "Javanês",
             "id": "jw"
@@ -285,39 +345,14 @@
             "id": "kn"
         },
         {
-            "name": "Kashmiri",
-            "language": "Caxemira",
-            "id": "ks"
-        },
-        {
-            "name": "Kazakh",
-            "language": "Cazaque",
-            "id": "kk"
-        },
-        {
             "name": "Kinyarwanda",
             "language": "Kinyarwanda",
             "id": "rw"
         },
         {
-            "name": "Kirghiz",
-            "language": "Quirguiz",
-            "id": "ky"
-        },
-        {
             "name": "Kirundi",
             "language": "Kirundi",
             "id": "rn"
-        },
-        {
-            "name": "Korean",
-            "language": "Coreano",
-            "id": "ko"
-        },
-        {
-            "name": "Kurdish",
-            "language": "Curda",
-            "id": "ku"
         },
         {
             "name": "Laothian",
@@ -415,6 +450,11 @@
             "id": "or"
         },
         {
+            "name": "(Afan) Oromo",
+            "language": "Oromo",
+            "id": "om"
+        },
+        {
             "name": "Pashto",
             "language": "Pashto",
             "id": "ps"
@@ -423,16 +463,6 @@
             "name": "Persian",
             "language": "Persa",
             "id": "fa"
-        },
-        {
-            "name": "Polish",
-            "language": "Polonês",
-            "id": "pl"
-        },
-        {
-            "name": "Portuguese",
-            "language": "Português",
-            "id": "pt"
         },
         {
             "name": "Punjabi",
@@ -445,6 +475,11 @@
             "id": "qu"
         },
         {
+            "name": "Kirghiz",
+            "language": "Quirguiz",
+            "id": "ky"
+        },
+        {
             "name": "Rhaeto-Romance",
             "language": "Rhaeto-Romance",
             "id": "rm"
@@ -453,11 +488,6 @@
             "name": "Romanian",
             "language": "Romeno",
             "id": "ro"
-        },
-        {
-            "name": "Russian",
-            "language": "Russo",
-            "id": "ru"
         },
         {
             "name": "Samoan",
@@ -473,11 +503,6 @@
             "name": "Sanskrit",
             "language": "Sânscrito",
             "id": "sa"
-        },
-        {
-            "name": "Scots Gaelic",
-            "language": "Gaélico escocês",
-            "id": "gd"
         },
         {
             "name": "Serbian",
@@ -510,34 +535,14 @@
             "id": "sd"
         },
         {
-            "name": "Singhalese",
-            "language": "Cingalês",
-            "id": "si"
-        },
-        {
             "name": "Siswati",
             "language": "Siswati",
             "id": "ss"
         },
         {
-            "name": "Slovak",
-            "language": "Eslovaco",
-            "id": "sk"
-        },
-        {
-            "name": "Slovenian",
-            "language": "Esloveno",
-            "id": "sl"
-        },
-        {
             "name": "Somali",
             "language": "Somali",
             "id": "so"
-        },
-        {
-            "name": "Spanish",
-            "language": "Espanhol",
-            "id": "es"
         },
         {
             "name": "Sudanese",
@@ -548,11 +553,6 @@
             "name": "Swahili",
             "language": "Suaíli",
             "id": "sw"
-        },
-        {
-            "name": "Swedish",
-            "language": "Sueco",
-            "id": "sv"
         },
         {
             "name": "Tagalog",
@@ -575,14 +575,14 @@
             "id": "tt"
         },
         {
+            "name": "Czech",
+            "language": "Tcheco",
+            "id": "cs"
+        },
+        {
             "name": "Telugu",
             "language": "Telugu",
             "id": "te"
-        },
-        {
-            "name": "Thai",
-            "language": "Tailandês",
-            "id": "th"
         },
         {
             "name": "Tibetan",
