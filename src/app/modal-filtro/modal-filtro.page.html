@@ -77,9 +77,10 @@
         itemValueField="id"
         itemTextField="name"
         [canSearch]="true"
-        (onSearch)="onSearchProdutora($event)">
+        (onSearch)="onSearchProdutora($event)"
+        searchPlaceholder="Digite o nome da produtora...">
         <ng-template ionicSelectableSearchFailTemplate>
-          <div padding>
+          <div class="resultado" padding *ngIf="produtoraNotFound">
             Nenhum resultado encontrado.
           </div>
         </ng-template>
