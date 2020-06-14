@@ -67,6 +67,7 @@ export class BuscaPage implements OnInit {
     this.pesquisaEncontrada = false;
     this.porFiltro = false;
     this.porTitulo = false;
+    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';    
   }
 
   clickEnter(e) {
@@ -228,6 +229,7 @@ export class BuscaPage implements OnInit {
     this.msgError = null;
     this.pesquisaEncontrada = false;
     this.porTitulo = false;
+    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';    
 
     this.porFiltro = true;
     let busca: ParametroBusca[] = [];
