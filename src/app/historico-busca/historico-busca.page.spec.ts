@@ -1,24 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { BuscaPage } from './busca.page';
+import { HistoricoBuscaPage } from './historico-busca.page';
 
-describe('BuscaPage', () => {
-  let component: BuscaPage;
-  let fixture: ComponentFixture<BuscaPage>;
+describe('HistoricoBuscaPage', () => {
+  let component: HistoricoBuscaPage;
+  let fixture: ComponentFixture<HistoricoBuscaPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BuscaPage ],
+      declarations: [ HistoricoBuscaPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BuscaPage);
+    fixture = TestBed.createComponent(HistoricoBuscaPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

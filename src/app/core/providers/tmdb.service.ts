@@ -110,7 +110,7 @@ export class TmdbService {
 
   // funcao para preencher idiomas 
   getLanguages(): Observable<Idioma[]> {
-    return this.http.get<Idioma[]>(this.idioma)
+    return this.http.get<Idioma[]>(this.idioma);
   }
 }
 

@@ -16,7 +16,13 @@
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
-      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (ionClear)="limpaPesquisa($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
+      <ion-searchbar id="barraPesquisa"
+        (ionInput)="coletaTitulo($event)"
+        (keyup.enter)="clickEnter($event)"
+        placeholder="Sua busca... " 
+        (ionClear)="limpaPesquisa($event)" 
+        value="{{tituloPesquisa}}">
+      </ion-searchbar>
     
       <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR</ion-button>
     </ion-list-header>

@@ -15,6 +15,14 @@ const routes: Routes = [
     loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
   },
   {
+    path: 'welcome/buscar/:historicoBusca',
+    loadChildren: () => import('./busca/busca.module').then( m => m.BuscaPageModule)
+  },
+  {
+    path: 'welcome/historico',
+    loadChildren: () => import('./historico-busca/historico-busca.module').then( m => m.HistoricoBuscaPageModule)
+  },
+  {
     path: 'welcome/:id',
     loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule), 
   },
@@ -30,6 +38,7 @@ const routes: Routes = [
     path: 'modal-filtro',
     loadChildren: () => import('./modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
   },
+
 
   
 ];

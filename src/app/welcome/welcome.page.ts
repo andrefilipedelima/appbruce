@@ -43,7 +43,7 @@ export class WelcomePage implements OnInit {
   }
 
   async ionViewDidEnter(){
-    (await this.loading).dismiss();
+    
   }
 
   async carregaDados(): Promise<void>{
@@ -78,11 +78,12 @@ export class WelcomePage implements OnInit {
           producoes: await (await this.tmdbService.descobrir(1, this.tipo_pagina, param).toPromise()).Producoes
         });
       });
-  
+      (await this.loading).dismiss();
     }
     catch(ex){
       console.log(ex);
       this.overlayService.toast({ message: ex});
+      (await this.loading).dismiss();
     }
     
   }
