@@ -18,16 +18,19 @@ export class AppComponent implements OnInit, OnDestroy {
   public appPages = [
     {
       title: 'Filmes',
+      name: 'filmes',
       url: '/welcome/filmes',
       icon: 'film'
     },
     {
       title: 'Séries',
+      name: 'series',
       url: '/welcome/series',
       icon: 'videocam'
     },
     {
       title: 'Buscar',
+      name: 'buscar',
       url: '/welcome/buscar',
       icon: 'search'
     }
@@ -36,36 +39,41 @@ export class AppComponent implements OnInit, OnDestroy {
   public appPages2 = [
     {
       title: 'Filmes',
+      name: 'filmes',
       url: '/welcome/filmes',
       icon: 'film'
     },
     {
       title: 'Séries',
+      name: 'series',
       url: '/welcome/series',
       icon: 'videocam'
     },
     {
       title: 'Buscar',
+      name: 'buscar',
       url: '/welcome/buscar',
       icon: 'search'
     },
     {
       title: 'Histórico',
-      url: '/historico',
+      name: 'historico',
+      url: '/welcome/historico',
       icon: 'globe'
     },
     {
       title: 'Preferências',
-      url: '/preferencias',
+      name: 'preferencias',
+      url: '/welcome/preferencias',
       icon: 'settings'
     },
     {
       title: 'Notificações',
-      url: '/notificacoes',
+      name: 'notificacoes',
+      url: '/welcome/notificacoes',
       icon: 'notifications'
     },
   ];
-  /* public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders']; */
 
   home = false;
   isAuth = false;
@@ -96,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const path = window.location.pathname.split('welcome/')[1];
     
     if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+      this.selectedIndex = this.appPages2.findIndex(page => page.name === path);
     }
 
     this.authSubscription = this.authService.authChange.subscribe(authStatus => {

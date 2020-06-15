@@ -26,7 +26,9 @@
     font-size: 1em !important;
 }
 
-.listaPreferencias {
-    width: 35%;
-    margin: auto;
+@media only screen and (min-width: 420px) {
+    .listaPreferencias {
+        width: 35%;
+        margin: auto;
+    }
 }

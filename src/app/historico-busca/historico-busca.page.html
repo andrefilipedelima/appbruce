@@ -27,7 +27,7 @@
 <ion-content>
   <ion-list *ngIf="(historicoBusca$ | async) as historicoBusca">
     <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
-        <ion-card *ngFor="let historico of historicoBusca" (click)="realizaBisca(historico);">
+        <ion-card *ngFor="let historico of historicoBusca" (click)="realizaBusca(historico);">
           <ion-card-content>
             <ion-row *ngIf="historico.porTitulo" class="conteudoBusca">
               <p class="titulo-detalhes">Título:</p> <p class="conteude">{{historico.tituloBuscado}}</p>

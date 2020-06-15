@@ -4,7 +4,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { AuthGuard } from './auth/auth.guard';
-import { Route } from '@angular/compiler/src/core';
 
 const routes: Routes = [
   {
@@ -22,7 +21,13 @@ const routes: Routes = [
   },
   {
     path: 'welcome/historico',
-    loadChildren: () => import('./historico-busca/historico-busca.module').then( m => m.HistoricoBuscaPageModule)
+    loadChildren: () => import('./historico-busca/historico-busca.module').then( m => m.HistoricoBuscaPageModule),
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'welcome/preferencias',
+    loadChildren: () => import('./preferencias/preferencias.module').then( m => m.PreferenciasPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'welcome/:id',
@@ -39,15 +44,7 @@ const routes: Routes = [
   {
     path: 'modal-filtro',
     loadChildren: () => import('./modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
-  },
-  {
-    path: 'preferencias',
-    loadChildren: () => import('./preferencias/preferencias.module').then( m => m.PreferenciasPageModule),
-    canLoad: [AuthGuard]
-  },
-
-
-  
+  } 
 ];
 
 @NgModule({
