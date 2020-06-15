@@ -8,7 +8,6 @@ import { ParametroBusca } from '../core/models/parametroBusca';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
 import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
-import { DatePipe } from '@angular/common';
 import { ParametroBuscaLog } from '../core/models/parametroBuscaLog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -22,12 +21,10 @@ export class BuscaPage implements OnInit {
   items: BuscaType[] = [];
 
   public tituloPesquisa: any;
-  public msgError: string;
-  public goalList: any[];
-  public loadedGoalList: any[];
+  public msgError: string = null;
   tipo_pagina: 'tv' | 'movie';
   loading: Promise<HTMLIonLoadingElement>;
-  public realizaBuscaFiltro;
+  public realizaBuscaFiltro: any;
 
   // recebe o titulo da searchbar
   public pesquisa: string;
@@ -55,7 +52,6 @@ export class BuscaPage implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute
     ) {
-    // this.loading = this.overlayService.loading();
   }
 
   ngOnInit() {
@@ -66,20 +62,80 @@ export class BuscaPage implements OnInit {
       
       if (historico.porTitulo) {
         this.tituloPesquisa = historico.tituloBuscado;
+        this.pesquisa = this.tituloPesquisa;
+        this.porTitulo = true;
+        this.porFiltro = false;
         this.carregaDados(false);
       } else {
-        let paramBusca: ParametroBusca[] = [];
-
-        historico.detalhada.parametrosBusca.forEach(param =>{
-          paramBusca.push({
-            parametro: param.parametro,
-            valor: param.valor
-          });
-        })
-
-        this.realizaPesquisaComFiltro(false, paramBusca, historico.detalhada.midia);
+        this.montarFiltrosComHistorico(historico);
+        this.realizaPesquisaComFiltro(false);
       }
     }
+  }
+
+  montarFiltrosComHistorico(historico) {
+    let filtro = {
+      tipoStreaming: undefined,
+      genero: {
+        id: undefined,
+        name: undefined,
+      },
+      idioma: {
+        id: undefined,
+        name: undefined,
+      },
+      ano: undefined,
+      produtora: {
+        id: undefined,
+        name: undefined,
+      },
+      ator: {
+        id: undefined,
+        name: undefined,
+      },
+    };
+
+    if (historico.detalhada.midia === 'movie') {
+      filtro.tipoStreaming = 'filme';
+    }
+    if (historico.detalhada.midia === 'tv') {
+      filtro.tipoStreaming = 'serie';
+    }
+    historico.detalhada.parametrosBusca.forEach(param =>{
+      if (param.parametroMostrar === 'Gênero') {
+        filtro.genero.id = param.valor;
+        filtro.genero.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === "Idioma Original") {
+        filtro.idioma.id = param.valor;
+        filtro.idioma.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === "Ano de Lançamento") {
+        filtro.ano = param.valor;
+      }
+      if (param.parametroMostrar === "Ator") {
+        filtro.ator.id = param.valor;
+        filtro.ator.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === 'Produtora') {
+        filtro.produtora.id = param.valor;
+        filtro.produtora.name = param.valorMostrar;
+      }
+    })
+
+    if (filtro.ator.id === undefined) {
+      delete filtro['ator'];
+    }
+    if (filtro.genero.id === undefined) {
+      delete filtro['genero'];
+    }
+    if (filtro.idioma.id === undefined) {
+      delete filtro['idioma'];
+    }
+    if (filtro.produtora.id === undefined) {
+      delete filtro['produtora'];
+    }
+    this.realizaBuscaFiltro = filtro;
   }
 
   coletaTitulo(searchbar) {
@@ -100,6 +156,7 @@ export class BuscaPage implements OnInit {
     this.porFiltro = false;
     this.porTitulo = false;
     (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';    
+    this.tituloPesquisa = null;
   }
 
   clickEnter(e) {
@@ -119,6 +176,7 @@ export class BuscaPage implements OnInit {
       this.pesquisa = this.tituloPesquisa;
       this.carregaDados(true);
     } else {
+      this.pesquisaEncontrada = false;
       this.msgError = "Não foi possivel encontrar sua busca. Tente novamente usando outros termos!";
       this.items = [];
     }
@@ -275,12 +333,13 @@ export class BuscaPage implements OnInit {
   }
 
 
-  async realizaPesquisaComFiltro(gravaHistorico: boolean, parametrosBusca?:ParametroBusca[], parametromidia?: 'tv' | 'movie'): Promise<void>{
+  async realizaPesquisaComFiltro(gravaHistorico: boolean): Promise<void>{
     // limpar tela caso ja tenha pesquisa
     this.msgError = null;
     this.pesquisaEncontrada = false;
     this.porTitulo = false;
-    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';    
+    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';
+    this.tituloPesquisa = null;    
 
     this.porFiltro = true;
     let loading = this.overlayService.loading();
@@ -288,92 +347,86 @@ export class BuscaPage implements OnInit {
     let buscaLog: ParametroBuscaLog[] = [];
     this.items = [];
 
-    if(parametrosBusca != undefined && parametrosBusca != null){
-      this.tipo_pagina = parametromidia;
-      busca = parametrosBusca;
+    if ( this.realizaBuscaFiltro.genero !== undefined) {
+      busca.push({
+        parametro: "with_genres",
+        valor: this.realizaBuscaFiltro.genero.id,
+      })
+      buscaLog.push({
+        parametro: "with_genres",
+        valor: this.realizaBuscaFiltro.genero.id,
+        parametroMostrar : "Gênero",
+        valorMostrar: this.realizaBuscaFiltro.genero.name
+      })
+      this.btFiltroGenero = this.realizaBuscaFiltro.genero.name;
     }
-    else{
-      if ( this.realizaBuscaFiltro.genero !== undefined ) {
-        busca.push({
-          parametro: "with_genres",
-          valor: this.realizaBuscaFiltro.genero.id,
-        })
-        buscaLog.push({
-          parametro: "with_genres",
-          valor: this.realizaBuscaFiltro.genero.id,
-          parametroMostrar : "Gênero",
-          valorMostrar: this.realizaBuscaFiltro.genero.name
-        })
-        this.btFiltroGenero = this.realizaBuscaFiltro.genero.name;
-      }
-      if (this.realizaBuscaFiltro.produtora !== undefined) {
-        busca.push({
-          parametro: "with_companies",
-          valor: this.realizaBuscaFiltro.produtora.id,
-        })
-        buscaLog.push({
-          parametro: "with_companies",
-          valor: this.realizaBuscaFiltro.produtora.id,
-          parametroMostrar : "Produtora",
-          valorMostrar: this.realizaBuscaFiltro.produtora.name
-        })
-        this.btFiltroProdutora = this.realizaBuscaFiltro.produtora.name;
-      }
-      if (this.realizaBuscaFiltro.idioma !== undefined) {
-        busca.push({
-            parametro: "with_original_language",
-            valor: this.realizaBuscaFiltro.idioma.id,
-          })
-        buscaLog.push({
+    if (this.realizaBuscaFiltro.produtora !== undefined) {
+      busca.push({
+        parametro: "with_companies",
+        valor: this.realizaBuscaFiltro.produtora.id,
+      })
+      buscaLog.push({
+        parametro: "with_companies",
+        valor: this.realizaBuscaFiltro.produtora.id,
+        parametroMostrar : "Produtora",
+        valorMostrar: this.realizaBuscaFiltro.produtora.name
+      })
+      this.btFiltroProdutora = this.realizaBuscaFiltro.produtora.name;
+    }
+    if (this.realizaBuscaFiltro.idioma !== undefined) {
+      busca.push({
           parametro: "with_original_language",
           valor: this.realizaBuscaFiltro.idioma.id,
-          parametroMostrar : "Idioma Original",
-          valorMostrar: this.realizaBuscaFiltro.idioma.name
         })
-        this.btFiltroIdioma = this.realizaBuscaFiltro.idioma.name;
+      buscaLog.push({
+        parametro: "with_original_language",
+        valor: this.realizaBuscaFiltro.idioma.id,
+        parametroMostrar : "Idioma Original",
+        valorMostrar: this.realizaBuscaFiltro.idioma.name
+      })
+      this.btFiltroIdioma = this.realizaBuscaFiltro.idioma.name;
+    }
+    if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
+      if (this.realizaBuscaFiltro.ano !== undefined) {
+        busca.push({
+          parametro: "primary_release_year",
+          valor: this.realizaBuscaFiltro.ano,
+        }) 
+        buscaLog.push({
+          parametro: "primary_release_year",
+          valor: this.realizaBuscaFiltro.ano,
+          parametroMostrar : "Ano de Lançamento",
+          valorMostrar: this.realizaBuscaFiltro.ano
+        })
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
-      if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
-        if (this.realizaBuscaFiltro.ano !== undefined) {
-          busca.push({
-            parametro: "primary_release_year",
-            valor: this.realizaBuscaFiltro.ano,
-          }) 
-          buscaLog.push({
-            parametro: "primary_release_year",
-            valor: this.realizaBuscaFiltro.ano,
-            parametroMostrar : "Ano de Lançamento",
-            valorMostrar: this.realizaBuscaFiltro.ano
-          })
-          this.btFiltroAno = this.realizaBuscaFiltro.ano;
-        }
-        if (this.realizaBuscaFiltro.ator !== undefined) {
-          busca.push({
-            parametro: "with_people",
-            valor: this.realizaBuscaFiltro.ator.id,
-          })
-          buscaLog.push({
-            parametro: "with_people",
-            valor: this.realizaBuscaFiltro.ator.id,
-            parametroMostrar : "Ator",
-            valorMostrar: this.realizaBuscaFiltro.ator.name
-          })
-          this.btFiltroAtor = this.realizaBuscaFiltro.ator.name;
-        }
+      if (this.realizaBuscaFiltro.ator !== undefined) {
+        busca.push({
+          parametro: "with_people",
+          valor: this.realizaBuscaFiltro.ator.id,
+        })
+        buscaLog.push({
+          parametro: "with_people",
+          valor: this.realizaBuscaFiltro.ator.id,
+          parametroMostrar : "Ator",
+          valorMostrar: this.realizaBuscaFiltro.ator.name
+        })
+        this.btFiltroAtor = this.realizaBuscaFiltro.ator.name;
       }
-      if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
-        if (this.realizaBuscaFiltro.ano !== undefined) {
-          busca.push({
-            parametro: "first_air_date_year",
-            valor: this.realizaBuscaFiltro.ano,
-          })
-          buscaLog.push({
-            parametro: "first_air_date_year",
-            valor: this.realizaBuscaFiltro.ano,
-            parametroMostrar : "Ano de Lançamento",
-            valorMostrar: this.realizaBuscaFiltro.ano
-          })
-          this.btFiltroAno = this.realizaBuscaFiltro.ano;
-        }
+    }
+    if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
+      if (this.realizaBuscaFiltro.ano !== undefined) {
+        busca.push({
+          parametro: "first_air_date_year",
+          valor: this.realizaBuscaFiltro.ano,
+        })
+        buscaLog.push({
+          parametro: "first_air_date_year",
+          valor: this.realizaBuscaFiltro.ano,
+          parametroMostrar : "Ano de Lançamento",
+          valorMostrar: this.realizaBuscaFiltro.ano
+        })
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
     }
 
