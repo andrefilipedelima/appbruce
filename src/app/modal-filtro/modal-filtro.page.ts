@@ -45,6 +45,11 @@ export class ModalFiltroPage implements OnInit {
   public tipoStreamingAux: string;
   public mostraCampoAtor: boolean = true;
 
+  // variaveis de retorno das pesquisas dos selects
+  public produtoraNotFound: boolean = false;
+  public prodPesquisaAux: string = null;
+  public atorNotFound: boolean = false;
+  public atorPesquisaAux: string = null;
 
   ngOnInit() {
     this.montarSelectGeneros();
@@ -103,6 +108,10 @@ export class ModalFiltroPage implements OnInit {
     const atoresAux = [];
     const resultado = await (await this.tmdbService.buscarPorPessoa(ator,1).toPromise());
 
+    if (resultado.length === 0) {
+      this.atorNotFound = true;
+    }
+
     atoresAux.push({
       resultado: resultado,
     })
@@ -126,6 +135,10 @@ export class ModalFiltroPage implements OnInit {
     this.produtoras = [];
     const prodAux = [];
     const resultado = await (await this.tmdbService.buscarPorCompania(produtora,1).toPromise());
+
+    if (resultado.length === 0) {
+      this.produtoraNotFound = true;
+    }
 
     prodAux.push({
       resultado: resultado,
@@ -223,8 +236,16 @@ export class ModalFiltroPage implements OnInit {
   }) {
     let atorPesquisa = event.text.trim().toLowerCase();
 
-    if (atorPesquisa.length >= 3) {
-      this.montaSelectAtor(atorPesquisa);
+    if (atorPesquisa.length >= 2) {
+      if (this.atorPesquisaAux !== atorPesquisa) {
+        this.montaSelectAtor(atorPesquisa);
+        this.atorPesquisaAux = atorPesquisa;
+      }
+    } else {
+      event.component.items = [];
+      this.atorNotFound = false;
+      this.atorPesquisaAux = null;
+      return;
     }
   }
 
@@ -234,8 +255,18 @@ export class ModalFiltroPage implements OnInit {
   }) {
     let prodPesquisa = event.text.trim().toLowerCase();
 
-    if (prodPesquisa) {
-      this.montaSelectProdutora(prodPesquisa);
+    if (prodPesquisa) { 
+      if (this.prodPesquisaAux !== prodPesquisa) {
+        this.montaSelectProdutora(prodPesquisa);
+        this.prodPesquisaAux = prodPesquisa;
+      }
+    }
+   
+    if (!prodPesquisa) {
+      event.component.items = [];
+      this.produtoraNotFound = false;
+      this.prodPesquisaAux = null;
+      return;
     }
   }
 

@@ -16,16 +16,66 @@
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
-      <ion-searchbar id="barraPesquisa" (ionInput)="coletaTitulo($event)" (keyup.enter)="clickEnter($event)" placeholder="Sua busca... "></ion-searchbar>
+      <ion-searchbar id="barraPesquisa"
+        (ionInput)="coletaTitulo($event)"
+        (keyup.enter)="clickEnter($event)"
+        placeholder="Sua busca... " 
+        (ionClear)="limpaPesquisa($event)" 
+        value="{{tituloPesquisa}}">
+      </ion-searchbar>
     
-      <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR
-        <!-- <ion-icon  color="medium" size="large" name="search-circle-outline"></ion-icon> -->
-      </ion-button>
+      <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR</ion-button>
     </ion-list-header>
   </ion-list>
 
+  <div class="resultado" *ngIf='msgError  && !porFiltro'>
+    <ion-label> {{msgError}} </ion-label>
+  </div>
 
-  <ion-label position="floating">{{msgError}}</ion-label>
+  <div class="resultado" *ngIf='porTitulo && pesquisaEncontrada'>
+    <ion-label> Esses foram os resultados encontrados para: {{pesquisa}} </ion-label>
+      <ion-button color="dark" class="btLimpar" (click)="limpaPesquisa($event)">
+        Limpar Resultados
+      </ion-button>
+  </div>
+
+  <div class="resultado" *ngIf='porFiltro'>
+    <ion-label > Filtros Selecionados: </ion-label>
+      <div></div>
+        <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="botaoFiltro('genero')">
+          {{btFiltroGenero}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroAtor" class='botaoFiltro' color='light' (click)="botaoFiltro('ator')">
+          {{btFiltroAtor}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroAno" class='botaoFiltro' color='light' (click)="botaoFiltro('ano')">
+          {{btFiltroAno}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroProdutora" class='botaoFiltro' color='light' (click)="botaoFiltro('produtora')">
+          {{btFiltroProdutora}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+        <ion-button *ngIf="btFiltroIdioma" class='botaoFiltro' color='light' (click)="botaoFiltro('idioma')">
+          {{btFiltroIdioma}}
+          <span class="close-filter-tag"> X </span>
+        </ion-button>
+    </div>
+
+    <div class="resultado" *ngIf='porFiltro && pesquisaEncontrada'>
+      <ion-label> Esses foram os resultados encontrados:  </ion-label>
+        <ion-button color="dark" class="btLimpar" (click)="limpaPesquisa($event)">
+          Limpar Filtros
+        </ion-button>
+    </div>
+
+    <div class="resultado" *ngIf='msgError && porFiltro'>
+      <ion-label> {{msgError}} </ion-label>
+    </div>
+
+  <br><br><br>
 
   <div id="container">
     <div *ngFor="let cat of items">

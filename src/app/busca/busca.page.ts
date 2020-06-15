@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
@@ -8,6 +8,8 @@ import { ParametroBusca } from '../core/models/parametroBusca';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
 import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
+import { ParametroBuscaLog } from '../core/models/parametroBuscaLog';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-busca',
@@ -16,16 +18,30 @@ import { HistoricoBusca } from '../core/models/historicoBusca';
 })
 export class BuscaPage implements OnInit {
 
-  items: BuscaType[];
+  items: BuscaType[] = [];
 
   public tituloPesquisa: any;
-  public msgError: string;
-  public goalList: any[];
-  public loadedGoalList: any[];
+  public msgError: string = null;
   tipo_pagina: 'tv' | 'movie';
   loading: Promise<HTMLIonLoadingElement>;
-  public realizaBuscaFiltro;
+  public realizaBuscaFiltro: any;
 
+  // recebe o titulo da searchbar
+  public pesquisa: string;
+
+  // tipo de pesquisa
+  public porTitulo: boolean = false;
+  public porFiltro: boolean = false;
+
+  // variavel auxiliar para informar se tem retorno de pesquisa ou nao
+  public pesquisaEncontrada: boolean = false;
+
+  // botoes de filtro
+  public btFiltroGenero = null;
+  public btFiltroAno = null;
+  public btFiltroAtor = null;
+  public btFiltroProdutora = null;
+  public btFiltroIdioma = null;
 
   constructor(
     private tmdbService: TmdbService,
@@ -33,15 +49,114 @@ export class BuscaPage implements OnInit {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private historicoBuscaService: HistoricoBuscaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute
     ) {
-    // this.loading = this.overlayService.loading();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    let historicoJson = this.activatedRoute.snapshot.paramMap.get("historicoBusca");
+    
+    if (historicoJson !== undefined && historicoJson !== null) {
+      let historico: HistoricoBusca = JSON.parse(historicoJson);
+      
+      if (historico.porTitulo) {
+        this.tituloPesquisa = historico.tituloBuscado;
+        this.pesquisa = this.tituloPesquisa;
+        this.porTitulo = true;
+        this.porFiltro = false;
+        this.carregaDados(false);
+      } else {
+        this.montarFiltrosComHistorico(historico);
+        this.realizaPesquisaComFiltro(false);
+      }
+    }
+  }
+
+  montarFiltrosComHistorico(historico) {
+    let filtro = {
+      tipoStreaming: undefined,
+      genero: {
+        id: undefined,
+        name: undefined,
+      },
+      idioma: {
+        id: undefined,
+        name: undefined,
+      },
+      ano: undefined,
+      produtora: {
+        id: undefined,
+        name: undefined,
+      },
+      ator: {
+        id: undefined,
+        name: undefined,
+      },
+    };
+
+    if (historico.detalhada.midia === 'movie') {
+      filtro.tipoStreaming = 'filme';
+    }
+    if (historico.detalhada.midia === 'tv') {
+      filtro.tipoStreaming = 'serie';
+    }
+    historico.detalhada.parametrosBusca.forEach(param =>{
+      if (param.parametroMostrar === 'Gênero') {
+        filtro.genero.id = param.valor;
+        filtro.genero.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === "Idioma Original") {
+        filtro.idioma.id = param.valor;
+        filtro.idioma.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === "Ano de Lançamento") {
+        filtro.ano = param.valor;
+      }
+      if (param.parametroMostrar === "Ator") {
+        filtro.ator.id = param.valor;
+        filtro.ator.name = param.valorMostrar;
+      }
+      if (param.parametroMostrar === 'Produtora') {
+        filtro.produtora.id = param.valor;
+        filtro.produtora.name = param.valorMostrar;
+      }
+    })
+
+    if (filtro.ator.id === undefined) {
+      delete filtro['ator'];
+    }
+    if (filtro.genero.id === undefined) {
+      delete filtro['genero'];
+    }
+    if (filtro.idioma.id === undefined) {
+      delete filtro['idioma'];
+    }
+    if (filtro.produtora.id === undefined) {
+      delete filtro['produtora'];
+    }
+    this.realizaBuscaFiltro = filtro;
+  }
 
   coletaTitulo(searchbar) {
+    if (this.msgError !== null || this.pesquisaEncontrada) {
+      // para limpar a tela ao modificar barra de pesquisa
+      this.msgError = null;
+      this.pesquisaEncontrada = false;
+      this.porFiltro = false;
+      this.items = []
+    }
     this.tituloPesquisa = searchbar.target.value;
+  }
+
+  limpaPesquisa(e) {
+    this.items = [];
+    this.msgError = null;
+    this.pesquisaEncontrada = false;
+    this.porFiltro = false;
+    this.porTitulo = false;
+    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';    
+    this.tituloPesquisa = null;
   }
 
   clickEnter(e) {
@@ -53,14 +168,17 @@ export class BuscaPage implements OnInit {
   }
 
   pesquisarPorTitulo() {
+    this.msgError = null;
+    this.porTitulo = true;
+    this.porFiltro = false;
+
     if (this.tituloPesquisa) {
-      this.msgError = "Esses foram os resultados encontrados para " + this.tituloPesquisa;
-
-       this.carregaDados();
-
-
+      this.pesquisa = this.tituloPesquisa;
+      this.carregaDados(true);
     } else {
+      this.pesquisaEncontrada = false;
       this.msgError = "Não foi possivel encontrar sua busca. Tente novamente usando outros termos!";
+      this.items = [];
     }
   }
 
@@ -84,25 +202,30 @@ export class BuscaPage implements OnInit {
     return value.media_type;
   }
 
-  async carregaDados(): Promise<void>{
+  async carregaDados(gravaHistorico: boolean): Promise<void>{
+    let loading = this.overlayService.loading();
     this.items = [];
     let resultado;
 
-    if(this.authService.isAuth()){
+    const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
+
+    if (quantidadePaginas <= 0) {
+      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
+      this.pesquisaEncontrada = false;
+      this.porTitulo = false;
+    } 
+     
+    if(gravaHistorico && quantidadePaginas > 0 && this.authService.isAuth()){
       let buscaHistorico: HistoricoBusca;
       buscaHistorico = {
         id: undefined,
         dataBusca: new Date(),
         porTitulo: true,
-        tituloBuscado: this.tituloPesquisa,
-        detalhada: null
+        tituloBuscado: this.tituloPesquisa
       }
 
-      await this.historicoBuscaService.create(buscaHistorico);
-    }
-
-    const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
-
+      this.historicoBuscaService.create(buscaHistorico);
+    }  
 
     let itensAux = [];
 
@@ -111,6 +234,7 @@ export class BuscaPage implements OnInit {
 
       resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
 
+      this.pesquisaEncontrada = true;
 
       var filtered = resultado.filter(this.filtraTipoMidia);
 
@@ -128,6 +252,10 @@ export class BuscaPage implements OnInit {
     } catch(ex){
       console.log(ex);
       this.overlayService.toast({ message: ex});
+    }
+    finally
+    {
+      (await loading).dismiss();
     }
     
   }
@@ -154,7 +282,7 @@ export class BuscaPage implements OnInit {
               console.log('tem pesquisa para filtrar: ', filtro);
               this.realizaBuscaFiltro = filtro;
   
-              this.realizaPesquisaComFiltro();
+              this.realizaPesquisaComFiltro(true);
   
           } 
         } else {
@@ -166,58 +294,139 @@ export class BuscaPage implements OnInit {
     return await profileModal.present();
   }
 
-  async realizaPesquisaComFiltro(): Promise<void>{
+
+  botaoFiltro(filtroRetirado){
+
+    if (filtroRetirado === 'genero') {
+      this.realizaBuscaFiltro.genero = undefined;
+      this.btFiltroGenero = false;
+    }
+    if (filtroRetirado === 'ano') {
+      this.realizaBuscaFiltro.ano = undefined;
+      this.btFiltroAno = false;
+    }
+    if (filtroRetirado === 'idioma') {
+      this.realizaBuscaFiltro.idioma = undefined;
+      this.btFiltroIdioma = false;
+    }
+    if (filtroRetirado === 'produtora') {
+      this.realizaBuscaFiltro.produtora = undefined;
+      this.btFiltroProdutora = false;
+    }
+    if (filtroRetirado === 'ator') {
+      this.realizaBuscaFiltro.ator = undefined;
+      this.btFiltroAtor = false;
+    }
+    if (this.realizaBuscaFiltro.ator === undefined &&
+      this.realizaBuscaFiltro.produtora === undefined &&
+      this.realizaBuscaFiltro.idioma === undefined &&
+      this.realizaBuscaFiltro.ano === undefined &&
+      this.realizaBuscaFiltro.genero === undefined
+    ) {
+      this.msgError = 'Para realizar buscas você deve selecionar pelo menos um filtro ou digitar um titulo no campo acima!';
+      this.porFiltro = false;
+      this.pesquisaEncontrada = false;
+      this.items = [];
+    } else {
+      this.realizaPesquisaComFiltro(false);
+    }
+  }
+
+
+  async realizaPesquisaComFiltro(gravaHistorico: boolean): Promise<void>{
+    // limpar tela caso ja tenha pesquisa
+    this.msgError = null;
+    this.pesquisaEncontrada = false;
+    this.porTitulo = false;
+    (<HTMLInputElement>document.getElementById('barraPesquisa')).value = '';
+    this.tituloPesquisa = null;    
+
+    this.porFiltro = true;
+    let loading = this.overlayService.loading();
     let busca: ParametroBusca[] = [];
+    let buscaLog: ParametroBuscaLog[] = [];
     this.items = [];
 
-    if ( this.realizaBuscaFiltro.genero !== undefined ) {
+    if ( this.realizaBuscaFiltro.genero !== undefined) {
       busca.push({
         parametro: "with_genres",
         valor: this.realizaBuscaFiltro.genero.id,
-      }
-      )
+      })
+      buscaLog.push({
+        parametro: "with_genres",
+        valor: this.realizaBuscaFiltro.genero.id,
+        parametroMostrar : "Gênero",
+        valorMostrar: this.realizaBuscaFiltro.genero.name
+      })
+      this.btFiltroGenero = this.realizaBuscaFiltro.genero.name;
     }
-
     if (this.realizaBuscaFiltro.produtora !== undefined) {
       busca.push({
         parametro: "with_companies",
         valor: this.realizaBuscaFiltro.produtora.id,
-      }
-      )
+      })
+      buscaLog.push({
+        parametro: "with_companies",
+        valor: this.realizaBuscaFiltro.produtora.id,
+        parametroMostrar : "Produtora",
+        valorMostrar: this.realizaBuscaFiltro.produtora.name
+      })
+      this.btFiltroProdutora = this.realizaBuscaFiltro.produtora.name;
     }
-
-
     if (this.realizaBuscaFiltro.idioma !== undefined) {
-      busca.push(
-       {
+      busca.push({
           parametro: "with_original_language",
           valor: this.realizaBuscaFiltro.idioma.id,
-        }
-      )
+        })
+      buscaLog.push({
+        parametro: "with_original_language",
+        valor: this.realizaBuscaFiltro.idioma.id,
+        parametroMostrar : "Idioma Original",
+        valorMostrar: this.realizaBuscaFiltro.idioma.name
+      })
+      this.btFiltroIdioma = this.realizaBuscaFiltro.idioma.name;
     }
-
     if (this.realizaBuscaFiltro.tipoStreaming === 'filme') {
       if (this.realizaBuscaFiltro.ano !== undefined) {
         busca.push({
           parametro: "primary_release_year",
           valor: this.realizaBuscaFiltro.ano,
-        }
-        )
+        }) 
+        buscaLog.push({
+          parametro: "primary_release_year",
+          valor: this.realizaBuscaFiltro.ano,
+          parametroMostrar : "Ano de Lançamento",
+          valorMostrar: this.realizaBuscaFiltro.ano
+        })
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
       if (this.realizaBuscaFiltro.ator !== undefined) {
         busca.push({
           parametro: "with_people",
           valor: this.realizaBuscaFiltro.ator.id,
         })
+        buscaLog.push({
+          parametro: "with_people",
+          valor: this.realizaBuscaFiltro.ator.id,
+          parametroMostrar : "Ator",
+          valorMostrar: this.realizaBuscaFiltro.ator.name
+        })
+        this.btFiltroAtor = this.realizaBuscaFiltro.ator.name;
       }
     }
-
     if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
       if (this.realizaBuscaFiltro.ano !== undefined) {
         busca.push({
           parametro: "first_air_date_year",
           valor: this.realizaBuscaFiltro.ano,
         })
+        buscaLog.push({
+          parametro: "first_air_date_year",
+          valor: this.realizaBuscaFiltro.ano,
+          parametroMostrar : "Ano de Lançamento",
+          valorMostrar: this.realizaBuscaFiltro.ano
+        })
+        this.btFiltroAno = this.realizaBuscaFiltro.ano;
       }
     }
 
@@ -226,10 +435,19 @@ export class BuscaPage implements OnInit {
     } else if (this.realizaBuscaFiltro.tipoStreaming === 'serie') {
       this.tipo_pagina = 'tv';
     }
-
+    
     let resultado;
 
-    if(this.authService.isAuth()){
+    const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
+    
+    if (quantidadePaginas <= 0) {
+      this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outra combinação de filtros!';
+      this.pesquisaEncontrada = false;
+    }
+    
+    let itensAux = [];
+
+    if(gravaHistorico && quantidadePaginas > 0 && this.authService.isAuth()){
       let buscaHistorico: HistoricoBusca;
       buscaHistorico = {
         id: undefined,
@@ -237,21 +455,21 @@ export class BuscaPage implements OnInit {
         porTitulo: false,
         detalhada: {
           midia: this.tipo_pagina,
-          parametrosBusca: busca
+          midiaMostrar: this.tipo_pagina == 'tv' ? "Série" : "Filme",
+          parametrosBusca: buscaLog
         }
       }
 
-      await this.historicoBuscaService.create(buscaHistorico);
+      console.log(buscaHistorico)
+      this.historicoBuscaService.create(buscaHistorico);
     }
-
-    const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
-    let itensAux = [];
 
     for(let i = 1; i <= quantidadePaginas; i++ ) {
       let concatAux = [];
 
       resultado = await (await this.tmdbService.descobrir(i, this.tipo_pagina, busca).toPromise()).Producoes;
 
+      this.pesquisaEncontrada = true;
 
       var filtered = resultado.filter(this.incluiTipoMidia);
 
@@ -270,7 +488,10 @@ export class BuscaPage implements OnInit {
       console.log(ex);
       this.overlayService.toast({ message: ex});
     }
+    finally{
+      (await loading).dismiss();
+    }
 
   }
-
 }
+
