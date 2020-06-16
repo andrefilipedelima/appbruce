@@ -42,26 +42,31 @@
   <div class="resultado" *ngIf='porFiltro'>
     <ion-label > Filtros Selecionados: </ion-label>
       <div></div>
-        <ion-button *ngIf="btFiltroGenero" class='botaoFiltro' color='light' (click)="botaoFiltro('genero')">
-          {{btFiltroGenero}}
-          <span class="close-filter-tag"> X </span>
-        </ion-button>
-        <ion-button *ngIf="btFiltroAtor" class='botaoFiltro' color='light' (click)="botaoFiltro('ator')">
-          {{btFiltroAtor}}
-          <span class="close-filter-tag"> X </span>
-        </ion-button>
-        <ion-button *ngIf="btFiltroAno" class='botaoFiltro' color='light' (click)="botaoFiltro('ano')">
-          {{btFiltroAno}}
-          <span class="close-filter-tag"> X </span>
-        </ion-button>
-        <ion-button *ngIf="btFiltroProdutora" class='botaoFiltro' color='light' (click)="botaoFiltro('produtora')">
-          {{btFiltroProdutora}}
-          <span class="close-filter-tag"> X </span>
-        </ion-button>
-        <ion-button *ngIf="btFiltroIdioma" class='botaoFiltro' color='light' (click)="botaoFiltro('idioma')">
-          {{btFiltroIdioma}}
-          <span class="close-filter-tag"> X </span>
-        </ion-button>
+      <ion-chip *ngIf="btFiltroGenero" (click)="botaoFiltro('genero')" class="chipFiltro">
+        <ion-icon name="film"></ion-icon>
+        <ion-label>{{btFiltroGenero}}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      <ion-chip *ngIf="btFiltroAtor" (click)="botaoFiltro('ator')" class="chipFiltro">
+        <ion-icon name="person"></ion-icon>
+        <ion-label>{{btFiltroAtor}}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      <ion-chip  *ngIf="btFiltroAno" (click)="botaoFiltro('ano')" class="chipFiltro">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label> {{btFiltroAno}}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      <ion-chip *ngIf="btFiltroProdutora" (click)="botaoFiltro('produtora')" class="chipFiltro">
+        <ion-icon name="business"></ion-icon>
+        <ion-label>{{btFiltroProdutora}}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      <ion-chip *ngIf="btFiltroIdioma" (click)="botaoFiltro('idioma')" class="chipFiltro">
+        <ion-icon name="globe"></ion-icon>
+        <ion-label>{{btFiltroIdioma}}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
     </div>
 
     <div class="resultado" *ngIf='porFiltro && pesquisaEncontrada'>
