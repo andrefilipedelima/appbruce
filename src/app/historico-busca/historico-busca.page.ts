@@ -41,4 +41,8 @@ export class HistoricoBuscaPage implements OnInit {
     this.navCtrl.navigateForward(['welcome/buscar',historicoJson]);
   }
 
+  deletaHistorico() {
+    console.log('precisa implementar funçao de delete');
+  }
+
 }
