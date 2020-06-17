@@ -62,7 +62,7 @@ export class HistoricoBuscaPage implements OnInit {
     console.log('precisa implementar funçao de delete');
   }
 
-  mudancaTipo(e) {
+  onChangeTipo(e) {
     const tipo = e.detail.value;
 
     if (tipo === 'title') {
