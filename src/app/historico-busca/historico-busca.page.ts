@@ -16,6 +16,11 @@ export class HistoricoBuscaPage implements OnInit {
 
   historicoBusca$: Observable<HistoricoBusca[]>;
 
+  public porTitulo = [];
+  public porFiltro = [];
+
+  public tipo: string = 'porTitulo';
+
   constructor(private historicoBuscaService: HistoricoBuscaService,
               private authService: AuthService,
               private overlayService: OverlayService,
@@ -31,7 +36,19 @@ export class HistoricoBuscaPage implements OnInit {
 
     this.authService.authState$.pipe(take(1)).subscribe(user =>{
       this.historicoBusca$ = this.historicoBuscaService.getAll();
-      this.historicoBusca$.pipe(take(1)).subscribe(historico => loading.dismiss());
+      this.historicoBusca$.pipe(take(1)).subscribe(historico => {
+        loading.dismiss()
+        const historicoTotal = historico;
+        this.porTitulo = [];
+        this.porFiltro = [];
+        historicoTotal.forEach(item =>{
+          if (item.porTitulo === true) {
+            this.porTitulo.push(item)
+          } else {
+            this.porFiltro.push(item)
+          }
+        })
+      })
     })
   }
 
@@ -43,6 +60,16 @@ export class HistoricoBuscaPage implements OnInit {
 
   deletaHistorico() {
     console.log('precisa implementar funçao de delete');
+  }
+
+  mudancaTipo(e) {
+    const tipo = e.detail.value;
+
+    if (tipo === 'title') {
+      this.tipo = 'porTitulo';
+    } else {
+      this.tipo = 'porFiltro';
+    }
   }
 
 }
