@@ -36,7 +36,7 @@ export class HistoricoBuscaPage implements OnInit {
 
     this.authService.authState$.pipe(take(1)).subscribe(user =>{
       this.historicoBusca$ = this.historicoBuscaService.getAll();
-      this.historicoBusca$.pipe(take(1)).subscribe(historico => {
+      this.historicoBusca$.subscribe(historico => {
         loading.dismiss()
         const historicoTotal = historico;
         this.porTitulo = [];
@@ -58,8 +58,11 @@ export class HistoricoBuscaPage implements OnInit {
     this.navCtrl.navigateForward(['welcome/buscar',historicoJson]);
   }
 
-  deletaHistorico() {
-    console.log('precisa implementar funçao de delete');
+  async deletaHistorico(historico: HistoricoBusca) {
+    const loading = await this.overlayService.loading();
+    await this.historicoBuscaService.delete(historico);
+    await loading.dismiss()
+
   }
 
   onChangeTipo(e) {
