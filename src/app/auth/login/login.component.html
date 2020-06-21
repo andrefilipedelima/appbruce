@@ -34,8 +34,11 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Deve ter pelo menos 6 caracteres.">
-                <input type="password" matInput placeholder="Senha" required ngModel name="password" minlength="6"
+                <input [type]="passwordType" matInput placeholder="Senha" required ngModel name="password" minlength="6"
                   #pwInput="ngModel" #password>
+                 <button *ngIf="pwInput.value?.length > 0" type="button" matSuffix (click)='mostraOcultaSenha()' class="btSenha">
+                  <mat-icon class="material-icons">{{ passwordIcon }}</mat-icon>
+                 </button> 
                 <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
               </mat-form-field>
             </ion-col>

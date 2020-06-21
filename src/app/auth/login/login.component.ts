@@ -13,6 +13,9 @@ export class LoginComponent implements OnInit {
   //loginForm: FormGroup;
   overlayService: OverlayService;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'visibility_off';
+
   constructor(private authService: AuthService, private route: ActivatedRoute, private _overlayService: OverlayService) { 
     console.log(this.route.queryParams);
 //    this.route.queryParams.subscribe(params => {
@@ -52,6 +55,14 @@ this.overlayService = _overlayService;
       this.overlayService.toast({ message: 'Usuário ou senha inválidos'});
   }
 
+  mostraOcultaSenha() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
 
+    if (this.passwordType === 'text') {
+      this.passwordIcon = 'visibility';
+    } else {
+      this.passwordIcon = 'visibility_off';
+    }
+  }
 
 }
