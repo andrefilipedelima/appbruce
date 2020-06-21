@@ -25,6 +25,8 @@ export class DetalhesProducaoPage implements OnInit {
   anoLancamento: string;
   sinopse: string;
   tituloProducao: string;
+  avaliacao: any;
+  semAvaliação: string = 'Sem avaliação';
   generoIndefinido: Genero[] = [{ id: 0, name: 'Gênero Indefinido', nrRandom: 0}]
   elenco: Cast[];
 
@@ -70,6 +72,12 @@ export class DetalhesProducaoPage implements OnInit {
         this.tmdbService.buscarSeriePorId(id_producao).pipe(take(1)).subscribe(serie =>{
           this.poster = serie.poster_path;
 
+          if (serie.vote_average !== 0) {
+            this.avaliacao = serie.vote_average;
+          } else {
+            this.avaliacao = this.semAvaliação;
+          }
+
           if (serie.genres.length > 0){
             this.generos = serie.genres;
           } else {
@@ -93,6 +101,12 @@ export class DetalhesProducaoPage implements OnInit {
       else{
         this.tmdbService.buscarFilmePorId(id_producao).pipe(take(1)).subscribe(filme =>{
           this.poster = filme.poster_path;
+
+          if (filme.vote_average !== 0) {
+            this.avaliacao = filme.vote_average;
+          } else {
+            this.avaliacao = this.semAvaliação;
+          }
 
           if (filme.genres.length > 0){
             this.generos = filme.genres;

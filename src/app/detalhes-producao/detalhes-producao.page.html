@@ -19,6 +19,9 @@
         </ion-col>
         <ion-col size="12"  sizeLg="8">
           <ion-row>
+            <p class="titulo-detalhes">Avaliação: </p><p class="conteude">{{avaliacao}}</p>
+          </ion-row>
+          <ion-row>
             <p class="titulo-detalhes">Gêneros: </p><p class="conteude" *ngFor="let genero of generos">{{genero.name}} {{generos.indexOf(genero) == generos.length - 1 ? "" : " - "}}</p>
           </ion-row>
           <ion-row>
