@@ -53,8 +53,11 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Deve ter pelo menos 6 caracteres.">
-                <input type="password" matInput placeholder="Senha" required ngModel name="password"
+                <input [type]="passwordType" matInput placeholder="Senha" required ngModel name="password"
                   minlength="6" #pwInput="ngModel">
+                <button *ngIf="pwInput.value?.length > 0" type="button" matSuffix (click)='mostraOcultaSenha("password")' class="btSenha">
+                  <mat-icon class="material-icons">{{ passwordIcon }}</mat-icon>
+                </button> 
                 <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
               </mat-form-field>
             </ion-col>
@@ -63,9 +66,11 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field hintLabel="Deve ter pelo menos 6 caracteres.">
-                <input type="password" matInput placeholder="Confirmar Senha" required ngModel name="confirm-password"
+                <input [type]="passwordTypeConfirm" matInput placeholder="Confirmar Senha" required ngModel name="confirm-password"
                   minlength="6" #confirmInput="ngModel" pattern="{{ pwInput.value }}">
-
+                <button *ngIf="confirmInput.value?.length > 0" type="button" matSuffix (click)='mostraOcultaSenha("passwordConfirm")' class="btSenha">
+                  <mat-icon class="material-icons">{{ passwordIconConfirm }}</mat-icon>
+                </button> 
                 <mat-error *ngIf="confirmInput.hasError('pattern')"> Campos de Senha e Confirmar Senha devem ser iguais.
                 </mat-error>
                 <mat-hint align="end">{{ confirmInput.value?.length }} / 6</mat-hint>

@@ -13,6 +13,11 @@ export class SignupComponent implements OnInit {
   maxDate;
   minDate;
 
+  passwordType: string = 'password';
+  passwordTypeConfirm: string = 'password';
+  passwordIcon: string = 'visibility_off';
+  passwordIconConfirm: string = 'visibility_off';
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -31,5 +36,31 @@ export class SignupComponent implements OnInit {
         password: form.value.password
       });
   }
+
+  mostraOcultaSenha(senha) {
+
+    if (senha === 'password') {
+      this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+  
+      if (this.passwordType === 'text') {
+        this.passwordIcon = 'visibility';
+      } else {
+        this.passwordIcon = 'visibility_off';
+      }
+    }
+
+    if (senha === 'passwordConfirm') {
+      this.passwordTypeConfirm = this.passwordTypeConfirm === 'text' ? 'password' : 'text';
+  
+      if (this.passwordTypeConfirm === 'text') {
+        this.passwordIconConfirm = 'visibility';
+      } else {
+        this.passwordIconConfirm = 'visibility_off';
+      }
+    }
+
+
+  }
+
 
 }
