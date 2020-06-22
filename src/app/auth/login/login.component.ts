@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OverlayService } from 'src/app/services/OverlayService';
+import { table } from 'console';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'visibility_off';
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private _overlayService: OverlayService) { 
+  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute, private _overlayService: OverlayService) { 
     console.log(this.route.queryParams);
 //    this.route.queryParams.subscribe(params => {
 //      console.log(params);
@@ -30,6 +32,13 @@ this.overlayService = _overlayService;
 }
 
   ngOnInit() {
+    this.authService.isAuth().pipe(take(1)).subscribe(user =>{
+      if(user){
+        this.router.navigate(['/welcome/filmes']);
+      }
+    })
+      
+
     const criacaoConta = this.route.snapshot.paramMap.get("contacriada");
     
     if(criacaoConta !== undefined && criacaoConta == "true") {

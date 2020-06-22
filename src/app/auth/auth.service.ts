@@ -41,6 +41,7 @@ export class AuthService {
         result.user.sendEmailVerification().then(result => {
           this.overlay.toast({message: "Conta Criada, verifique sua caixa de e-mail"});
           this.router.navigate(['/login/true']);
+          this.afAuth.auth.signOut();
         }).catch(error => {
           this.overlay.toast({message: "Erro de e-mail de configuração."});
         })
@@ -61,6 +62,7 @@ export class AuthService {
         }
         else {
           this.overlay.toast({message: "E-mail ainda não verificado."});
+          this.afAuth.auth.signOut();
         }
       })
       .catch(error => {
