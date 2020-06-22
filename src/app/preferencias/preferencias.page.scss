@@ -1,5 +1,5 @@
 .titulo-pagina {
-    font-size: 2em !important;
+    font-size: 1.3em !important;
     font-family: Verdana;
 }
 
@@ -8,9 +8,6 @@
     font-family: Verdana;
 }
 
-.menu {
-    display: flex;
-}
 
 .search-btn {
     height: 50px;
@@ -24,6 +21,7 @@
 
 .titulo-pagina.ios {
     font-size: 1em !important;
+    padding: 20px;
 }
 
 @media only screen and (min-width: 420px) {

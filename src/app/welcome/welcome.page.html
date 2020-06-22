@@ -3,28 +3,18 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <div class="menu">
-      <ion-title slot="start" class="titulo-pagina">
-        <img src="../../../assets/icon/logo-appbruce-b.png" class="dog">
-        {{titulo_pagina}}
-      </ion-title>
-      <ion-button 
-          class="search-btn"
-          color="#0d0d0d"
-          [routerLink]="['/welcome/buscar']">
-        <ion-icon 
-            slot="end"
-            [ios]="'search-outline'"
-            [md]="'search-sharp'"
-            color="#e6e6e6"  
-           >
-        </ion-icon>
-      </ion-button>
-    </div>
+
+    <ion-title slot="start" class="titulo-pagina">
+      <img src="../../../assets/icon/logo-appbruce-b.png" class="dog">
+      {{titulo_pagina}}
+    </ion-title>
+    <ion-icon class="lupa" slot="end" size="medium" name="search" color="#e6e6e6" [routerLink]="['/welcome/buscar']">
+    </ion-icon>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{titulo_pagina}}</ion-title>
@@ -32,7 +22,7 @@
   </ion-header>
 
   <div id="container">
-    
+
     <div *ngFor="let cat of items">
       <ion-row class="category-banner">
         <ion-col class="ion-align-self-center titulo-categorias">
@@ -40,19 +30,23 @@
         </ion-col>
       </ion-row>
 
-      <ion-slides [options]="retornaSliderConfig(cat.tipo)" >
+      <ion-slides [options]="retornaSliderConfig(cat.tipo)">
         <ion-slide *ngFor="let producao of cat.producoes">
           <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id)">
             <ion-card-content class="cardCustomizado">
-              <img src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
+              <img src='{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}'>
             </ion-card-content>
           </ion-card>
         </ion-slide>
 
-        <div class="botao-esquerda" slot="start" (click)="slidePrev(items.indexOf(cat))"><ion-icon style="height: 100%; width: 100%;" name="caret-back"></ion-icon></div>
-        <div class="botao-direita" slot="end" (click)="slideNext(items.indexOf(cat))"><ion-icon style="height: 100%; width: 100%;" name="caret-forward"></ion-icon></div>
+        <div class="botao-esquerda" slot="start" (click)="slidePrev(items.indexOf(cat))">
+          <ion-icon style="height: 100%; width: 100%;" name="caret-back"></ion-icon>
+        </div>
+        <div class="botao-direita" slot="end" (click)="slideNext(items.indexOf(cat))">
+          <ion-icon style="height: 100%; width: 100%;" name="caret-forward"></ion-icon>
+        </div>
       </ion-slides>
-  </div>
-    
+    </div>
+
   </div>
 </ion-content>

@@ -95,7 +95,7 @@ export class WelcomePage implements OnInit {
         retorno = {
           spaceBetween: 10,
           centeredSlides: !(window.innerWidth>=960),
-          slidesPerView: window.innerWidth>=960 ? 3.2 : 1.2,
+          slidesPerView: window.innerWidth>=500 ? 3.2 : 1.2,
           loop: true,
           initialSlide: 0,
           speed: 400
@@ -105,7 +105,7 @@ export class WelcomePage implements OnInit {
         retorno = {
           spaceBetween: 10,
           centeredSlides: !(window.innerWidth>=960),
-          slidesPerView: window.innerWidth>=960 ? 6.2 : 2.4,
+          slidesPerView: window.innerWidth>=500 ? 6.2 : 2.4,
           loop: true,
           initialSlide: 0,
           speed: 400

@@ -2,6 +2,8 @@
 .titulo-pagina {
     font-size: 1em !important;
     font-family: Verdana;
+    padding: 12px 20px;
+    min-width: 226px;
 }
 
 .search-pagina {
@@ -20,11 +22,14 @@
 }
 
 .dog {
-    max-width: 45px;
+    max-width: 15%;
+    width: 45px;
 }
+
 
 .titulo-pagina.ios {
     font-size: 1em !important;
+    padding: 20px;
 }
 
 .conteudoBusca{
