@@ -3,7 +3,6 @@ import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OverlayService } from 'src/app/services/OverlayService';
-import { table } from 'console';
 import { take } from 'rxjs/operators';
 
 @Component({
