@@ -22,17 +22,21 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Preferências</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="labelGenero">
+    <ion-label id="labelgenero">Suas preferências irão ajudar a personalizar sua tela inicial com melhores sugestões de acordo com suas escolhas.</ion-label> 
+    <br><br>
+    <ion-label > Selecione os gêneros de sua preferência:</ion-label>
+  </div>
 
-  <ion-list class="listaPreferencias">
-    <ion-item *ngFor="let item of generos">
-      <ion-label>{{item.name}}</ion-label>
-      <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item)"></ion-checkbox>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of generos" class="listaPreferencias" size-md="4" size="12">
+          <ion-item>
+            <ion-label>{{item.name}}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item)"></ion-checkbox>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+</ion-grid>
 
 </ion-content>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
+import { OverlayService } from '../services/OverlayService';
 
 @Component({
   selector: 'app-preferencias',
@@ -13,7 +14,7 @@ export class PreferenciasPage implements OnInit {
   public generosSelecionadosFilme = [];
   public tipo: string = 'movie';
 
-  constructor(private tmdbService: TmdbService) { }
+  constructor(private tmdbService: TmdbService, private overlayService: OverlayService) { }
 
   ngOnInit() {
     this.montarPreferenciasGeneros(this.tipo);
@@ -31,8 +32,8 @@ export class PreferenciasPage implements OnInit {
   }
 
   async montarPreferenciasGeneros(mediaType){
+    const loading = await this.overlayService.loading();
     this.generos = [];
-
     const resultado = await (await this.tmdbService.buscarGeneros(mediaType).toPromise());
 
     resultado.forEach(element => {
@@ -40,6 +41,7 @@ export class PreferenciasPage implements OnInit {
     })
 
     this.generos = resultado;
+    await loading.dismiss()
   }
 
   generosChecked(item){

@@ -24,6 +24,22 @@
     padding: 20px;
 }
 
+.listaPreferencias {
+    width: 35%;
+    font-size: 5px;
+    padding: 0px;
+}
+
+.labelGenero {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+#labelgenero {
+    color: gray;
+}
+
 @media only screen and (min-width: 420px) {
     .listaPreferencias {
         width: 35%;
