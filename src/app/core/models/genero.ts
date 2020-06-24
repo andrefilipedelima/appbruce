@@ -1,5 +1,6 @@
 export interface Genero{
     id: number,
     name: string,
-    nrRandom: number
+    nrRandom: number,
+    isChecked?: boolean,
 }

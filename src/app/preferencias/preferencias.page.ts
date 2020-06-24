@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TmdbService } from '../core/providers/tmdb.service';
 
 @Component({
   selector: 'app-preferencias',
@@ -7,31 +8,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreferenciasPage implements OnInit {
 
-  constructor() { }
+  public generos;
+  public generosSelecionadosSerie = [];
+  public generosSelecionadosFilme = [];
+  public tipo: string = 'movie';
 
-  public form = [
-    { val: 'Ação', isChecked: false },
-    { val: 'Aventura', isChecked: false },
-    { val: 'Animação', isChecked: false },
-    { val: 'Cinema TV', isChecked: false },
-    { val: 'Comédia', isChecked: false },
-    { val: 'Crime', isChecked: false },
-    { val: 'Drama', isChecked: false },
-    { val: 'Documentário', isChecked: false },
-    { val: 'Família', isChecked: false },
-    { val: 'Fantasia', isChecked: false },
-    { val: 'Faroeste', isChecked: false },
-    { val: 'Ficção Científica', isChecked: false },
-    { val: 'Guerra', isChecked: false },
-    { val: 'História', isChecked: false },
-    { val: 'Mistério', isChecked: false },
-    { val: 'Musical', isChecked: false },
-    { val: 'Romance', isChecked: false },
-    { val: 'Suspense', isChecked: false },
-    { val: 'Terror', isChecked: false },
-  ];
+  constructor(private tmdbService: TmdbService) { }
 
   ngOnInit() {
+    this.montarPreferenciasGeneros(this.tipo);
+  }
+
+  onChangeTipo(e) {
+    this.tipo = e.detail.value;
+
+    if (this.tipo === 'movie') {
+      this.montarPreferenciasGeneros(this.tipo)
+    } 
+    if (this.tipo === 'tv') {
+      this.montarPreferenciasGeneros(this.tipo)
+    } 
+  }
+
+  async montarPreferenciasGeneros(mediaType){
+    this.generos = [];
+
+    const resultado = await (await this.tmdbService.buscarGeneros(mediaType).toPromise());
+
+    resultado.forEach(element => {
+      element.isChecked = false;
+    })
+
+    this.generos = resultado;
+  }
+
+  generosChecked(item){
+    // ******** PRECISA ARRUMAR ESSA FUNÇÃO ****************
+
+    if (this.tipo === 'movie') {
+      this.generosSelecionadosFilme.push({
+        item
+      })
+      console.log('filmes selecionados', this.generosSelecionadosFilme);
+    }
+
+    if (this.tipo === 'tv') {
+      this.generosSelecionadosSerie.push({
+        item
+      })
+      console.log('series selecionados', this.generosSelecionadosSerie);
+    }
   }
 
 }

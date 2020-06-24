@@ -12,6 +12,16 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-segment (ionChange)="onChangeTipo($event)" value="movie">
+    <ion-segment-button value="movie">
+      <ion-label>Filmes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="tv">
+      <ion-label>Séries</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Preferências</ion-title>
@@ -19,9 +29,9 @@
   </ion-header>
 
   <ion-list class="listaPreferencias">
-    <ion-item *ngFor="let item of form">
-      <ion-label>{{item.val}}</ion-label>
-      <ion-checkbox slot="end" [(ngModel)]="item.isChecked"></ion-checkbox>
+    <ion-item *ngFor="let item of generos">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item)"></ion-checkbox>
     </ion-item>
   </ion-list>
 
