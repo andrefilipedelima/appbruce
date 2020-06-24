@@ -57,11 +57,11 @@
               <ion-row *ngIf="!historico.porTitulo">
                 <ion-row class="conteudoBusca">
                   <p class="titulo-detalhes">Tipo de produção:</p>
-                  <p class="conteude">{{historico.detalhada.midiaMostrar}}</p>
+                  <p class="conteudo">{{historico.detalhada.midiaMostrar}}</p>
                 </ion-row>
                 <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca" class="conteudoBusca">
                   <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p>
-                  <p class="conteude">{{parametro.valorMostrar}}</p>
+                  <p class="conteudo">{{parametro.valorMostrar}}</p>
                 </ion-row>
               </ion-row>
             </ion-card-content>
