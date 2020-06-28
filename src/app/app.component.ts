@@ -66,13 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
       name: 'preferencias',
       url: '/welcome/preferencias',
       icon: 'settings'
-    },
-    {
-      title: 'Notificações',
-      name: 'notificacoes',
-      url: '/welcome/notificacoes',
-      icon: 'notifications'
-    },
+    }
   ];
 
   home = false;
@@ -116,32 +110,36 @@ export class AppComponent implements OnInit, OnDestroy {
 
       console.log('app component:' + logado);
       this.isAuth = logado;
-      if(!logado){
-        this.appPages = [
-          {
-            title: 'Filmes',
-            name: 'filmes',
-            url: '/welcome/filmes',
-            icon: 'film'
-          },
-          {
-            title: 'Séries',
-            name: 'series',
-            url: '/welcome/series',
-            icon: 'videocam'
-          },
-          {
-            title: 'Buscar',
-            name: 'buscar',
-            url: '/welcome/buscar',
-            icon: 'search'
-          }
-        ];
-      }
-      else{
-        this.appPages = this.appPages2;
-      }
+      this.controlaMenu(logado);
     })
+  }
+
+  controlaMenu(logado){
+    if(!logado){
+      this.appPages = [
+        {
+          title: 'Filmes',
+          name: 'filmes',
+          url: '/welcome/filmes',
+          icon: 'film'
+        },
+        {
+          title: 'Séries',
+          name: 'series',
+          url: '/welcome/series',
+          icon: 'videocam'
+        },
+        {
+          title: 'Buscar',
+          name: 'buscar',
+          url: '/welcome/buscar',
+          icon: 'search'
+        }
+      ];
+    }
+    else{
+      this.appPages = this.appPages2;
+    }
   }
   
   ngOnDestroy() {
@@ -149,9 +147,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    this.isAuth = false;
+    this.controlaMenu(this.isAuth);
     this.authService.logout();
   }
-
   
   habilitado(): boolean{
      return (this.route.url == '/login' || this.route.url == '/signup' || this.route.url == '/reset' || this.route.url == '/login/true');

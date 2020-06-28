@@ -75,7 +75,6 @@ export class BuscaPage implements OnInit {
     await this.authService.isAuth()
                           .pipe(take(1))
                           .subscribe(logado => {
-                            console.log(`logado: ${logado}`)
                             this.usuarioLogado = logado;
                           });
 

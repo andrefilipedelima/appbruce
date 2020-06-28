@@ -5,6 +5,11 @@ import { WelcomeType } from '../core/models/welcomeType';
 import { ParametroBusca } from '../core/models/parametroBusca';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, IonSlides } from '@ionic/angular';
+import { AuthService } from '../auth/auth.service';
+import { PreferenciasService } from '../core/providers/preferencias.service';
+import { take } from 'rxjs/operators';
+import { Preferencias } from '../core/models/preferencias';
+import { Genero } from '../core/models/genero';
 
 @Component({
   selector: 'app-welcome',
@@ -18,12 +23,21 @@ export class WelcomePage implements OnInit {
   loading: Promise<HTMLIonLoadingElement>;
   @ViewChildren(IonSlides) slides: QueryList<IonSlides>;
 
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController) { 
+  constructor(private tmdbService: TmdbService, 
+              private overlayService: OverlayService,
+              private route: ActivatedRoute, 
+              private navCtrl: NavController,
+              private authService: AuthService,
+              private preferenciasService: PreferenciasService) { 
     this.loading = this.overlayService.loading();
   }
 
   async ngOnInit(): Promise<void> {
     const param_tipo_pagina = this.route.snapshot.paramMap.get('id');
+    let preferenciasGenero: Genero[] = [];
+    let usuarioLogado: boolean;
+
+
 
     if(!param_tipo_pagina){
       this.tipo_pagina = 'movie';
@@ -39,14 +53,37 @@ export class WelcomePage implements OnInit {
 
     this.titulo_pagina = this.tipo_pagina == 'tv'? 'Séries' : 'Filmes';
 
-    await this.carregaDados();
+    this.authService.authState$.pipe(take(1)).subscribe(async user =>{
+
+      console.log(user)
+      if(user != null){
+        const preferencias$ = this.preferenciasService.getAll();
+
+        preferencias$.subscribe(async pref =>{
+          if(pref != undefined && pref != null){
+            preferenciasGenero = this.tipo_pagina == 'tv' ? pref[0].id_generos_tv : pref[0].id_generos_movie;
+          }
+          
+          console.log(pref);
+          console.log(preferenciasGenero);
+          await this.carregaDados(preferenciasGenero);
+        })
+
+      }
+      else{
+        await this.carregaDados(preferenciasGenero);
+      }
+
+    });
+
+
   }
 
   async ionViewDidEnter(){
     
   }
 
-  async carregaDados(): Promise<void>{
+  async carregaDados(preferenciasGenero: Genero[]): Promise<void>{
     this.items = [];
 
     try
@@ -63,8 +100,30 @@ export class WelcomePage implements OnInit {
         titulo: "Populares",
         producoes: await (await this.tmdbService.buscarPopulares(1, this.tipo_pagina).toPromise()).Producoes
       });
+      let generos: Genero[] = [];
+      
+      if(preferenciasGenero.length > 0){
+        preferenciasGenero.sort((a, b) => a.nrRandom > b.nrRandom ? 1 : -1)
+                          .slice(0, 5)
+                          .forEach(pGenero =>{
+                            generos.push(pGenero);
+                          });
+                          
 
-      const generos = (await this.tmdbService.buscarGeneros(this.tipo_pagina).toPromise()).sort((a, b) => a.nrRandom > b.nrRandom ? 1 : -1).slice(0, 5);
+        if(generos.length < 5){
+          const qtde = 5 - generos.length;
+
+          (await this.tmdbService.buscarGeneros(this.tipo_pagina).toPromise()).sort((a, b) => a.nrRandom > b.nrRandom ? 1 : -1)
+                                                                              .slice(0, qtde)
+                                                                              .forEach(genero =>{
+                                                                                generos.push(genero);
+                                                                              });
+        }
+        
+      }
+      else{
+        generos = (await this.tmdbService.buscarGeneros(this.tipo_pagina).toPromise()).sort((a, b) => a.nrRandom > b.nrRandom ? 1 : -1).slice(0, 5);
+      }
 
       generos.forEach(async genero =>{
         let param: ParametroBusca[];
@@ -75,7 +134,7 @@ export class WelcomePage implements OnInit {
         this.items.push({
           tipo: "genero",
           titulo: genero.name,
-          producoes: await (await this.tmdbService.descobrir(1, this.tipo_pagina, param).toPromise()).Producoes
+          producoes: await (await this.tmdbService.descobrir(1, this.tipo_pagina, param).toPromise()).Producoes.filter(producao => producao.poster_path != null)
         });
       });
       (await this.loading).dismiss();

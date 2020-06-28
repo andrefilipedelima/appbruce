@@ -9,10 +9,6 @@ import { Preferencias } from '../models/preferencias';
   providedIn: 'root'
 })
 export class PreferenciasService extends Firestore<Preferencias> {
-  private readonly limiteRegistros = 10;
-  private qtdeRegistros: number;
-  private ultimoRegistro: Preferencias;
-
   constructor(private authService: AuthService, db: AngularFirestore) {
     super(db);
     this.init();
@@ -22,25 +18,10 @@ export class PreferenciasService extends Firestore<Preferencias> {
     this.authService.authState$.subscribe(user => {
       if (user){
         this.setCollection(`/users/${user.uid}/preferencias`, (ref: firestore.CollectionReference) => {
-          return ref.orderBy('dataBusca', 'desc');
+          return ref;
         });
-
-        this.collection.valueChanges().subscribe(preferencias =>{
-          this.qtdeRegistros = preferencias.length;
-          this.ultimoRegistro = preferencias[this.qtdeRegistros - 1];
-        })
       }
       else this.setCollection(null);
     });
   }
-
-  create(item: Preferencias): Promise<Preferencias> {
-    if(this.qtdeRegistros >= this.limiteRegistros){
-     this.delete(this.ultimoRegistro);
-    }
-
-    item.id = this.db.createId();
-    return this.setItem(item, 'set');
-  }
-
 }

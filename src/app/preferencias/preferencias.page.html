@@ -33,7 +33,7 @@
       <ion-col *ngFor="let item of generos" class="listaPreferencias" size-md="4" size="12">
           <ion-item>
             <ion-label>{{item.name}}</ion-label>
-            <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item)"></ion-checkbox>
+            <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item, $event)"></ion-checkbox>
           </ion-item>
       </ion-col>
     </ion-row>

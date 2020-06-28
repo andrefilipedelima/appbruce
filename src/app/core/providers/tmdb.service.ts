@@ -88,7 +88,7 @@ export class TmdbService {
     const url_busca = this.API_URL + "discover/" + media_type + "?" + this.KEY + parametro;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, false)));
   }
 
   buscarGeneros(media_type: 'tv' | 'movie'): Observable<Genero[]>{

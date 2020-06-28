@@ -1,14 +1,7 @@
-import { ParametroBusca } from './parametroBusca';
-import { ParametroBuscaLog } from './parametroBuscaLog';
+import { Genero } from './genero';
 
 export interface Preferencias{
     id: string,
-    dataBusca: Date,
-    porTitulo: boolean,
-    tituloBuscado?: string,
-    detalhada?: {
-        midia: 'tv' | 'movie',
-        midiaMostrar: string,
-        parametrosBusca: ParametroBuscaLog[]
-    }
+    id_generos_tv:Genero[],
+    id_generos_movie:Genero[]
 }
