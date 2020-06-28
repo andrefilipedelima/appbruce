@@ -14,7 +14,9 @@ export class PreferenciasPage implements OnInit {
   public generosSelecionadosFilme = [];
   public tipo: string = 'movie';
 
-  constructor(private tmdbService: TmdbService, private overlayService: OverlayService) { }
+  constructor(private tmdbService: TmdbService, 
+              private overlayService: OverlayService
+              ) { }
 
   ngOnInit() {
     this.montarPreferenciasGeneros(this.tipo);
