@@ -4,6 +4,7 @@ import { HistoricoBusca } from '../models/historicoBusca';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { firestore } from 'firebase';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class HistoricoBuscaService extends Firestore<HistoricoBusca> {
           return ref.orderBy('dataBusca', 'desc');
         });
 
-        this.collection.valueChanges().subscribe(historico =>{
+        this.collection.valueChanges().pipe(take(1)).subscribe(historico =>{
           this.qtdeRegistros = historico.length;
           this.ultimoRegistro = historico[this.qtdeRegistros - 1];
         })
@@ -35,8 +36,10 @@ export class HistoricoBuscaService extends Firestore<HistoricoBusca> {
   }
 
   create(item: HistoricoBusca): Promise<HistoricoBusca> {
+    this.qtdeRegistros++;
     if(this.qtdeRegistros >= this.limiteRegistros){
      this.delete(this.ultimoRegistro);
+     this.qtdeRegistros--;
     }
 
     item.id = this.db.createId();

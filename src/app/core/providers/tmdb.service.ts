@@ -54,7 +54,7 @@ export class TmdbService {
     const url_busca = this.API_URL + "search/multi?" + this.KEY + "&language=pt-BR&page=" + pagina + "&query=" + strBusca;
 
     return this.http.get(url_busca)
-                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, true)));               
+                    .pipe(map((props:any) => new Resultado(props.total_pages, props.results, false)));               
   }
 
   buscarAtores(id_producao: number, media_type: 'tv' | 'movie'): Observable<Cast[]>{

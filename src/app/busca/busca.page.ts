@@ -10,6 +10,7 @@ import { AuthService } from '../auth/auth.service';
 import { HistoricoBusca } from '../core/models/historicoBusca';
 import { ParametroBuscaLog } from '../core/models/parametroBuscaLog';
 import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-busca',
@@ -20,6 +21,22 @@ export class BuscaPage implements OnInit {
 
   items: BuscaType[] = [];
 
+  //-----------Auxiliares para busca por scrolll-------------
+
+  private informacoesBusca: {
+    porTitulo: boolean,
+    paginaCorrente: number,
+    totalPaginas: number,
+    tituloBuscado?: string,
+    buscaAvancada?:{
+      tipoMedia: 'tv' | 'movie',
+      parametroBusca: ParametroBusca[]
+    }
+  }
+
+  //---------------------------------------------------------
+
+  private usuarioLogado: boolean;
   public tituloPesquisa: any;
   public msgError: string = null;
   tipo_pagina: 'tv' | 'movie';
@@ -54,9 +71,17 @@ export class BuscaPage implements OnInit {
     ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.authService.isAuth()
+                          .pipe(take(1))
+                          .subscribe(logado => {
+                            console.log(`logado: ${logado}`)
+                            this.usuarioLogado = logado;
+                          });
+
+
     let historicoJson = this.activatedRoute.snapshot.paramMap.get("historicoBusca");
-    
+
     if (historicoJson !== undefined && historicoJson !== null) {
       let historico: HistoricoBusca = JSON.parse(historicoJson);
       
@@ -205,17 +230,23 @@ export class BuscaPage implements OnInit {
   async carregaDados(gravaHistorico: boolean): Promise<void>{
     let loading = this.overlayService.loading();
     this.items = [];
-    let resultado;
 
-    const quantidadePaginas = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise()).Total_Paginas;
+    const resultado_busca = await this.tmdbService.buscarPorTexto(this.tituloPesquisa, 1).toPromise();
 
-    if (quantidadePaginas <= 0) {
+    this.informacoesBusca = {
+      porTitulo: true,
+      totalPaginas: resultado_busca.Total_Paginas,
+      paginaCorrente: 1,
+      tituloBuscado: this.tituloPesquisa
+    }
+
+    if (resultado_busca.Total_Paginas <= 0) {
       this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outros termos!';
       this.pesquisaEncontrada = false;
       this.porTitulo = false;
     } 
      
-    if(gravaHistorico && quantidadePaginas > 0 && this.authService.isAuth()){
+    if(gravaHistorico && resultado_busca.Total_Paginas > 0 && this.usuarioLogado){
       let buscaHistorico: HistoricoBusca;
       buscaHistorico = {
         id: undefined,
@@ -229,19 +260,16 @@ export class BuscaPage implements OnInit {
 
     let itensAux = [];
 
-    for(let i = 1; i <= quantidadePaginas; i++ ) {
+    if(resultado_busca.Total_Paginas > 0) {
       let concatAux = [];
-
-      resultado = await (await this.tmdbService.buscarPorTexto(this.tituloPesquisa, i).toPromise()).Producoes;
 
       this.pesquisaEncontrada = true;
 
-      var filtered = resultado.filter(this.filtraTipoMidia);
+      var filtered = resultado_busca.Producoes.filter(this.filtraTipoMidia);
 
       concatAux = itensAux.concat(filtered);
 
       itensAux = concatAux;
-
     }
 
     try {
@@ -258,6 +286,42 @@ export class BuscaPage implements OnInit {
       (await loading).dismiss();
     }
     
+  }
+
+  async carregaBusca(evento){
+    if(this.informacoesBusca == undefined || this.informacoesBusca == null){
+      evento.target.complete();
+      return;
+    }
+
+    if(this.informacoesBusca.paginaCorrente < this.informacoesBusca.totalPaginas){
+      this.informacoesBusca.paginaCorrente++;
+      const loadingBusca = this.overlayService.loading();
+
+      if(this.informacoesBusca.porTitulo){
+        const resultado = await (await this.tmdbService.buscarPorTexto(this.informacoesBusca.tituloBuscado, this.informacoesBusca.paginaCorrente).toPromise()).Producoes;
+
+        resultado.forEach(producao =>{
+          this.items.forEach(item =>{
+            item.producoes.push(producao);
+          });
+        });
+
+      }
+      else{
+        const resultado = await (await this.tmdbService.descobrir(this.informacoesBusca.paginaCorrente, this.informacoesBusca.buscaAvancada.tipoMedia, this.informacoesBusca.buscaAvancada.parametroBusca).toPromise()).Producoes;
+
+        resultado.forEach(producao =>{
+          this.items.forEach(item =>{
+            item.producoes.push(producao);
+          });
+        });
+      }
+
+      await (await loadingBusca).dismiss();
+    }
+
+    evento.target.complete();
   }
 
   abreDetalhes(id: number, tipoPagina){
@@ -436,18 +500,26 @@ export class BuscaPage implements OnInit {
       this.tipo_pagina = 'tv';
     }
     
-    let resultado;
-
-    const quantidadePaginas = await (await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise()).Total_Paginas;
+    const resultado_busca = await this.tmdbService.descobrir(1, this.tipo_pagina, busca).toPromise();
     
-    if (quantidadePaginas <= 0) {
+    this.informacoesBusca = {
+      porTitulo: false,
+      totalPaginas: resultado_busca.Total_Paginas,
+      paginaCorrente: 1,
+      buscaAvancada:{
+        tipoMedia: this.tipo_pagina,
+        parametroBusca: busca
+      }
+    }
+
+    if (resultado_busca.Total_Paginas <= 0) {
       this.msgError = 'Não encontramos resultados para sua pesquisa. Tente novamente usando outra combinação de filtros!';
       this.pesquisaEncontrada = false;
     }
     
     let itensAux = [];
 
-    if(gravaHistorico && quantidadePaginas > 0 && this.authService.isAuth()){
+    if(gravaHistorico && resultado_busca.Total_Paginas > 0 && this.usuarioLogado){
       let buscaHistorico: HistoricoBusca;
       buscaHistorico = {
         id: undefined,
@@ -464,14 +536,12 @@ export class BuscaPage implements OnInit {
       this.historicoBuscaService.create(buscaHistorico);
     }
 
-    for(let i = 1; i <= quantidadePaginas; i++ ) {
+    if(resultado_busca.Total_Paginas > 0) {
       let concatAux = [];
-
-      resultado = await (await this.tmdbService.descobrir(i, this.tipo_pagina, busca).toPromise()).Producoes;
 
       this.pesquisaEncontrada = true;
 
-      var filtered = resultado.filter(this.incluiTipoMidia);
+      var filtered = resultado_busca.Producoes.filter(this.incluiTipoMidia);
 
       concatAux = itensAux.concat(filtered);
 

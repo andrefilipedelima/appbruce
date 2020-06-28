@@ -36,7 +36,6 @@ export class DetalhesProducaoPage implements OnInit {
   buscouStreamings: boolean;
 
   constructor(private tmdbService: TmdbService, private overlayService: OverlayService, private route: ActivatedRoute, private navCtrl: NavController, private utellyService: UtellyService) { 
-    this.loading = this.overlayService.loading();
     this.buscouProducao = false;
     this.buscouStreamings = false;
   }
@@ -55,6 +54,8 @@ export class DetalhesProducaoPage implements OnInit {
   async carregaDados(id_producao: number, tipo_pagina: string): Promise<void>{
 
     try{
+      this.loading = this.overlayService.loading();
+    
       let midia: 'tv' | 'movie';
       midia = (tipo_pagina == 'tv' ? 'tv' : 'movie');
 
@@ -131,6 +132,7 @@ export class DetalhesProducaoPage implements OnInit {
     }
     catch(error){
       this.overlayService.toast(error);
+      (await this.loading).dismiss();
     }
   }
 

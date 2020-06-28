@@ -111,8 +111,36 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isAuth = authStatus;
     });
 
-    this.authService.isAuth().subscribe(logado =>{
+    this.authService.authState$.subscribe(user =>{
+      const logado = user != null;
+
+      console.log('app component:' + logado);
       this.isAuth = logado;
+      if(!logado){
+        this.appPages = [
+          {
+            title: 'Filmes',
+            name: 'filmes',
+            url: '/welcome/filmes',
+            icon: 'film'
+          },
+          {
+            title: 'Séries',
+            name: 'series',
+            url: '/welcome/series',
+            icon: 'videocam'
+          },
+          {
+            title: 'Buscar',
+            name: 'buscar',
+            url: '/welcome/buscar',
+            icon: 'search'
+          }
+        ];
+      }
+      else{
+        this.appPages = this.appPages2;
+      }
     })
   }
   

@@ -30,6 +30,9 @@
                 <p class="titulo-detalhes">Título:</p>
                 <p class="conteudo">{{historico.tituloBuscado}}</p>
               </ion-row>
+              <ion-row>
+                realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
+              </ion-row>
             </ion-card-content>
           </ion-card>
           <ion-item-option slot="end" class="trash" (click)="deletaHistorico(historico)">
@@ -61,6 +64,9 @@
                 <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca" class="conteudoBusca">
                   <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p>
                   <p class="conteudo">{{parametro.valorMostrar}}</p>
+                </ion-row>
+                <ion-row>
+                  realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
                 </ion-row>
               </ion-row>
             </ion-card-content>
