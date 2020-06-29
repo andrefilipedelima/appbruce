@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OverlayService } from 'src/app/services/OverlayService';
 import { take } from 'rxjs/operators';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,13 @@ export class LoginComponent implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'visibility_off';
 
-  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute, private _overlayService: OverlayService) { 
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private _overlayService: OverlayService,
+    public alertCtrl: AlertController
+  ) { 
     console.log(this.route.queryParams);
 //    this.route.queryParams.subscribe(params => {
 //      console.log(params);
@@ -59,8 +66,41 @@ this.overlayService = _overlayService;
       password: form.value.password
     });
 
-    if(!login)
+    if(!login) {
       this.overlayService.toast({ message: 'Usuário ou senha inválidos'});
+    } else {
+      const user = this.authService.getUser();
+      if (user.displayName === null) {
+        this.salvarNomeUsuario();
+      }
+    }
+  }
+
+  async salvarNomeUsuario() {
+    let alert = await this.alertCtrl.create({
+      header: 'Olá',
+      subHeader: 'Bem vindo ao App Bruce!',
+      message: 'Como gostaria de ser chamado?',
+      inputs: [
+        {
+          name: 'nome',
+          type: 'text',
+          placeholder: 'Digite aqui seu nome...'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Salvar',
+          handler: data => {
+            if (data.nome.length > 0) {
+              console.log('nome', data.nome);
+              this.authService.setUserName(data.nome);
+            }
+          }
+        },
+      ]
+    });
+    await alert.present();
   }
 
   mostraOcultaSenha() {

@@ -28,8 +28,7 @@ export class WelcomePage implements OnInit {
               private route: ActivatedRoute, 
               private navCtrl: NavController,
               private authService: AuthService,
-              private preferenciasService: PreferenciasService,
-              public alertCtrl: AlertController) { 
+              private preferenciasService: PreferenciasService) { 
     this.loading = this.overlayService.loading();
   }
 
@@ -55,9 +54,6 @@ export class WelcomePage implements OnInit {
 
       console.log(user)
       if(user !== null){
-        if (user.displayName === null) {
-          this.salvarNomeUsuario();
-        }
         const preferencias$ = this.preferenciasService.getAll();
 
         preferencias$.subscribe(async pref => {
@@ -78,30 +74,6 @@ export class WelcomePage implements OnInit {
     });
 
 
-  }
-
-  async salvarNomeUsuario() {
-    let alert = await this.alertCtrl.create({
-      header: 'Bem vindo ao App Bruce!',
-      message: 'Como gostaria de ser chamado?',
-      inputs: [
-        {
-          name: 'nome',
-          type: 'text',
-          placeholder: 'Digite aqui seu nome...'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Ok',
-          handler: data => {
-            console.log('nome', data.nome);
-            this.authService.setUserName(data.nome);
-          }
-        },
-      ]
-    });
-    await alert.present();
   }
 
   async ionViewDidEnter(){

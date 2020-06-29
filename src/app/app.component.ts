@@ -96,8 +96,10 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('app component:' + logado);
       if (user !== null) {
         this.user = true;
-        this.userName = user.displayName;
         this.userEmail = user.email;
+        if (user.displayName !== null) {
+          this.userName = 'Olá, ' + user.displayName;
+        }
       }
       this.isAuth = logado;
       this.controlaMenu(logado);
