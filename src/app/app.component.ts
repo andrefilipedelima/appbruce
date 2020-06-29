@@ -141,6 +141,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.controlaMenu(this.isAuth);
     this.user = false;
     this.authService.logout();
+    this.selectedIndex = 0;
   }
   
   habilitado(): boolean{

@@ -24,7 +24,7 @@
 
           <ion-menu-toggle auto-hide="false">
             <div *ngIf="!home">
-              <ion-item *ngIf="!isAuth" routerLink="/login" lines="none" detail="false">
+              <ion-item *ngIf="!isAuth" routerLink="/login" lines="none" detail="false" (click)="onLogout()">
                 <ion-icon slot="start" [ios]="'log-in' + '-outline'" [md]="'log-in' + '-sharp'" color="#e6e6e6"></ion-icon>
                 <ion-label>Login</ion-label>
               </ion-item>
