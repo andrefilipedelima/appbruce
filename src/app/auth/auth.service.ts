@@ -97,8 +97,12 @@ export class AuthService {
   }
 
   setUserName(nome) {
-    const user = this.afAuth.auth.currentUser;
+    const user = this.getUser();
     user.updateProfile({displayName: nome})
+  }
+
+  getUser() {
+    return this.afAuth.auth.currentUser;
   }
 
 }
