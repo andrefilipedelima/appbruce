@@ -4,7 +4,7 @@ import { OverlayService } from '../services/OverlayService';
 import { WelcomeType } from '../core/models/welcomeType';
 import { ParametroBusca } from '../core/models/parametroBusca';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, IonSlides } from '@ionic/angular';
+import { NavController, IonSlides, AlertController } from '@ionic/angular';
 import { AuthService } from '../auth/auth.service';
 import { PreferenciasService } from '../core/providers/preferencias.service';
 import { take } from 'rxjs/operators';
@@ -28,16 +28,14 @@ export class WelcomePage implements OnInit {
               private route: ActivatedRoute, 
               private navCtrl: NavController,
               private authService: AuthService,
-              private preferenciasService: PreferenciasService) { 
+              private preferenciasService: PreferenciasService,
+              public alertCtrl: AlertController) { 
     this.loading = this.overlayService.loading();
   }
 
   async ngOnInit(): Promise<void> {
     const param_tipo_pagina = this.route.snapshot.paramMap.get('id');
     let preferenciasGenero: Genero[] = [];
-    let usuarioLogado: boolean;
-
-
 
     if(!param_tipo_pagina){
       this.tipo_pagina = 'movie';
@@ -56,12 +54,15 @@ export class WelcomePage implements OnInit {
     this.authService.authState$.pipe(take(1)).subscribe(async user =>{
 
       console.log(user)
-      if(user != null){
+      if(user !== null){
+        if (user.displayName === null) {
+          this.salvarNomeUsuario();
+        }
         const preferencias$ = this.preferenciasService.getAll();
 
-        preferencias$.subscribe(async pref =>{
-          if(pref != undefined && pref != null){
-            preferenciasGenero = this.tipo_pagina == 'tv' ? pref[0].id_generos_tv : pref[0].id_generos_movie;
+        preferencias$.subscribe(async pref => {
+          if(pref !== undefined && pref !== null && pref.length !== 0){
+            preferenciasGenero = this.tipo_pagina === 'tv' ? pref[0].id_generos_tv : pref[0].id_generos_movie;
           }
           
           console.log(pref);
@@ -77,6 +78,30 @@ export class WelcomePage implements OnInit {
     });
 
 
+  }
+
+  async salvarNomeUsuario() {
+    let alert = await this.alertCtrl.create({
+      header: 'Bem vindo ao App Bruce!',
+      message: 'Como gostaria de ser chamado?',
+      inputs: [
+        {
+          name: 'nome',
+          type: 'text',
+          placeholder: 'Digite aqui seu nome...'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Ok',
+          handler: data => {
+            console.log('nome', data.nome);
+            this.authService.setUserName(data.nome);
+          }
+        },
+      ]
+    });
+    await alert.present();
   }
 
   async ionViewDidEnter(){

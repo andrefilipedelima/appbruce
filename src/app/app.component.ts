@@ -15,26 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Filmes',
-      name: 'filmes',
-      url: '/welcome/filmes',
-      icon: 'film'
-    },
-    {
-      title: 'Séries',
-      name: 'series',
-      url: '/welcome/series',
-      icon: 'videocam'
-    },
-    {
-      title: 'Buscar',
-      name: 'buscar',
-      url: '/welcome/buscar',
-      icon: 'search'
-    }
-  ];
+  public appPages = [];
 
   public appPages2 = [
     {
@@ -72,6 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
   home = false;
   isAuth = false;
   authSubscription: Subscription;
+  public user: boolean = false;
+  // caso nao possua nome salva, deixa como ola
+  public userName: string = 'Olá';
+  public userEmail: string;
   
   
 
@@ -106,9 +91,14 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.authService.authState$.subscribe(user =>{
-      const logado = user != null;
+      const logado = user !== null;
 
       console.log('app component:' + logado);
+      if (user !== null) {
+        this.user = true;
+        this.userName = user.displayName;
+        this.userEmail = user.email;
+      }
       this.isAuth = logado;
       this.controlaMenu(logado);
     })
@@ -149,6 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onLogout() {
     this.isAuth = false;
     this.controlaMenu(this.isAuth);
+    this.user = false;
     this.authService.logout();
   }
   

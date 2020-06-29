@@ -96,4 +96,9 @@ export class AuthService {
     this.router.navigate(['/welcome/filmes']);
   }
 
+  setUserName(nome) {
+    const user = this.afAuth.auth.currentUser;
+    user.updateProfile({displayName: nome})
+  }
+
 }

@@ -3,8 +3,14 @@
     <ion-menu contentId="main-content" type="overlay" [disabled]="habilitado()">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>User</ion-list-header>
-          <ion-note>email@gmail.com</ion-note>
+          <div *ngIf="user">
+            <ion-list-header>{{userName}}</ion-list-header>
+            <ion-note>{{userEmail}}</ion-note>
+          </div>
+          <div *ngIf="!user">
+            <ion-list-header>Olá Visitante</ion-list-header>
+            <ion-note></ion-note>
+          </div>
 
           <div>
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
