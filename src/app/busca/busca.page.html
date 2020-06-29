@@ -90,9 +90,13 @@
             <ion-col *ngFor="let producao of cat.producoes" size-sm="2" size="4">
                 <ion-card class="cardCustomizado" (click)="abreDetalhes(producao.id, producao.media_type)">
                   <ion-card-content class="cardCustomizado" >
-                      <img *ngIf="producao.poster_path != null" src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
-                      <img *ngIf="producao.poster_path == null" src= 'https://eticketsolutions.com/demo/themes/e-ticket/img/movie.jpg' >
-                      <label *ngIf="producao.poster_path == null">{{producao.media_type == 'tv' ? producao.name : producao.title}}</label>
+                      <img *ngIf="producao.poster_path !== null" src= '{{ "http://image.tmdb.org/t/p/original/" + producao.poster_path }}' >
+                      <div class="withoutImage" *ngIf="producao.poster_path === null">
+                        <figure>
+                          <img src= '../../../assets/icon/withoutPoster.jpg' />  
+                          <figcaption>{{producao.media_type === "tv" ? producao.name : producao.title}}</figcaption>
+                        </figure>
+                      </div>
                   </ion-card-content>
                 </ion-card>
             </ion-col>

@@ -14,6 +14,7 @@
     background: #333333;
     height: 70%;
 }
+
 .bt.ios {
     height: 60%;
     margin-bottom: 12px;
@@ -37,20 +38,50 @@
     padding-right: 15px;
 }
 
+.btLimpar {
+    text-decoration: underline;
+    text-transform: capitalize;
+    float: right;
+}
 
+.chipFiltro {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
 
-  .btLimpar {
-      text-decoration: underline;
-      text-transform: capitalize;
-      float: right;
-  }
-
-  .chipFiltro {
-      background-color: white;
-      color: black;
-      font-weight: bold;
-  }
-
-  .titulo-pagina.ios {
+.titulo-pagina.ios {
     font-size: 1.1em !important;
 }
+
+.withoutImage {
+    figure {
+        position: relative;
+        padding: 0px !important;
+        margin: 0px !important;
+        line-height: 0 !important;
+
+        img {
+            opacity: 0.5;
+        }
+    
+        figcaption {
+            padding: 10px;
+            line-height: 1.5;
+            position: absolute;
+            bottom: 0;
+            text-align: right;
+            color: white;
+        }
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .withoutImage {
+        figure { 
+            figcaption {
+                font-size: 20px;
+            }
+        }
+    }
+  }

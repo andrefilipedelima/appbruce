@@ -300,7 +300,9 @@ export class BuscaPage implements OnInit {
       if(this.informacoesBusca.porTitulo){
         const resultado = await (await this.tmdbService.buscarPorTexto(this.informacoesBusca.tituloBuscado, this.informacoesBusca.paginaCorrente).toPromise()).Producoes;
 
-        resultado.forEach(producao =>{
+        var filtered = resultado.filter(this.filtraTipoMidia);
+
+        filtered.forEach(producao =>{
           this.items.forEach(item =>{
             item.producoes.push(producao);
           });
@@ -310,7 +312,9 @@ export class BuscaPage implements OnInit {
       else{
         const resultado = await (await this.tmdbService.descobrir(this.informacoesBusca.paginaCorrente, this.informacoesBusca.buscaAvancada.tipoMedia, this.informacoesBusca.buscaAvancada.parametroBusca).toPromise()).Producoes;
 
-        resultado.forEach(producao =>{
+        var filtered = resultado.filter(this.incluiTipoMidia);
+
+        filtered.forEach(producao =>{
           this.items.forEach(item =>{
             item.producoes.push(producao);
           });
