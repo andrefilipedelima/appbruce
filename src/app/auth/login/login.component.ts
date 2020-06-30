@@ -25,17 +25,8 @@ export class LoginComponent implements OnInit {
     private _overlayService: OverlayService,
     public alertCtrl: AlertController
   ) { 
-    console.log(this.route.queryParams);
-//    this.route.queryParams.subscribe(params => {
-//      console.log(params);
-//      if (params && params.message) {
-//        this.toastService.presentToast(params.message);
-//      }
-//    });
-
-this.overlayService = _overlayService;
-
-}
+    this.overlayService = _overlayService;
+  }
 
   ngOnInit() {
     this.authService.isAuth().pipe(take(1)).subscribe(user =>{
@@ -93,7 +84,6 @@ this.overlayService = _overlayService;
           text: 'Salvar',
           handler: data => {
             if (data.nome.length > 0) {
-              console.log('nome', data.nome);
               this.authService.setUserName(data.nome);
             }
           }

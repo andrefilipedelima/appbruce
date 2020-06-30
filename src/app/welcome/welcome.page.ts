@@ -52,7 +52,6 @@ export class WelcomePage implements OnInit {
 
     this.authService.authState$.pipe(take(1)).subscribe(async user =>{
 
-      console.log(user)
       if(user !== null){
         const preferencias$ = this.preferenciasService.getAll();
 
@@ -61,8 +60,6 @@ export class WelcomePage implements OnInit {
             preferenciasGenero = this.tipo_pagina === 'tv' ? pref[0].id_generos_tv : pref[0].id_generos_movie;
           }
           
-          console.log(pref);
-          console.log(preferenciasGenero);
           await this.carregaDados(preferenciasGenero);
         })
 
@@ -137,7 +134,6 @@ export class WelcomePage implements OnInit {
       (await this.loading).dismiss();
     }
     catch(ex){
-      console.log(ex);
       this.overlayService.toast({ message: ex});
       (await this.loading).dismiss();
     }

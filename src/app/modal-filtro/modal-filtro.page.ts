@@ -221,12 +221,10 @@ export class ModalFiltroPage implements OnInit {
   }
   
   onChangeGenero(valorSelecionado){
-    console.log('genero selecionado', valorSelecionado);
     this.genero = valorSelecionado;
   }
 
   onChangeIdioma(valorSelecionado){
-    console.log('idioma selecionado', valorSelecionado);
     this.idioma = valorSelecionado;
   }
 

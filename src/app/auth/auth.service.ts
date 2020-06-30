@@ -56,7 +56,6 @@ export class AuthService {
     await this.afAuth.auth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
-        console.log(result);
         if (result.user.emailVerified) {
           this.authSuccessfully();
         }

@@ -9,7 +9,7 @@
 
 <ion-content class="ion-padding">
   <section>
-    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" autocomplete="off">
       <ion-grid>
         <ion-col>
 
@@ -32,7 +32,7 @@
           <ion-row>
             <ion-col style="text-align: center">
               <mat-form-field>
-                <input type="text" matInput placeholder="Nome completo" required ngModel name="name"
+                <input type="text" matInput placeholder="Nome" required ngModel name="name"
                   #nameInput="ngModel">
                 <mat-error *ngIf="nameInput.hasError('required')">Preenchimento obrigatório.</mat-error>
               </mat-form-field>

@@ -93,7 +93,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.authState$.subscribe(user =>{
       const logado = user !== null;
 
-      console.log('app component:' + logado);
       if (user !== null) {
         this.user = true;
         this.userEmail = user.email;
