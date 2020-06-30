@@ -85,7 +85,11 @@ export class DetalhesProducaoPage implements OnInit {
             this.generos = this.generoIndefinido;
           }
 
-          this.anoLancamento = serie.first_air_date.substring(0 ,4);
+          if (serie.first_air_date !== null) {
+            this.anoLancamento = serie.first_air_date.substring(0 ,4);
+          } else {
+            this.anoLancamento = 'Não informado.'
+          }
 
           if (serie.overview !== '') {
             this.sinopse = serie.overview;
@@ -115,7 +119,11 @@ export class DetalhesProducaoPage implements OnInit {
             this.generos = this.generoIndefinido;
           }
 
-          this.anoLancamento = filme.release_date.substring(0 ,4);
+          if (filme.release_date !== null) {
+            this.anoLancamento = filme.release_date.substring(0 ,4);
+          } else {
+            this.anoLancamento = 'Não informado.'
+          }
           
           if (filme.overview !== '') {
             this.sinopse = filme.overview;
