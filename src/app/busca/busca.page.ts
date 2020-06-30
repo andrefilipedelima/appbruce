@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { TmdbService } from '../core/providers/tmdb.service';
 import { BuscaType } from '../core/models/buscaType';
 import { OverlayService } from '../services/OverlayService';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, IonContent } from '@ionic/angular';
 import { ModalFiltroPage } from '../modal-filtro/modal-filtro.page';
 import { ParametroBusca } from '../core/models/parametroBusca';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
@@ -17,7 +17,10 @@ import { take } from 'rxjs/operators';
   templateUrl: './busca.page.html',
   styleUrls: ['./busca.page.scss'],
 })
+
 export class BuscaPage implements OnInit {
+
+  @ViewChild(IonContent, { static: false }) content: IonContent;
 
   items: BuscaType[] = [];
 
@@ -59,6 +62,9 @@ export class BuscaPage implements OnInit {
   public btFiltroAtor = null;
   public btFiltroProdutora = null;
   public btFiltroIdioma = null;
+
+  // variavel para habilitar botao que volta ao topo
+  public habilitaBTfab: boolean = false;
 
   constructor(
     private tmdbService: TmdbService,
@@ -566,5 +572,27 @@ export class BuscaPage implements OnInit {
     }
 
   }
+
+  ScrollToTop() {
+    this.content.scrollToTop(1000).then(() => {
+      this.habilitaBTfab = false
+    });
+  }
+
+  btScroll(event) {
+      // captura a posicao do botao
+      const bottomPosition = event.target.clientHeight + event.detail.scrollTop;
+      // captura o tamanho da tela
+      const screenSize = event.target.clientHeight;
+      // calcula um valor de acordo com o tamanho da tela
+      var auxbottomPosition = screenSize + (screenSize / 4 );
+      // se a posicao do botao for maior que o valor, mostra o botao, senao deixa oculto
+      if (bottomPosition > auxbottomPosition) {
+        this.habilitaBTfab = true;
+      } else {
+        this.habilitaBTfab = false;
+      }
+  }
+
 }
 

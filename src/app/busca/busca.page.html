@@ -12,7 +12,8 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content
+  [scrollEvents]="true" (ionScroll)="btScroll($event)">
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
@@ -110,5 +111,11 @@
     <ion-infinite-scroll-content loadingSpinner="bubbles">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <ion-fab *ngIf="habilitaBTfab" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ScrollToTop()" color="light" size="small">
+      <ion-icon name="arrow-up-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
