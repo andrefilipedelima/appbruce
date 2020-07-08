@@ -11,6 +11,7 @@ import { HistoricoBusca } from '../core/models/historicoBusca';
 import { ParametroBuscaLog } from '../core/models/parametroBuscaLog';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { GlobalFooService } from '../services/GlobalFooService ';
 
 @Component({
   selector: 'app-busca',
@@ -73,7 +74,8 @@ export class BuscaPage implements OnInit {
     private modalCtrl: ModalController,
     private historicoBuscaService: HistoricoBuscaService,
     private authService: AuthService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private globalFooService: GlobalFooService
     ) {
   }
 
@@ -88,6 +90,11 @@ export class BuscaPage implements OnInit {
     let historicoJson = this.activatedRoute.snapshot.paramMap.get("historicoBusca");
 
     if (historicoJson !== undefined && historicoJson !== null) {
+      this.globalFooService.publishSomeData({
+        atualizaMenu: true,
+        selectedIndex: 2
+      });
+
       let historico: HistoricoBusca = JSON.parse(historicoJson);
       
       if (historico.porTitulo) {

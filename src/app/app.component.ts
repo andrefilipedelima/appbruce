@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalFooService } from './services/GlobalFooService ';
 
 
 @Component({
@@ -65,10 +66,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
-    private route: Router
+    private route: Router,
+    private globalFooService: GlobalFooService
   ) {
     this.initializeApp();
 
+    this.globalFooService.getObservable().subscribe((data) => {
+      if(data.atualizaMenu){
+        this.selectedIndex = data.selectedIndex;
+      }
+    });
   }
 
   
