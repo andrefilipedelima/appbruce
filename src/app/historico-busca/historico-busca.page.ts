@@ -23,6 +23,10 @@ export class HistoricoBuscaPage implements OnInit {
 
   public segment:number = 0;
 
+  slideOpts = {
+    autoHeight: true,
+  };
+
   constructor(private historicoBuscaService: HistoricoBuscaService,
               private authService: AuthService,
               private overlayService: OverlayService,

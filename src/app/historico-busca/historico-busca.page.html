@@ -21,7 +21,7 @@
 
 <ion-content>
 
-  <ion-slides (ionSlideDidChange)="slideChanged()" #slides >
+  <ion-slides (ionSlideDidChange)="slideChanged()" #slides [options]="slideOpts">
     <ion-slide #titulo>
         <ion-list *ngIf="porTitulo as historicoBusca">
           <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">

@@ -28,7 +28,7 @@
     <ion-label> Selecione os gêneros de sua preferência:</ion-label>
   </div>
 
-  <ion-slides (ionSlideDidChange)="slideChanged()" #slides >
+  <ion-slides (ionSlideDidChange)="slideChanged()" #slides [options]="slideOpts" >
     <ion-slide #filme>
       <ion-grid>
         <ion-row>

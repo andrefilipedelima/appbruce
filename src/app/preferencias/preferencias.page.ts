@@ -21,6 +21,10 @@ export class PreferenciasPage implements OnInit {
   public generosFilme;
   public generosSerie;
   public segment:number = 0;
+
+  slideOpts = {
+    autoHeight: true
+  };
   
   preferenciasService$: Observable<Preferencias[]>;
 
