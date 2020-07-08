@@ -11,32 +11,49 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-segment (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment" >
+  <ion-segment-button value="0">
+    <ion-label>Filmes</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="1">
+    <ion-label>Séries</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
 <ion-content>
-
-  <ion-segment (ionChange)="onChangeTipo($event)" value="movie">
-    <ion-segment-button value="movie">
-      <ion-label>Filmes</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="tv">
-      <ion-label>Séries</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
+  
   <div class="labelGenero">
     <ion-label id="labelgenero">Suas preferências irão ajudar a personalizar sua tela inicial com melhores sugestões de acordo com suas escolhas.</ion-label> 
     <br><br>
-    <ion-label > Selecione os gêneros de sua preferência:</ion-label>
+    <ion-label> Selecione os gêneros de sua preferência:</ion-label>
   </div>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let item of generos" class="listaPreferencias" size-md="4" size="12">
-          <ion-item>
-            <ion-label>{{item.name}}</ion-label>
-            <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item, $event)"></ion-checkbox>
-          </ion-item>
-      </ion-col>
-    </ion-row>
-</ion-grid>
+  <ion-slides (ionSlideDidChange)="slideChanged()" #slides >
+    <ion-slide #filme>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let item of generosFilme" class="listaPreferencias" size-md="4" size="12">
+            <ion-item>
+              <ion-label>{{item.name}}</ion-label>
+              <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item, $event, 'movie')"></ion-checkbox>
+            </ion-item> 
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide #serie>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let item of generosSerie" class="listaPreferencias" size-md="4" size="12">
+            <ion-item>
+              <ion-label>{{item.name}}</ion-label>
+              <ion-checkbox slot="end" [(ngModel)]="item.isChecked" (ionChange)="generosChecked(item, $event, 'tv')"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
 
 </ion-content>
