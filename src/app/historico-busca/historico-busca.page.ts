@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HistoricoBusca } from '../core/models/historicoBusca';
 import { Observable } from 'rxjs';
 import { HistoricoBuscaService } from '../core/providers/historico-busca.service';
 import { AuthService } from '../auth/auth.service';
 import { OverlayService } from '../services/OverlayService';
 import { take } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
+import { NavController, IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-historico-busca',
@@ -14,12 +14,14 @@ import { NavController } from '@ionic/angular';
 })
 export class HistoricoBuscaPage implements OnInit {
 
+  @ViewChild('slides', {static: true}) slides: IonSlides;
+
   historicoBusca$: Observable<HistoricoBusca[]>;
 
   public porTitulo = [];
   public porFiltro = [];
 
-  public tipo: string = 'porTitulo';
+  public segment:number = 0;
 
   constructor(private historicoBuscaService: HistoricoBuscaService,
               private authService: AuthService,
@@ -65,14 +67,10 @@ export class HistoricoBuscaPage implements OnInit {
 
   }
 
-  onChangeTipo(e) {
-    const tipo = e.detail.value;
-
-    if (tipo === 'title') {
-      this.tipo = 'porTitulo';
-    } else {
-      this.tipo = 'porFiltro';
-    }
+  slideChanged() {
+    this.slides.getActiveIndex().then((index: number) => {
+      this.segment = index;
+    });
   }
 
 }
