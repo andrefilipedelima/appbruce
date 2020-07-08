@@ -117,3 +117,10 @@ ion-menu ion-content {
   ion-item.selected {
     --color: var(--ion-color-primary);
   }
+
+  .edit {
+    float: right;
+    width: 24px;
+    height: 24px;
+    color: gray;
+  }

@@ -4,9 +4,7 @@
       <ion-content>
         <ion-list id="inbox-list">
           <div *ngIf="user">
-              <ion-item (click)="changeUserDisplayName($event)">
-                <ion-icon name="pencil-sharp" slot="end" size="medium"></ion-icon>
-              </ion-item>
+            <ion-icon name="pencil-sharp" (click)="changeUserDisplayName($event)" class="edit"></ion-icon>
             <ion-list-header>{{userName}}</ion-list-header>
             <ion-note>{{userEmail}}</ion-note>
           </div>
