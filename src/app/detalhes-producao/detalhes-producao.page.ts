@@ -31,6 +31,7 @@ export class DetalhesProducaoPage implements OnInit {
   elenco: Cast[];
 
   streamers$: Observable<Streamers[]>;
+  streamers: Streamers[];
 
   buscouProducao: boolean;
   buscouStreamings: boolean;
@@ -62,12 +63,15 @@ export class DetalhesProducaoPage implements OnInit {
       this.elenco = await this.tmdbService.buscarAtores(id_producao, midia).toPromise();
       this.elenco = this.elenco.slice(0, 3);
 
-      this.streamers$ = this.utellyService.buscarEmQualStreamingPorId(id_producao, 'tmdb').pipe(map(uttely => uttely.locations));
-      
+      this.streamers = await (await this.utellyService.buscarEmQualStreamingPorId(id_producao, 'tmdb').toPromise()).locations.filter(location => location.country.indexOf('br') > -1);
+      this.buscouStreamings = true;
+
+      /*
       this.streamers$.pipe(take(1)).subscribe( locations => {
         this.buscouStreamings = true;
         this.escondeLoading();
       });
+      */
 
       if(tipo_pagina == 'tv'){
         this.tmdbService.buscarSeriePorId(id_producao).pipe(take(1)).subscribe(serie =>{
@@ -139,7 +143,7 @@ export class DetalhesProducaoPage implements OnInit {
       }
     }
     catch(error){
-      this.overlayService.toast(error);
+      //this.overlayService.toast(error);
       (await this.loading).dismiss();
     }
   }

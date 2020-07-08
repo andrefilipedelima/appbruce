@@ -38,8 +38,8 @@
             <p class="sinopse">{{sinopse}}</p>
           </ion-row>
           <ion-row>
-            <ion-list *ngIf="(streamers$ | async) as streamers">
-              <ng-container *ngIf="streamers.length > 0; else noStreamers ">
+            <ion-list>
+              <ng-container *ngIf="streamers != null && streamers.length > 0; else noStreamers ">
                 <ion-row>
                   <p class="titulo-detalhes">Onde encontrar </p>
                 </ion-row>
