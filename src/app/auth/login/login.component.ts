@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OverlayService } from 'src/app/services/OverlayService';
 import { take } from 'rxjs/operators';
-import { AlertController } from '@ionic/angular';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,6 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  //loginForm: FormGroup;
   overlayService: OverlayService;
 
   passwordType: string = 'password';
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private _overlayService: OverlayService,
-    public alertCtrl: AlertController
+    private AppComp: AppComponent,
   ) { 
     this.overlayService = _overlayService;
   }
@@ -42,13 +41,6 @@ export class LoginComponent implements OnInit {
      this._overlayService.toast({message:"Conta criada, por favor verifique o seu e-mail para ativar a conta!"}); 
     }
 
-    //this.loginForm = new FormGroup({
-    //  email: new FormControl('', {
-    //    validators: [Validators.required, Validators.email]
-    //  }),
-    //  password: new FormControl('', {validators: [Validators.required]})
-    //});
-
   }
 
   async onSubmit(form: NgForm){
@@ -62,35 +54,9 @@ export class LoginComponent implements OnInit {
     } else {
       const user = this.authService.getUser();
       if (user.displayName === null) {
-        this.salvarNomeUsuario();
+        this.AppComp.salvarNomeUsuario();
       }
     }
-  }
-
-  async salvarNomeUsuario() {
-    let alert = await this.alertCtrl.create({
-      header: 'Olá',
-      subHeader: 'Bem vindo ao App Bruce!',
-      message: 'Como gostaria de ser chamado?',
-      inputs: [
-        {
-          name: 'nome',
-          type: 'text',
-          placeholder: 'Digite aqui seu nome...'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Salvar',
-          handler: data => {
-            if (data.nome.length > 0) {
-              this.authService.setUserName(data.nome);
-            }
-          }
-        },
-      ]
-    });
-    await alert.present();
   }
 
   mostraOcultaSenha() {

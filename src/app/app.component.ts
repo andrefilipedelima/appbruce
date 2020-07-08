@@ -5,8 +5,9 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalFooService } from './services/GlobalFooService ';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -55,10 +56,11 @@ export class AppComponent implements OnInit, OnDestroy {
   isAuth = false;
   authSubscription: Subscription;
   public user: boolean = false;
-  // caso nao possua nome salva, deixa como ola
+  // caso nao possua nome salvo, deixa como ola
   public userName: string = 'Olá';
   public userEmail: string;
-  
+
+  public userCompleto;
   
 
   constructor(
@@ -67,7 +69,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private statusBar: StatusBar,
     private authService: AuthService,
     private route: Router,
-    private globalFooService: GlobalFooService
+    private globalFooService: GlobalFooService,
+    public alertCtrl: AlertController,
   ) {
     this.initializeApp();
 
@@ -102,6 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
       if (user !== null) {
         this.user = true;
+        this.userCompleto = user;
         this.userEmail = user.email;
         if (user.displayName !== null) {
           this.userName = 'Olá, ' + user.displayName;
@@ -156,4 +160,62 @@ export class AppComponent implements OnInit, OnDestroy {
      return (this.route.url == '/login' || this.route.url == '/signup' || this.route.url == '/reset' || this.route.url == '/login/true');
   }
 
+  async salvarNomeUsuario() {
+    let alert = await this.alertCtrl.create({
+      header: 'Olá',
+      subHeader: 'Bem vindo ao App Bruce!',
+      message: 'Como gostaria de ser chamado?',
+      inputs: [
+        {
+          name: 'nome',
+          type: 'text',
+          placeholder: 'Digite aqui seu nome...'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Salvar',
+          handler: data => {
+            if (data.nome.length > 0) {
+              this.authService.setUserName(data.nome);
+              this.userName = 'Olá, ' + data.nome;
+            }
+          }
+        },
+      ]
+    });
+    await alert.present();
+  }
+
+  async changeUserDisplayName(e){
+    let header: string = 'Olá';
+
+    if (this.userCompleto.displayName) {
+      header = header + ' ' + this.userCompleto.displayName;
+    }
+    let alert = await this.alertCtrl.create({
+      header: header,
+      message: 'Gostaria de alterar seu nome de usuário?',
+      inputs: [
+        {
+          name: 'nome',
+          type: 'text',
+          placeholder: 'Digite aqui um novo nome...'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Ok',
+          handler: data => {
+            if (data.nome.length > 0) {
+              this.authService.setUserName(data.nome);
+              this.userName = 'Olá, ' + data.nome;
+            }
+          }
+        },
+      ]
+    });
+    await alert.present();
+
+  }
 }

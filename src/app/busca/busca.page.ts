@@ -80,6 +80,11 @@ export class BuscaPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.globalFooService.publishSomeData({
+      atualizaMenu: true,
+      selectedIndex: 2
+    });
+
     await this.authService.isAuth()
                           .pipe(take(1))
                           .subscribe(logado => {
@@ -90,10 +95,6 @@ export class BuscaPage implements OnInit {
     let historicoJson = this.activatedRoute.snapshot.paramMap.get("historicoBusca");
 
     if (historicoJson !== undefined && historicoJson !== null) {
-      this.globalFooService.publishSomeData({
-        atualizaMenu: true,
-        selectedIndex: 2
-      });
 
       let historico: HistoricoBusca = JSON.parse(historicoJson);
       

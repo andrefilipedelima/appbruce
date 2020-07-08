@@ -10,80 +10,85 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-segment (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment" >
+  <ion-segment-button value="0">
+    <ion-label>Por Titulo</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="1">
+    <ion-label>Por Filtros</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
 <ion-content>
-  <ion-segment (ionChange)="onChangeTipo($event)" value="title">
-    <ion-segment-button value="title">
-      <ion-label>Por Titulo</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="filters">
-      <ion-label>Por Filtros</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 
-  <div *ngIf="tipo === 'porTitulo'">
-    <ion-list *ngIf="porTitulo as historicoBusca">
-      <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
-        <ion-item *ngFor="let historico of historicoBusca">
-          <ion-card (click)="realizaBusca(historico);">
-            <ion-card-content>
-              <ion-row *ngIf="historico.porTitulo" class="conteudoBusca">
-                <p class="titulo-detalhes">Título:</p>
-                <p class="conteudo">{{historico.tituloBuscado}}</p>
-              </ion-row>
+  <ion-slides (ionSlideDidChange)="slideChanged()" #slides [options]="slideOpts">
+    <ion-slide #titulo>
+        <ion-list *ngIf="porTitulo as historicoBusca">
+          <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
+            <ion-item *ngFor="let historico of historicoBusca">
+              <ion-card (click)="realizaBusca(historico);">
+                <ion-card-content>
+                  <ion-row *ngIf="historico.porTitulo">
+                    <ion-row class="conteudoBusca">
+                      <p class="titulo-detalhes">Título:</p>
+                      <p class="conteudo">{{historico.tituloBuscado}}</p>
+                    </ion-row>
+                    <ion-row>
+                      realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
+                    </ion-row>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+              <ion-item-option slot="end" class="trash" (click)="deletaHistorico(historico)">
+                <ion-icon slot="top" name="trash" size="large"></ion-icon>
+              </ion-item-option>
+            </ion-item>
+          </ng-container>
+          <ng-template #semHistorico>
+            <ion-card>
               <ion-row>
-                realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
+                Não há histórico de busca por titulo
               </ion-row>
-            </ion-card-content>
-          </ion-card>
-          <ion-item-option slot="end" class="trash" (click)="deletaHistorico(historico)">
-            <ion-icon slot="top" name="trash" size="large"></ion-icon>
-          </ion-item-option>
-        </ion-item>
-      </ng-container>
-      <ng-template #semHistorico>
-        <ion-card>
-          <ion-row>
-            Não há histórico de busca
-          </ion-row>
-        </ion-card>
-      </ng-template>
-    </ion-list>
-  </div>
+            </ion-card>
+          </ng-template>
+        </ion-list>
+    </ion-slide>
 
-  <div *ngIf="tipo === 'porFiltro'">
-    <ion-list *ngIf="porFiltro as historicoBusca">
-      <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
-        <ion-item *ngFor="let historico of historicoBusca">
-          <ion-card (click)="realizaBusca(historico);">
-            <ion-card-content>
-              <ion-row *ngIf="!historico.porTitulo">
-                <ion-row class="conteudoBusca">
-                  <p class="titulo-detalhes">Tipo de produção:</p>
-                  <p class="conteudo">{{historico.detalhada.midiaMostrar}}</p>
-                </ion-row>
-                <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca" class="conteudoBusca">
-                  <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p>
-                  <p class="conteudo">{{parametro.valorMostrar}}</p>
-                </ion-row>
-                <ion-row>
-                  realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
-                </ion-row>
+    <ion-slide #filtro>
+        <ion-list *ngIf="porFiltro as historicoBusca">
+          <ng-container *ngIf="historicoBusca.length > 0; else semHistorico ">
+            <ion-item *ngFor="let historico of historicoBusca">
+              <ion-card (click)="realizaBusca(historico);">
+                <ion-card-content>
+                  <ion-row *ngIf="!historico.porTitulo">
+                    <ion-row class="conteudoBusca">
+                      <p class="titulo-detalhes">Tipo de produção:</p>
+                      <p class="conteudo">{{historico.detalhada.midiaMostrar}}</p>
+                    </ion-row>
+                    <ion-row *ngFor="let parametro of historico.detalhada.parametrosBusca" class="conteudoBusca">
+                      <p class="titulo-detalhes">{{parametro.parametroMostrar}}:</p>
+                      <p class="conteudo">{{parametro.valorMostrar}}</p>
+                    </ion-row>
+                    <ion-row>
+                      realizada em {{historico.dataBusca.seconds * 1000 | date: 'dd/MM/yyyy'}}
+                    </ion-row>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+              <ion-item-option slot="end" class="trash" (click)="deletaHistorico(historico)">
+                <ion-icon slot="top" name="trash" size="large"></ion-icon>
+              </ion-item-option>
+            </ion-item>
+          </ng-container>
+          <ng-template #semHistorico>
+            <ion-card>
+              <ion-row>
+                Não há histórico de busca por filtro
               </ion-row>
-            </ion-card-content>
-          </ion-card>
-          <ion-item-option slot="end" class="trash" (click)="deletaHistorico(historico)">
-            <ion-icon slot="top" name="trash" size="large"></ion-icon>
-          </ion-item-option>
-        </ion-item>
-      </ng-container>
-      <ng-template #semHistorico>
-        <ion-card>
-          <ion-row>
-            Não há histórico de busca
-          </ion-row>
-        </ion-card>
-      </ng-template>
-    </ion-list>
-  </div>
+            </ion-card>
+          </ng-template>
+        </ion-list>
+    </ion-slide>
+  </ion-slides>
 
 </ion-content>

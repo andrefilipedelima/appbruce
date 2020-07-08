@@ -11,9 +11,6 @@
   </ion-toolbar>
 </ion-header>
 
-
-<ion-content
-  [scrollEvents]="true" (ionScroll)="btScroll($event)">
   <ion-list>
     <ion-list-header class="barraPesquisa-header">
 
@@ -28,6 +25,10 @@
       <ion-button class="bt" (click)="pesquisarPorTitulo()">BUSCAR</ion-button>
     </ion-list-header>
   </ion-list>
+
+
+<ion-content
+  [scrollEvents]="true" (ionScroll)="btScroll($event)">
 
   <div class="resultado" *ngIf='msgError  && !porFiltro'>
     <ion-label> {{msgError}} </ion-label>
